@@ -1,0 +1,173 @@
+<template>
+  <style>
+    @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Georgia"; src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #f2e6cf;
+      --red: #94050d;
+      --ink: #54232f;
+    }
+    /* Coffee Touch: big red retro headline at the top */
+    #intro-head {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 120px;
+      text-align: center;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 216px;
+      line-height: 0.92;
+      color: var(--red);
+    }
+    #intro-head .line { display: block; }
+    #intro-tag {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 548px;
+      text-align: center;
+      font-family: "Georgia", serif;
+      font-size: 34px;
+      letter-spacing: 0.22em;
+      color: var(--red);
+    }
+    #intro-tag .w { display: inline-block; }
+
+    /* Product with a long cast shadow */
+    #intro-product {
+      position: absolute;
+      left: 540px;
+      top: 1190px;
+      width: 0;
+      height: 0;
+    }
+    #intro-product-move { position: absolute; left: 0; top: 0; }
+    #intro-shadow-wrap {
+      position: absolute;
+      left: -230px;
+      top: -508px;
+      width: 460px;
+      height: 508px;
+      transform-origin: 50% 100%;
+      transform: scaleY(0.32) skewX(-58deg);
+    }
+    #intro-shadow { width: 100%; height: 100%; display: block; }
+    #intro-pouch {
+      position: absolute;
+      left: -230px;
+      top: -508px;
+      width: 460px;
+      height: auto;
+    }
+
+    /* Premium ingredients, centred under the pouch */
+    #intro-ing-title {
+      position: absolute;
+      left: 80px;
+      right: 80px;
+      top: 640px;
+      text-align: center;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 74px;
+      line-height: 1;
+      color: var(--red);
+      letter-spacing: 0.02em;
+    }
+    #intro-ing-title .w { display: inline-block; }
+    #intro-ing-list {
+      position: absolute;
+      left: 160px;
+      width: 760px;
+      top: 742px;
+    }
+    .ing {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 70px;
+      color: var(--ink);
+    }
+    .ing svg { width: 40px; height: 40px; flex: none; }
+    #ing-1 { top: 0; }
+    #ing-2 { top: 84px; }
+    #ing-3 { top: 168px; }
+    #ing-4 { top: 252px; }
+  </style>
+
+  <div id="root" data-composition-id="intro" data-width="1080" data-height="1350">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="leaf" viewBox="0 0 40 40">
+          <path d="M6 34 C6 16 18 6 34 6 C34 22 24 34 6 34 Z" fill="#6e7a3c" />
+          <path d="M8 32 C16 24 22 18 30 10" fill="none" stroke="#f2e6cf" stroke-width="2.4" stroke-linecap="round" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <div id="intro-head" class="clip" data-start="0" data-duration="1.9" data-track-index="0">
+      <span id="head-kopi" class="line">Kopi</span><span id="head-ratu" class="line">Ratu</span>
+    </div>
+    <div id="intro-tag" class="clip" data-start="0.45" data-duration="1.45" data-track-index="1">
+      <span class="w">INSPIRING</span> <span class="w">ADDICTION</span>
+    </div>
+
+    <div id="intro-product" class="clip" data-start="0" data-duration="4.5" data-track-index="2" data-layout-allow-overflow>
+      <div id="intro-product-move">
+        <div id="intro-shadow-wrap"><img id="intro-shadow" src="assets/pouch-shadow.png" alt="" /></div>
+        <img id="intro-pouch" src="assets/kopi-ratu-cutout.png" alt="Kopi Ratu pouch and sachets" />
+      </div>
+    </div>
+
+    <div id="intro-ing-title" class="clip" data-start="1.75" data-duration="2.75" data-track-index="0">
+      <span class="w">Premium</span> <span class="w">Ingredients</span>
+    </div>
+    <div id="intro-ing-list" class="clip" data-start="2.05" data-duration="2.45" data-track-index="1">
+      <div id="ing-1" class="ing"><svg><use href="#leaf" /></svg><span>Ginkgo Biloba</span></div>
+      <div id="ing-2" class="ing"><svg><use href="#leaf" /></svg><span>Ginseng</span></div>
+      <div id="ing-3" class="ing"><svg><use href="#leaf" /></svg><span>Bacopa Monnieri</span></div>
+      <div id="ing-4" class="ing"><svg><use href="#leaf" /></svg><span>Black Cohosh</span></div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // 0-0.7 s: the headline slams in out of the hook's zoom; the pouch drops and its shadow lands
+    tl.fromTo(["#head-kopi", "#head-ratu"], { scale: 1.5, opacity: 0, filter: "blur(10px)" },
+      { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "expo.out", stagger: 0.08 }, 0);
+    tl.fromTo("#intro-product-move", { y: -1300, rotation: -8, filter: "blur(6px)" },
+      { y: 0, rotation: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 0.05);
+    tl.fromTo("#intro-shadow", { opacity: 0 }, { opacity: 0.42, duration: 0.45, ease: "power2.out" }, 0.3);
+
+    // 0.9-1.3 s: tagline, word by word
+    tl.fromTo("#intro-tag .w", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power2.out", stagger: 0.08 }, 0.5);
+
+    // 3.4-4.0 s: headline leaves up, the pouch rises and shrinks to make room
+    tl.fromTo(["#head-kopi", "#head-ratu", "#intro-tag .w"], { y: 0, opacity: 1 },
+      { y: -160, opacity: 0, duration: 0.35, ease: "power3.in", stagger: 0.04, immediateRender: false }, 1.45);
+    tl.fromTo("#intro-product-move", { y: 0, scale: 1 },
+      { y: -630, scale: 0.7, duration: 0.55, ease: "power3.inOut", immediateRender: false }, 1.5);
+
+    // 3.9-6.2 s: premium ingredients, one at a time
+    tl.fromTo("#intro-ing-title .w", { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "expo.out", stagger: 0.08 }, 1.8);
+    ["#ing-1", "#ing-2", "#ing-3", "#ing-4"].forEach((sel, i) => {
+      tl.fromTo(sel, { opacity: 0, scale: 0.82, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "back.out(1.8)" }, 2.1 + i * 0.25);
+      tl.fromTo(sel + " svg", { rotation: -40, scale: 0 },
+        { rotation: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, 2.15 + i * 0.25);
+    });
+
+    window.__timelines["intro"] = tl;
+  </script>
+</template>

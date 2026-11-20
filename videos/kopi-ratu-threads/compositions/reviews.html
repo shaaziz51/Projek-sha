@@ -1,0 +1,125 @@
+<template>
+  <style>
+    @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Pinyon Script"; src: url("assets/fonts/pinyon-script-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Georgia"; src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --paper: #f3e7d3;
+      --ink: #54232f;
+      --red: #94050d;
+      --star: #9a5f06;
+    }
+    #rev-ground { position: absolute; inset: 0; }
+    #rev-stage { position: absolute; inset: 0; background: var(--paper); }
+    #rev-head {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 96px;
+      text-align: center;
+      font-family: "Pinyon Script", Georgia, serif;
+      font-size: 92px;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    #rev-stars {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 214px;
+      text-align: center;
+      font-family: "Georgia", serif;
+      font-size: 44px;
+      letter-spacing: 0.08em;
+      color: var(--star);
+    }
+    #rev-stars span { display: inline-block; }
+
+    /* One review at a time: a big line from it, then the real screenshot as proof */
+    .rev {
+      position: absolute;
+      inset: 0;
+    }
+    .rev-quote {
+      position: absolute;
+      left: 80px;
+      right: 80px;
+      top: 290px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 104px;
+      line-height: 1;
+      color: var(--red);
+    }
+    .rev-quote .w { display: inline-block; }
+    .rev-card {
+      position: absolute;
+      left: 110px;
+      top: 650px;
+      width: 860px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 18px 36px rgba(84, 35, 47, 0.18);
+    }
+    .rev-card img { display: block; width: 860px; height: auto; }
+  </style>
+
+  <div id="root" data-composition-id="reviews" data-width="1080" data-height="1350">
+    <div id="rev-ground" class="clip" data-start="0" data-duration="4.9" data-track-index="0" data-layout-allow-overflow>
+      <div id="rev-stage">
+        <div id="rev-head">Kata Pelanggan</div>
+        <div id="rev-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+
+        <!-- Lines quoted word for word from each review -->
+        <div id="rev-1" class="rev">
+          <div class="rev-quote"><div><span class="w">“Sedap</span> <span class="w">sangat”</span></div></div>
+          <div class="rev-card"><img src="assets/reviews/review-3.jpg" alt="Review by f**e, 5 stars" /></div>
+        </div>
+        <div id="rev-2" class="rev">
+          <div class="rev-quote"><div><span class="w">“Hampir</span> <span class="w">13</span> <span class="w">tahun</span> <span class="w">minum</span> <span class="w">kopi</span> <span class="w">ratu</span> <span class="w">ni.”</span></div></div>
+          <div class="rev-card"><img src="assets/reviews/review-4.jpg" alt="Review: Kualiti produk terbaik" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // 0-0.35 s: a fresh sheet of paper whips in from the right over the olive
+    tl.fromTo("#rev-stage", { x: 1080 }, { x: 0, duration: 0.35, ease: "power3.out" }, 0);
+    tl.fromTo("#rev-head", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0.22);
+    tl.fromTo("#rev-stars span", { scale: 0, transformOrigin: "50% 60%" },
+      { scale: 1, duration: 0.3, ease: "back.out(2.4)", stagger: 0.05 }, 0.32);
+
+    // Reviews, 2.1 s each: the line punches in, the screenshot slides up under it, then both clear
+    const REVS = ["#rev-1", "#rev-2"];
+    REVS.forEach((r, i) => {
+      const at = 0.45 + i * 2.1;
+      tl.fromTo(r + " .rev-quote .w", { opacity: 0, scale: 1.4, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.05 }, at);
+      tl.fromTo(r + " .rev-card", { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, at + 0.12);
+      if (i < REVS.length - 1) {
+        tl.fromTo(r + " .rev-quote .w", { opacity: 1, filter: "blur(0px)" },
+          { opacity: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in", immediateRender: false }, at + 1.95);
+        tl.fromTo(r + " .rev-card", { opacity: 1, x: 0 },
+          { opacity: 0, x: -160, duration: 0.18, ease: "power3.in", immediateRender: false }, at + 1.93);
+      }
+    });
+
+    // 4.62-4.82 s: clear the sheet for the end card
+    tl.fromTo(["#rev-head", "#rev-stars", "#rev-2"], { opacity: 1 },
+      { opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, 4.62);
+
+    window.__timelines["reviews"] = tl;
+  </script>
+</template>
