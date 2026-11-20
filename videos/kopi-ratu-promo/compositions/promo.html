@@ -137,8 +137,7 @@
       line-height: 1.15;
     }
     /* One copy slot between the logo row and the product; one message at a time */
-    #copy-herba,
-    #copy-manis {
+    #copy-herba {
       left: 120px;
       top: 452px;
       width: 768px;
@@ -251,8 +250,7 @@
     <!-- Copy, beats 2-3 -->
     <div id="copy-logo" class="copy clip" data-start="1.1" data-duration="4.0" data-track-index="5"><img id="copy-logo-img" src="assets/jrm-logo.png" alt="JRM Holistik" /></div>
     <div id="copy-tagline" class="copy clip" data-start="1.6" data-duration="3.5" data-track-index="6"><span class="w">Inspiring</span><br /><span class="w">Addiction.</span></div>
-    <div id="copy-herba" class="copy clip" data-start="1.85" data-duration="1.8" data-track-index="7"><span class="w">Herba</span> <span class="w">ginseng,</span> <span class="w">maca,</span> <span class="w">damiana</span> <span class="w">&amp;</span> <span class="w">tongkat</span> <span class="w">ali.</span></div>
-    <div id="copy-manis" class="copy clip" data-start="3.65" data-duration="1.35" data-track-index="7"><span class="w">Rasa</span> <span class="w">rendah.</span><br /><span class="w">Kurang</span> <span class="w">manis.</span></div>
+    <div id="copy-herba" class="copy clip" data-start="1.7" data-duration="3.3" data-track-index="7"><span class="w">Ginkgo</span> <span class="w">biloba</span> <span class="w">and</span> <span class="w">Bacopa</span> <span class="w">monnieri,</span> <span class="w">refreshing</span> <span class="w">coffee</span> <span class="w">taste.</span></div>
     <div id="copy-serving" class="copy clip" data-start="5.6" data-duration="1.8" data-track-index="7"><span id="copy-serving-pill"><span class="w">15</span> <span class="w">hidangan</span> <span class="w">sebungkus</span></span></div>
 
     <!-- End card (7.6-10 s) -->
@@ -291,19 +289,15 @@
     tl.fromTo("#copy-logo-img", { opacity: 0, filter: "blur(8px)" },
       { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 1.1);
 
-    // ---- Beat 3 (1.6-5.0 s): callouts, word by word ----
+    // ---- Beat 3 (1.6-5.0 s): tagline, then one callout above the pouch, word by word ----
     tl.fromTo("#copy-tagline .w", { opacity: 0, filter: "blur(6px)" },
       { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.09 }, 1.6);
     tl.fromTo("#copy-herba .w", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.08 }, 1.85);
-    tl.fromTo("#copy-herba .w", { opacity: 1, filter: "blur(0px)" },
-      { opacity: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in", immediateRender: false }, 3.5);
-    tl.fromTo("#copy-manis .w", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.09 }, 3.65);
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.07 }, 1.7);
     // everything on the gold ground leaves cleanly before the colour change
     tl.fromTo(["#copy-logo-img", "#copy-tagline .w"], { opacity: 1, filter: "blur(0px)" },
       { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in", immediateRender: false }, 4.75);
-    tl.fromTo("#copy-manis .w", { opacity: 1, filter: "blur(0px)" },
+    tl.fromTo("#copy-herba .w", { opacity: 1, filter: "blur(0px)" },
       { opacity: 0, filter: "blur(8px)", duration: 0.13, ease: "power2.in", immediateRender: false }, 4.85);
 
     // ---- Beat 4 (5.0-7.6 s): colour flood to cream, stacked words slide in, pouch swings ----
