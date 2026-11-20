@@ -13,7 +13,7 @@ Good for focus, stamina & emotion/stress.
 
 Ada yang dah minum hampir 13 tahun 👀
 
-Grab now on @Kak_sha_jrm showcase 🛒
+Grab now on @Kak_sha_jrm TikTok showcase 🛒
 
 ## X / Twitter (under 280 characters)
 
@@ -21,7 +21,7 @@ Grab now on @Kak_sha_jrm showcase 🛒
 
 Kopi Ratu dengan Ginkgo Biloba, Ginseng, Bacopa Monnieri & Black Cohosh. Good for focus, stamina & emotion/stress.
 
-Grab now on @Kak_sha_jrm showcase 🛒
+Grab now on @Kak_sha_jrm TikTok showcase 🛒
 
 ## Optional reply to keep the thread going
 
