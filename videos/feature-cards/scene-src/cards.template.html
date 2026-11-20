@@ -1,0 +1,97 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2");
+      font-weight: 700;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      background: #fff9f0;
+    }
+    #cards-stage {
+      position: absolute;
+      inset: 0;
+    }
+    #cards-stage svg {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+  </style>
+  <div id="root" data-composition-id="cards" data-width="1920" data-height="1080">
+    <div id="cards-stage" class="clip" data-start="0" data-duration="5" data-track-index="0" data-layout-allow-overlap>
+<!--SVG-->
+    </div>
+  </div>
+  <script>
+    // Each layer of each card comes in on its own, in reading order, card by card.
+    const tl = gsap.timeline({ paused: true });
+    const CARDS = ["herba", "manis", "bancuh"];
+    const CARD_START = 0.2;    // first card's shape
+    const CARD_STEP = 0.9;     // next card starts this much later
+    // Offset of each layer inside its card, and how it arrives.
+    const LAYERS = [
+      ["shape", 0.0], ["outline", 0.1], ["icon-badge", 0.22], ["icon", 0.32], ["title", 0.45],
+      ["rule", 0.6], ["body", 0.7], ["chip", 0.9], ["chip-text", 1.0],
+    ];
+
+    function enter(card, layer, at) {
+      const el = "#" + card + "-" + layer;
+      switch (layer) {
+        case "shape":
+          tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96, transformOrigin: "50% 100%" },
+            { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, at);
+          break;
+        case "outline":
+          tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, at);
+          break;
+        case "icon-badge":
+          tl.fromTo(el, { scale: 0, transformOrigin: "50% 50%" },
+            { scale: 1, duration: 0.5, ease: "back.out(1.7)" }, at);
+          break;
+        case "icon": {
+          // Draw each stroke on, using its measured length.
+          document.querySelectorAll(el + " path").forEach((p, k) => {
+            const len = Math.ceil(p.getTotalLength()) + 1;
+            tl.fromTo(p, { attr: { "stroke-dasharray": len, "stroke-dashoffset": len } },
+              { attr: { "stroke-dashoffset": 0 }, duration: 0.45, ease: "power2.inOut" }, at + k * 0.05);
+          });
+          break;
+        }
+        case "title":
+          tl.fromTo(el, { opacity: 0, filter: "blur(6px)" },
+            { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, at);
+          break;
+        case "rule":
+          tl.fromTo(el, { scaleX: 0, transformOrigin: "0% 50%" },
+            { scaleX: 1, duration: 0.4, ease: "power3.out" }, at);
+          break;
+        case "body":
+          tl.fromTo(el + " tspan", { opacity: 0, attr: { dy: 10 } },
+            { opacity: 1, attr: { dy: 0 }, duration: 0.35, ease: "power3.out", stagger: 0.07 }, at);
+          break;
+        case "chip":
+          tl.fromTo(el, { scaleX: 0, transformOrigin: "0% 50%" },
+            { scaleX: 1, duration: 0.45, ease: "expo.out" }, at);
+          break;
+        case "chip-text":
+          tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, at);
+          break;
+      }
+    }
+
+    CARDS.forEach((card, i) => {
+      LAYERS.forEach(([layer, offset]) => enter(card, layer, CARD_START + i * CARD_STEP + offset));
+    });
+
+    window.__timelines["cards"] = tl;
+  </script>
+</template>

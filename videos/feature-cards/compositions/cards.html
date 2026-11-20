@@ -1,0 +1,227 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2");
+      font-weight: 700;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      background: #fff9f0;
+    }
+    #cards-stage {
+      position: absolute;
+      inset: 0;
+    }
+    #cards-stage svg {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+  </style>
+  <div id="root" data-composition-id="cards" data-width="1920" data-height="1080">
+    <div id="cards-stage" class="clip" data-start="0" data-duration="5" data-track-index="0" data-layout-allow-overlap>
+<svg id="cards-svg" xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="1920" height="1080" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1800 900">
+<title>Kopi Ratu feature cards</title>
+<defs>
+  <linearGradient id="card-gradient" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.55" stop-color="#FFFFFF"/>
+    <stop offset="1" stop-color="#E1B377"/>
+  </linearGradient>
+</defs>
+<g id="background" inkscape:groupmode="layer" inkscape:label="Background">
+  <rect width="1800" height="900" fill="#FFF9F0"/>
+</g>
+<g id="card-herba" inkscape:groupmode="layer" inkscape:label="Card 1 · Campuran Herba" transform="translate(90 120)">
+  <g id="herba-shape" inkscape:groupmode="layer" inkscape:label="Card shape">
+    <rect width="520" height="660" rx="28" fill="url(#card-gradient)"/>
+  </g>
+  <g id="herba-outline" inkscape:groupmode="layer" inkscape:label="Card outline">
+    <rect x="0.75" y="0.75" width="518.5" height="658.5" rx="27.25" fill="none" stroke="#54232F" stroke-opacity="0.14" stroke-width="1.5"/>
+  </g>
+  <g id="herba-icon-badge" inkscape:groupmode="layer" inkscape:label="Icon badge">
+    <circle cx="92" cy="112" r="58" fill="#FFF9F0" stroke="#54232F" stroke-opacity="0.15" stroke-width="1.5"/>
+  </g>
+  <g id="herba-icon" inkscape:groupmode="layer" inkscape:label="Icon">
+    <g fill="none" stroke="#54232F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M92 146 C92 122 96 100 110 82"/>
+      <path d="M92 128 C74 126 66 112 68 98 C84 100 92 112 92 128 Z"/>
+      <path d="M96 110 C112 110 122 98 120 84 C104 84 96 96 96 110 Z"/>
+      <path d="M106 90 C98 78 102 66 114 60 C120 72 116 84 106 90 Z"/>
+    </g>
+  </g>
+  <g id="herba-title" inkscape:groupmode="layer" inkscape:label="Title">
+    <text x="48" y="262" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="46" fill="#54232F">Campuran Herba</text>
+  </g>
+  <g id="herba-rule" inkscape:groupmode="layer" inkscape:label="Rule">
+    <rect x="48" y="292" width="64" height="3" fill="#54232F"/>
+  </g>
+  <g id="herba-body" inkscape:groupmode="layer" inkscape:label="Body text">
+    <text font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="25" fill="#54232F">
+      <tspan x="48" y="352">Kopi pra-campuran dengan</tspan>
+      <tspan x="48" y="390">ginseng, maca, damiana</tspan>
+      <tspan x="48" y="428">dan tongkat ali.</tspan>
+    </text>
+  </g>
+  <g id="herba-chip" inkscape:groupmode="layer" inkscape:label="Detail chip">
+    <rect x="48" y="560" width="254" height="50" rx="25" fill="#54232F"/>
+  </g>
+  <g id="herba-chip-text" inkscape:groupmode="layer" inkscape:label="Detail text">
+    <text x="72" y="592" font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="21" letter-spacing="1.5" fill="#FFF9F0">4 HERBA PILIHAN</text>
+  </g>
+</g>
+<g id="card-manis" inkscape:groupmode="layer" inkscape:label="Card 2 · Kurang Manis" transform="translate(640 120)">
+  <g id="manis-shape" inkscape:groupmode="layer" inkscape:label="Card shape">
+    <rect width="520" height="660" rx="28" fill="url(#card-gradient)"/>
+  </g>
+  <g id="manis-outline" inkscape:groupmode="layer" inkscape:label="Card outline">
+    <rect x="0.75" y="0.75" width="518.5" height="658.5" rx="27.25" fill="none" stroke="#54232F" stroke-opacity="0.14" stroke-width="1.5"/>
+  </g>
+  <g id="manis-icon-badge" inkscape:groupmode="layer" inkscape:label="Icon badge">
+    <circle cx="92" cy="112" r="58" fill="#FFF9F0" stroke="#54232F" stroke-opacity="0.15" stroke-width="1.5"/>
+  </g>
+  <g id="manis-icon" inkscape:groupmode="layer" inkscape:label="Icon">
+    <g fill="none" stroke="#54232F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M80 86 L102 97 L80 108 L58 97 Z"/>
+      <path d="M58 97 V125 L80 136 L102 125 V97"/>
+      <path d="M80 108 V136"/>
+      <path d="M124 88 V130"/>
+      <path d="M114 120 L124 132 L134 120"/>
+    </g>
+  </g>
+  <g id="manis-title" inkscape:groupmode="layer" inkscape:label="Title">
+    <text x="48" y="262" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="46" fill="#54232F">Kurang Manis</text>
+  </g>
+  <g id="manis-rule" inkscape:groupmode="layer" inkscape:label="Rule">
+    <rect x="48" y="292" width="64" height="3" fill="#54232F"/>
+  </g>
+  <g id="manis-body" inkscape:groupmode="layer" inkscape:label="Body text">
+    <text font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="25" fill="#54232F">
+      <tspan x="48" y="352">Rasa rendah gula, dinikmati</tspan>
+      <tspan x="48" y="390">panas dengan aroma yang</tspan>
+      <tspan x="48" y="428">memukau.</tspan>
+    </text>
+  </g>
+  <g id="manis-chip" inkscape:groupmode="layer" inkscape:label="Detail chip">
+    <rect x="48" y="560" width="325" height="50" rx="25" fill="#54232F"/>
+  </g>
+  <g id="manis-chip-text" inkscape:groupmode="layer" inkscape:label="Detail text">
+    <text x="72" y="592" font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="21" letter-spacing="1.5" fill="#FFF9F0">5.7 G GULA / HIDANGAN</text>
+  </g>
+</g>
+<g id="card-bancuh" inkscape:groupmode="layer" inkscape:label="Card 3 · Mudah Dibancuh" transform="translate(1190 120)">
+  <g id="bancuh-shape" inkscape:groupmode="layer" inkscape:label="Card shape">
+    <rect width="520" height="660" rx="28" fill="url(#card-gradient)"/>
+  </g>
+  <g id="bancuh-outline" inkscape:groupmode="layer" inkscape:label="Card outline">
+    <rect x="0.75" y="0.75" width="518.5" height="658.5" rx="27.25" fill="none" stroke="#54232F" stroke-opacity="0.14" stroke-width="1.5"/>
+  </g>
+  <g id="bancuh-icon-badge" inkscape:groupmode="layer" inkscape:label="Icon badge">
+    <circle cx="92" cy="112" r="58" fill="#FFF9F0" stroke="#54232F" stroke-opacity="0.15" stroke-width="1.5"/>
+  </g>
+  <g id="bancuh-icon" inkscape:groupmode="layer" inkscape:label="Icon">
+    <g fill="none" stroke="#54232F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M62 106 H112 V118 C112 134 100 142 87 142 C74 142 62 134 62 118 Z"/>
+      <path d="M112 110 C127 110 127 128 112 128"/>
+      <path d="M54 150 H120"/>
+      <path d="M78 96 C71 88 84 81 77 72"/>
+      <path d="M95 96 C88 88 101 81 94 72"/>
+    </g>
+  </g>
+  <g id="bancuh-title" inkscape:groupmode="layer" inkscape:label="Title">
+    <text x="48" y="262" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="46" fill="#54232F">Mudah Dibancuh</text>
+  </g>
+  <g id="bancuh-rule" inkscape:groupmode="layer" inkscape:label="Rule">
+    <rect x="48" y="292" width="64" height="3" fill="#54232F"/>
+  </g>
+  <g id="bancuh-body" inkscape:groupmode="layer" inkscape:label="Body text">
+    <text font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="25" fill="#54232F">
+      <tspan x="48" y="352">Bancuh satu paket dengan</tspan>
+      <tspan x="48" y="390">100–150 ml air panas</tspan>
+      <tspan x="48" y="428">mendidih, kacau hingga rata.</tspan>
+    </text>
+  </g>
+  <g id="bancuh-chip" inkscape:groupmode="layer" inkscape:label="Detail chip">
+    <rect x="48" y="560" width="354" height="50" rx="25" fill="#54232F"/>
+  </g>
+  <g id="bancuh-chip-text" inkscape:groupmode="layer" inkscape:label="Detail text">
+    <text x="72" y="592" font-family="Georgia, 'Gelasio', 'Times New Roman', serif" font-size="21" letter-spacing="1.5" fill="#FFF9F0">15 HIDANGAN SEBUNGKUS</text>
+  </g>
+</g>
+</svg>
+
+    </div>
+  </div>
+  <script>
+    // Each layer of each card comes in on its own, in reading order, card by card.
+    const tl = gsap.timeline({ paused: true });
+    const CARDS = ["herba", "manis", "bancuh"];
+    const CARD_START = 0.2;    // first card's shape
+    const CARD_STEP = 0.9;     // next card starts this much later
+    // Offset of each layer inside its card, and how it arrives.
+    const LAYERS = [
+      ["shape", 0.0], ["outline", 0.1], ["icon-badge", 0.22], ["icon", 0.32], ["title", 0.45],
+      ["rule", 0.6], ["body", 0.7], ["chip", 0.9], ["chip-text", 1.0],
+    ];
+
+    function enter(card, layer, at) {
+      const el = "#" + card + "-" + layer;
+      switch (layer) {
+        case "shape":
+          tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96, transformOrigin: "50% 100%" },
+            { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, at);
+          break;
+        case "outline":
+          tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, at);
+          break;
+        case "icon-badge":
+          tl.fromTo(el, { scale: 0, transformOrigin: "50% 50%" },
+            { scale: 1, duration: 0.5, ease: "back.out(1.7)" }, at);
+          break;
+        case "icon": {
+          // Draw each stroke on, using its measured length.
+          document.querySelectorAll(el + " path").forEach((p, k) => {
+            const len = Math.ceil(p.getTotalLength()) + 1;
+            tl.fromTo(p, { attr: { "stroke-dasharray": len, "stroke-dashoffset": len } },
+              { attr: { "stroke-dashoffset": 0 }, duration: 0.45, ease: "power2.inOut" }, at + k * 0.05);
+          });
+          break;
+        }
+        case "title":
+          tl.fromTo(el, { opacity: 0, filter: "blur(6px)" },
+            { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, at);
+          break;
+        case "rule":
+          tl.fromTo(el, { scaleX: 0, transformOrigin: "0% 50%" },
+            { scaleX: 1, duration: 0.4, ease: "power3.out" }, at);
+          break;
+        case "body":
+          tl.fromTo(el + " tspan", { opacity: 0, attr: { dy: 10 } },
+            { opacity: 1, attr: { dy: 0 }, duration: 0.35, ease: "power3.out", stagger: 0.07 }, at);
+          break;
+        case "chip":
+          tl.fromTo(el, { scaleX: 0, transformOrigin: "0% 50%" },
+            { scaleX: 1, duration: 0.45, ease: "expo.out" }, at);
+          break;
+        case "chip-text":
+          tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, at);
+          break;
+      }
+    }
+
+    CARDS.forEach((card, i) => {
+      LAYERS.forEach(([layer, offset]) => enter(card, layer, CARD_START + i * CARD_STEP + offset));
+    });
+
+    window.__timelines["cards"] = tl;
+  </script>
+</template>
