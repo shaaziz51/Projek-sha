@@ -1,8 +1,17 @@
-"""Build the Kopi Ratu 3D model inputs from the product photo.
+"""Build the Kopi Ratu 3D model inputs from the product photos.
+
+Sources (source/):
+  kopi-ratu-photo.jpg   studio front shot: big pouch with two sachets in front of it
+  kopi-ratu-back.jpg    the back of the pouch, on a desk
+  kopi-ratu-side-a.jpg  the right-hand edge: front's right part meets the back's left column
+  kopi-ratu-side-b.jpg  the left-hand edge: back's nutrition table meets the front's leaves
+The side shots show a stand-up pouch (front and back sealed at the side edges, folded base),
+thin at the top and widening evenly to the base; src/kopiRatu.js uses that wedge.
 
 Writes:
   public/textures/kopi-pouch-front.png   big pouch front, straightened, with the corner the sachets hide rebuilt
-  public/textures/kopi-pouch-back.png    plain back: cream top, orange base
+                                         (label panel, frame, orange base, and the halal logo from side A)
+  public/textures/kopi-pouch-back.png    the real back, straightened from kopi-ratu-back.jpg
   public/textures/kopi-sachet-front.png  sachet front (both sachets share the same artwork)
   src/kopiRatuProfile.js                 sizes and placement in photo pixels
 
@@ -10,7 +19,8 @@ Run from the repository root:  python3 tools/extract_kopi_ratu.py
 """
 import json
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
+from scipy import ndimage
 
 SRC = "source/kopi-ratu-photo.jpg"
 img = Image.open(SRC).convert("RGB")
@@ -32,7 +42,8 @@ ORANGE_FROM = 576                      # where the orange base starts beside the
 pouch = px.copy()
 H, W = px.shape[:2]
 yy, xx = np.mgrid[0:H, 0:W]
-hidden = ((xx >= FRONT_SACHET[0]) & (yy >= FRONT_SACHET[1])) | ((xx >= BACK_SACHET[0]) & (yy >= BACK_SACHET[1]))
+# The front sachet's rounded corner starts a few px right of its crop, so the last "A" of EKSTRA stays.
+hidden = ((xx >= 560) & (yy >= FRONT_SACHET[1])) | ((xx >= BACK_SACHET[0]) & (yy >= BACK_SACHET[1]))
 
 cream_panel = np.array([243, 234, 229])
 cream_pouch = np.array([234, 224, 214])
@@ -61,6 +72,24 @@ for y, x in zip(ys, xs):
     else:
         pouch[y, x] = cream_pouch
 
+# "KOPI dengan EKSTRAK HERBA & EKSTRA[K]": the last K is hidden; copy the K of the first EKSTRAK.
+pouch[652:672, 561:570] = px[652:672, 440:449]
+
+# Halal logo: hidden here, but side A shows it on the orange base just right of the label panel.
+side_a = np.array(Image.open("source/kopi-ratu-side-a.jpg").convert("RGB")).astype(np.int32)
+logo = side_a[822:910, 347:405]
+yellow = (logo[:, :, 0] > 170) & (logo[:, :, 1] > 120) & (logo[:, :, 2] < 110)
+logo_alpha = Image.fromarray(((~yellow) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))
+scale = 0.92
+lw, lh = int(logo.shape[1] * scale), int(logo.shape[0] * scale)
+logo_img = Image.fromarray(logo.astype(np.uint8)).resize((lw, lh), Image.LANCZOS)
+logo_alpha = logo_alpha.resize((lw, lh), Image.LANCZOS)
+cx, cy = 705, 772                       # where the logo's centre lands on the front (photo px)
+ox, oy = int(cx - 27 * scale), int(cy - 34 * scale)
+base = Image.fromarray(pouch.astype(np.uint8))
+base.paste(logo_img, (ox, oy), logo_alpha)
+pouch = np.array(base).astype(np.int32)
+
 
 def perspective_coeffs(dst, src):
     """Coefficients for PIL's PERSPECTIVE transform mapping output points `dst` to input points `src`."""
@@ -87,14 +116,29 @@ front_rgba = with_cutout(front)
 front_rgba.save("public/textures/kopi-pouch-front.png")
 corner_alpha = np.array(front_rgba)[:, :, 3]
 
-# Back: cream above the orange base, same proportions as the front.
 orange_v = (ORANGE_FROM - POUCH["tl"][1]) / (POUCH["bl"][1] - POUCH["tl"][1])
-back = np.zeros((TH, TW, 3), np.uint8)
-back[:] = cream_pouch
-for y in range(int(orange_v * TH), TH):
-    py = int(ORANGE_FROM + (y - orange_v * TH) / TH * (POUCH["bl"][1] - POUCH["tl"][1]))
-    back[y] = orange_by_row.get(min(py, H - 1), np.array([205, 100, 5]))
-# Same outline as the front, mirrored because the back is seen from behind.
+
+# --- Back: straightened from the desk photo ---
+# The pouch edges, traced by eye on zoomed crops (y: x). The desk shot looks down on the pouch,
+# so the top is wider than the base and the base curves.
+BACK_LEFT = {90: 26, 150: 27, 250: 40, 350: 62, 450: 100, 550: 128, 650: 132, 750: 138, 850: 152, 925: 185}
+BACK_RIGHT = {95: 803, 150: 803, 200: 798, 250: 785, 300: 762, 400: 748, 475: 727, 600: 720, 700: 707,
+              800: 692, 850: 682, 900: 668, 918: 655}
+back_px = np.array(Image.open("source/kopi-ratu-back.jpg").convert("RGB")).astype(float)
+ly, lx = zip(*sorted(BACK_LEFT.items()))
+ry, rx = zip(*sorted(BACK_RIGHT.items()))
+u = (np.arange(TW) + 0.5) / TW
+v = (np.arange(TH) + 0.5) / TH
+U, V = np.meshgrid(u, v)
+top = 80 + 15 * U                               # top seal, a little lower on the right
+bottom = 910 + 50 * np.sin(np.pi * U)           # the base bows toward the camera in the middle
+Y = top + V * (bottom - top)
+L = np.interp(Y, ly, lx)
+R = np.interp(Y, ry, rx)
+X = L + U * (R - L)
+back = np.dstack([ndimage.map_coordinates(back_px[:, :, c], [Y, X], order=1) for c in range(3)])
+back = np.clip(back, 0, 255).astype(np.uint8)
+# Same outline as the front (rounded corners), mirrored because the back is seen from behind.
 Image.fromarray(np.dstack([back, corner_alpha[:, ::-1]]), "RGBA").save("public/textures/kopi-pouch-back.png")
 
 # Sachet

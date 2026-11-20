@@ -37,18 +37,19 @@ function pouchGeometry(width, height, depth, side, segU = 48, segV = 64) {
   return g;
 }
 
-function pouch({ width, height, depth, front, back, base }) {
+function pouch({ width, height, depth, front, back, base, backTint }) {
   const group = new THREE.Group();
-  const film = (map) =>
+  const film = (map, tint = "#ffffff") =>
     new THREE.MeshPhysicalMaterial({
       map,
+      color: tint,
       alphaTest: 0.5,
       roughness: 0.42,
       clearcoat: 0.6,
       clearcoatRoughness: 0.35,
     });
   const f = new THREE.Mesh(pouchGeometry(width, height, depth, 1), film(front));
-  const b = new THREE.Mesh(pouchGeometry(width, height, depth, -1), film(back));
+  const b = new THREE.Mesh(pouchGeometry(width, height, depth, -1), film(back, backTint));
   f.castShadow = b.castShadow = true;
   group.add(f, b);
   if (base) {
@@ -64,7 +65,8 @@ function pouch({ width, height, depth, front, back, base }) {
   return group;
 }
 
-// Builds the big Kopi Ratu pouch with its two sachets, arranged as in the product photo.
+// Builds the big Kopi Ratu pouch with its two sachets, arranged as in the studio photo.
+// Front, back and side shape come from the photos in source/ (see tools/extract_kopi_ratu.py).
 // Sizes are scaled so the pouch stands a little shorter than the Mega Ratu box.
 export function buildKopiRatu(textures, pouchHeight = 5.3) {
   const p = kopiRatu.pouch;
@@ -75,10 +77,14 @@ export function buildKopiRatu(textures, pouchHeight = 5.3) {
   const big = pouch({
     width: pouchW,
     height: pouchHeight,
-    depth: (v) => 0.08 + 1.45 * Math.pow(1 - v, 1.6),
+    // Side photos: a straight wedge, sealed thin at the top and widening evenly to the base,
+    // where it is about a fifth of the pouch's height deep.
+    depth: (v) => 0.06 + 1.1 * Math.pow(1 - v, 1.05),
     front: textures.pouchFront,
     back: textures.pouchBack,
     base: "#d36a08",
+    // The back photo was taken under brighter desk light than the studio front.
+    backTint: "#d9d4d0",
   });
   group.add(big);
 
