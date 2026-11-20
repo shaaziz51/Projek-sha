@@ -1,0 +1,150 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia Text";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --bg-a: #450a10;
+      --bg-b: #460c23;
+      --ink: #f2d49b;
+      --accent: #fff9f0;
+    }
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, var(--bg-a) 0%, var(--bg-b) 100%);
+    }
+    #hero-glow {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 980px;
+      height: 980px;
+      margin: -490px 0 0 -490px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 249, 240, 0.34) 0%, rgba(255, 249, 240, 0.12) 38%, rgba(255, 249, 240, 0) 70%);
+    }
+    #hero-product {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 0;
+      height: 0;
+    }
+    #hero-product img {
+      position: absolute;
+      height: 780px;
+      width: auto;
+      left: -223px;
+      top: -390px;
+    }
+    #hero-text {
+      position: absolute;
+      left: 180px;
+      top: 0;
+      bottom: 0;
+      width: 820px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--ink);
+    }
+    #hero-name {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 128px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    #hero-name span {
+      display: inline-block;
+    }
+    #hero-name .sp {
+      width: 0.32em;
+    }
+    #hero-rule {
+      width: 300px;
+      height: 3px;
+      margin: 38px 0 26px 6px;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+    #hero-tagline {
+      font-family: "Georgia Text", Georgia, serif;
+      font-style: normal;
+      font-size: 40px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+    #hero-logo {
+      margin: 64px 0 0 4px;
+    }
+    #hero-logo img {
+      display: block;
+      width: 300px;
+      height: auto;
+    }
+  </style>
+  <div id="root" data-composition-id="hero" data-width="1920" data-height="1080">
+    <div id="hero-bg" data-layout-ignore></div>
+    <div id="hero-glow" data-layout-ignore></div>
+    <div id="hero-product" class="clip" data-start="0" data-duration="5" data-track-index="0">
+      <img id="hero-product-img" src="assets/mega-ratu-cutout.png" alt="Mega Ratu box and bottle" />
+    </div>
+    <div id="hero-text" class="clip" data-start="0" data-duration="5" data-track-index="1">
+      <h1 id="hero-name" aria-label="Mega Ratu">
+        <span id="l1">M</span><span id="l2">E</span><span id="l3">G</span><span id="l4">A</span><span id="l5" class="sp"> </span><span id="l6">R</span><span id="l7">A</span><span id="l8">T</span><span id="l9">U</span>
+      </h1>
+      <div id="hero-rule"></div>
+      <div id="hero-tagline">Campuran Minuman Botani</div>
+      <div id="hero-logo"><img id="hero-logo-img" src="assets/jrm-logo-mega.png" alt="JRM Holistik" /></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const letters = ["#l1", "#l2", "#l3", "#l4", "#l6", "#l7", "#l8", "#l9"];
+
+    // Product arrives first and settles on a long tail.
+    tl.fromTo("#hero-glow", { opacity: 0.5, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, 0);
+    tl.fromTo(
+      "#hero-product-img",
+      { opacity: 0.55, y: 30, scale: 1.04, filter: "blur(6px)" },
+      { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" },
+      0,
+    );
+
+    // The name appears letter by letter.
+    letters.forEach((sel, i) => {
+      tl.fromTo(
+        sel,
+        { opacity: 0, filter: "blur(6px)" },
+        { opacity: 1, filter: "blur(0px)", duration: 0.22, ease: "power4.out" },
+        0.45 + i * 0.13,
+      );
+    });
+
+    // Rule, tagline, then the JRM Holistik logo.
+    tl.fromTo("#hero-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 1.6);
+    tl.fromTo(
+      "#hero-tagline",
+      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
+      1.85,
+    );
+    tl.fromTo(
+      "#hero-logo-img",
+      { opacity: 0, y: 14, filter: "blur(8px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" },
+      2.25,
+    );
+
+    window.__timelines["hero"] = tl;
+  </script>
+</template>
