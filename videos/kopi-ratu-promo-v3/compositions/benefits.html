@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Georgia"; src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --olive: #5c6631;
+      --olive-dark: #4b5428;
+      --sand: #ead3a4;
+    }
+    #ben-ground { position: absolute; inset: 0; }
+    #ben-ground-fill {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, var(--olive) 0%, var(--olive) 50%, var(--olive-dark) 100%);
+    }
+
+    /* The real cup and saucer, cut out of the photo */
+    #ben-cup { position: absolute; left: 540px; top: 720px; width: 0; height: 0; }
+    #ben-cup-move { position: absolute; left: 0; top: 0; }
+    #ben-cup-shadow {
+      position: absolute;
+      left: -300px;
+      top: 452px;
+      width: 600px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(30, 34, 12, 0.55) 0%, rgba(30, 34, 12, 0) 70%);
+    }
+    #ben-cup-img { position: absolute; left: -280px; top: 0; width: 560px; height: auto; }
+
+    #ben-art { position: absolute; inset: 0; }
+    #ben-art svg { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: visible; }
+
+    /* Benefits as big punch words above the cup */
+    #ben-copy {
+      position: absolute;
+      left: 120px;
+      right: 192px;
+      top: 300px;
+      text-align: center;
+      color: var(--sand);
+    }
+    #ben-lead { font-family: "Georgia", serif; font-size: 58px; line-height: 1.1; font-style: italic; }
+    .ben-word {
+      display: block;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 112px;
+      line-height: 1.02;
+      letter-spacing: 0.01em;
+    }
+  </style>
+
+  <div id="root" data-composition-id="benefits" data-width="1080" data-height="1920">
+    <div id="ben-ground" class="clip" data-start="0" data-duration="4.3" data-track-index="0" data-layout-ignore>
+      <div id="ben-ground-fill"></div>
+    </div>
+
+    <div id="ben-cup" class="clip" data-start="0" data-duration="4.3" data-track-index="1" data-layout-allow-overflow>
+      <div id="ben-cup-move">
+        <div id="ben-cup-shadow"></div>
+        <img id="ben-cup-img" src="assets/cup-cutout.png" alt="Coffee in a gold-rimmed cup and saucer" />
+      </div>
+    </div>
+
+    <div id="ben-art" class="clip" data-start="0" data-duration="4.3" data-track-index="2" data-layout-ignore data-layout-allow-overflow>
+      <svg viewBox="0 0 1080 1920">
+        <!-- the pour lands on the coffee in the cup (photo surface centre at about 542, 848) -->
+        <path id="ben-stream" d="M548 -40 C546 260 552 560 544 846" fill="none" stroke="#2e1408" stroke-width="15" stroke-linecap="round" />
+        <path id="ben-stream-hi" d="M546 -40 C544 260 550 560 542 846" fill="none" stroke="#8a4f24" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+        <ellipse id="ben-ripple-1" cx="542" cy="850" rx="20" ry="8" fill="none" stroke="#e8c79a" stroke-width="3" opacity="0" />
+        <ellipse id="ben-ripple-2" cx="542" cy="850" rx="20" ry="8" fill="none" stroke="#e8c79a" stroke-width="3" opacity="0" />
+      </svg>
+    </div>
+
+    <div id="ben-copy" class="clip" data-start="1.55" data-duration="2.75" data-track-index="3">
+      <div id="ben-lead">Good for</div>
+      <span id="ben-w1" class="ben-word">FOCUS.</span>
+      <span id="ben-w2" class="ben-word">STAMINA.</span>
+      <span id="ben-w3" class="ben-word">EMOTION/STRESS.</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const STREAMS = ["#ben-stream", "#ben-stream-hi"];
+    const LEN = Math.ceil(document.getElementById("ben-stream").getTotalLength()) + 2;
+
+    // 0-0.55 s: the stream pours down and the olive floods in behind it; the cup settles
+    tl.fromTo("#ben-ground-fill", { clipPath: "inset(0% 0% 100% 0%)" },
+      { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, 0);
+    tl.fromTo("#ben-cup-move", { y: 90, opacity: 0, scale: 0.94 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "expo.out" }, 0.08);
+    STREAMS.forEach((s) => {
+      tl.fromTo(s, { attr: { "stroke-dasharray": LEN, "stroke-dashoffset": LEN } },
+        { attr: { "stroke-dashoffset": 0 }, duration: 0.45, ease: "power2.in" }, 0.15);
+      // 1.2-1.6 s: the pour stops; its tail falls into the cup
+      tl.fromTo(s, { attr: { "stroke-dashoffset": 0 } },
+        { attr: { "stroke-dashoffset": -LEN }, duration: 0.4, ease: "power2.in", immediateRender: false }, 1.2);
+    });
+    // ripples where the stream hits the coffee
+    [["#ben-ripple-1", 0.6], ["#ben-ripple-2", 1.0], ["#ben-ripple-1", 1.55]].forEach(([sel, at]) => {
+      tl.fromTo(sel, { attr: { rx: 18, ry: 7 }, opacity: 0.75 },
+        { attr: { rx: 96, ry: 38 }, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, at);
+    });
+
+    // 1.6-2.7 s: the benefits punch in one by one
+    tl.fromTo("#ben-lead", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 1.6);
+    ["#ben-w1", "#ben-w2", "#ben-w3"].forEach((sel, i) => {
+      tl.fromTo(sel, { opacity: 0, scale: 1.45, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 1.8 + i * 0.36);
+    });
+    // a small push on the cup as each word lands
+    [1.8, 2.16, 2.52].forEach((at) => {
+      tl.fromTo("#ben-cup-img", { scale: 1.035, transformOrigin: "50% 60%" },
+        { scale: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, at);
+    });
+
+    window.__timelines["benefits"] = tl;
+  </script>
+</template>

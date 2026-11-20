@@ -1,0 +1,46 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    /* Film grain over the whole film, after the Coffee Touch poster. The texture jumps to a new
+       seeded offset 12 times a second, like real grain; it is a function of time only. */
+    #grain-layer { position: absolute; inset: 0; }
+    #grain-img {
+      position: absolute;
+      left: -100px;
+      top: -140px;
+      width: 1280px;
+      height: 2200px;
+      mix-blend-mode: overlay;
+      opacity: 0.2;
+    }
+  </style>
+  <div id="root" data-composition-id="grain" data-width="1080" data-height="1920">
+    <div id="grain-layer" class="clip" data-start="0" data-duration="23.4" data-track-index="0" data-layout-ignore>
+      <img id="grain-img" src="assets/grain.png" alt="" />
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Seeded offsets (a small LCG), one per grain step.
+    const STEPS = 23.4 * 12 + 2;
+    const OFFS = [];
+    let seed = 1902;
+    for (let i = 0; i < STEPS; i++) {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      const x = (seed % 199) - 99;
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      const y = (seed % 279) - 139;
+      OFFS.push([x, y]);
+    }
+    const grain = document.getElementById("grain-img");
+    const state = { t: 0 };
+    tl.fromTo(state, { t: 0 }, {
+      t: 23.4, duration: 23.4, ease: "none",
+      onUpdate: () => {
+        const [x, y] = OFFS[Math.min(STEPS - 1, Math.floor(state.t * 12))];
+        grain.style.transform = "translate(" + x + "px," + y + "px)";
+      },
+    }, 0);
+    window.__timelines["grain"] = tl;
+  </script>
+</template>

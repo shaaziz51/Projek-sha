@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Georgia"; src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #f2e6cf;
+      --red: #94050d;
+      --ink: #54232f;
+      --gold: #9a5f06;
+    }
+    /* Hook: a real customer's line, big, on screen from frame 0 */
+    #hook-block {
+      position: absolute;
+      left: 120px;
+      right: 192px;
+      top: 300px;
+      text-align: center;
+    }
+    #hook-mark {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -20px;
+      font-family: "Georgia", serif;
+      font-size: 200px;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.35;
+    }
+    #hook-quote {
+      position: relative;
+      padding-top: 40px;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 128px;
+      line-height: 0.98;
+      color: var(--red);
+    }
+    #hook-quote .w { display: inline-block; }
+    #hook-stars {
+      margin-top: 34px;
+      font-family: "Georgia", serif;
+      font-size: 54px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+    }
+    #hook-stars span { display: inline-block; }
+    #hook-who {
+      margin-top: 10px;
+      font-family: "Georgia", serif;
+      font-size: 34px;
+      color: var(--ink);
+    }
+  </style>
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920">
+    <div id="hook-clip" class="clip" data-start="0" data-duration="2.3" data-track-index="0" data-layout-allow-overflow>
+      <div id="hook-block">
+        <div id="hook-quote"><span class="w">“Minum</span> <span class="w">pagi,</span><br /><span class="w">bertenaga</span><br /><span class="w">sampai</span> <span class="w">ptg.”</span></div>
+        <div id="hook-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div id="hook-who">— a**n, pelanggan Kopi Ratu</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 0-0.5 s: the whole line is there at frame 0 and punches in; each word gives a small kick
+    tl.fromTo("#hook-block", { scale: 1.12, transformOrigin: "50% 40%" },
+      { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
+    tl.fromTo("#hook-quote .w", { y: -18 }, { y: 0, duration: 0.3, ease: "back.out(3)", stagger: 0.07 }, 0.02);
+    tl.fromTo("#hook-stars span", { scale: 0, transformOrigin: "50% 60%" },
+      { scale: 1, duration: 0.3, ease: "back.out(2.4)", stagger: 0.06 }, 0.35);
+    tl.fromTo("#hook-who", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 0.4);
+    // 1.85-2.15 s: zoom through the line into the next scene
+    tl.fromTo("#hook-block", { scale: 1, opacity: 1, filter: "blur(0px)" },
+      { scale: 1.9, opacity: 0, filter: "blur(14px)", duration: 0.3, ease: "power3.in", immediateRender: false }, 1.95);
+    window.__timelines["hook"] = tl;
+  </script>
+</template>
