@@ -1,0 +1,188 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia Text";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --ink: #54232f;
+      --accent: #fff9f0;
+      --kopi-gold: #e1b377;
+      --mega-red: #450a10;
+    }
+    #box-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 42%, #5a1a24 0%, #2a0a10 55%, #12040a 100%);
+    }
+    #box-floor-shadow {
+      position: absolute;
+      left: 960px;
+      top: 935px;
+      width: 1300px;
+      height: 150px;
+      margin: -75px 0 0 -650px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.25) 45%, rgba(0, 0, 0, 0) 72%);
+    }
+    #box-stage {
+      position: absolute;
+      inset: 0;
+      perspective: 2800px;
+      perspective-origin: 50% 40%;
+    }
+    #box-tilt,
+    #box-drift,
+    #box-turn {
+      position: absolute;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+    }
+    #box-tilt {
+      left: 960px;
+      top: 590px;
+    }
+    .box-face {
+      position: absolute;
+      width: 880px;
+      height: 495px;
+      left: -440px;
+      top: -247.5px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 0 0 2px rgba(255, 249, 240, 0.35);
+    }
+    .box-face video {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .box-shade {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      pointer-events: none;
+    }
+    #box-front {
+      transform: translateZ(440px);
+      background-image: url("assets/kopi-ratu-end.jpg");
+    }
+    #box-right {
+      transform: rotateY(90deg) translateZ(440px);
+      background-image: url("assets/mega-ratu-end.jpg");
+    }
+    #box-back {
+      transform: rotateY(180deg) translateZ(440px);
+      background-image: url("assets/kopi-mega-ratu-end.jpg");
+    }
+    #box-left {
+      transform: rotateY(-90deg) translateZ(440px);
+      background: var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+    #box-left img {
+      display: block;
+      width: 340px;
+      height: auto;
+    }
+    #box-brand-line {
+      margin-top: 34px;
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 46px;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    #box-brand-tag {
+      margin-top: 14px;
+      font-family: "Georgia Text", Georgia, serif;
+      font-size: 22px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    #box-top {
+      width: 880px;
+      height: 880px;
+      left: -440px;
+      top: -440px;
+      transform: rotateX(90deg) translateZ(247.5px);
+      background: linear-gradient(135deg, var(--kopi-gold) 0%, #8c4a3a 50%, var(--mega-red) 100%);
+    }
+  </style>
+  <div id="root" data-composition-id="box" data-width="1920" data-height="1080">
+    <div id="box-bg" data-layout-ignore></div>
+    <div id="box-floor-shadow" data-layout-ignore></div>
+    <div id="box-stage" data-layout-ignore data-layout-allow-overflow data-layout-allow-overlap>
+      <div id="box-tilt">
+        <div id="box-drift">
+          <div id="box-turn">
+            <div id="box-top" class="box-face"><div id="box-top-shade" class="box-shade"></div></div>
+            <div id="box-front" class="box-face">
+              <video id="box-v-kopi" class="clip" src="assets/kopi-ratu.mp4" data-start="0" data-duration="5" data-track-index="0" muted playsinline></video>
+              <div id="box-front-shade" class="box-shade"></div>
+            </div>
+            <div id="box-right" class="box-face">
+              <video id="box-v-mega" class="clip" src="assets/mega-ratu.mp4" data-start="2.9" data-hf-media-start-basis="local" data-duration="5" data-track-index="1" muted playsinline></video>
+              <div id="box-right-shade" class="box-shade"></div>
+            </div>
+            <div id="box-back" class="box-face">
+              <video id="box-v-duo" class="clip" src="assets/kopi-mega-ratu.mp4" data-start="7.1" data-hf-media-start-basis="local" data-media-start="7.4" data-duration="5.1" data-track-index="0" muted playsinline></video>
+              <div id="box-back-shade" class="box-shade"></div>
+            </div>
+            <div id="box-left" class="box-face">
+              <img id="box-logo" src="assets/jrm-logo-kopi.png" alt="JRM Holistik" />
+              <div id="box-brand-line">Kopi Ratu &amp; Mega Ratu</div>
+              <div id="box-brand-tag">JRM Holistik</div>
+              <div id="box-left-shade" class="box-shade"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const TURN = 1.0;
+
+    // Camera: a fixed downward look so the top of the box reads as 3D.
+    tl.fromTo("#box-tilt", { rotationX: -16, y: -10, scale: 0.82 }, { rotationX: -11, y: 0, scale: 1, duration: 1.4, ease: "expo.out" }, 0);
+
+    // Arrives turned, settles, then drifts slowly for the rest of the film.
+    tl.fromTo("#box-drift", { rotationY: -30 }, { rotationY: 6, duration: 1.4, ease: "expo.out" }, 0);
+    tl.fromTo("#box-drift", { rotationY: 6 }, { rotationY: -6, duration: 13.6, ease: "none", immediateRender: false }, 1.4);
+
+    // Light: the face toward the viewer is lit, faces turned away are shaded.
+    tl.set("#box-turn", { rotationY: 0 }, 0);
+    tl.set("#box-top-shade", { opacity: 0.12 }, 0);
+    tl.set("#box-front-shade", { opacity: 0 }, 0);
+    tl.set(["#box-right-shade", "#box-back-shade", "#box-left-shade"], { opacity: 0.55 }, 0);
+
+    // Quarter turns: Kopi Ratu -> Mega Ratu -> both together -> JRM Holistik.
+    const turns = [
+      { at: 3.2, from: 0, to: -90, out: "#box-front-shade", in: "#box-right-shade" },
+      { at: 7.4, from: -90, to: -180, out: "#box-right-shade", in: "#box-back-shade" },
+      { at: 11.4, from: -180, to: -270, out: "#box-back-shade", in: "#box-left-shade" },
+    ];
+    turns.forEach((t) => {
+      tl.fromTo("#box-turn", { rotationY: t.from }, { rotationY: t.to, duration: TURN, ease: "power2.inOut", immediateRender: false }, t.at);
+      tl.fromTo(t.out, { opacity: 0 }, { opacity: 0.55, duration: TURN, ease: "power2.inOut", immediateRender: false }, t.at);
+      tl.fromTo(t.in, { opacity: 0.55 }, { opacity: 0, duration: TURN, ease: "power2.inOut", immediateRender: false }, t.at);
+    });
+
+    window.__timelines["box"] = tl;
+  </script>
+</template>
