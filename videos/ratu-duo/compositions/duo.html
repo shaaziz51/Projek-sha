@@ -1,0 +1,214 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia Text";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --kopi-a: #ffffff;
+      --kopi-b: #e1b377;
+      --kopi-ink: #54232f;
+      --mega-a: #450a10;
+      --mega-b: #460c23;
+      --mega-ink: #f2d49b;
+      --accent: #fff9f0;
+    }
+    .duo-half {
+      position: absolute;
+      top: 0;
+      width: 960px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #duo-left,
+    #duo-right {
+      position: absolute;
+      top: 0;
+      width: 960px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #duo-left {
+      left: 0;
+      background: linear-gradient(160deg, var(--kopi-a) 0%, var(--kopi-a) 25%, var(--kopi-b) 100%);
+      color: var(--kopi-ink);
+    }
+    #duo-right {
+      left: 960px;
+      background: linear-gradient(160deg, var(--mega-a) 0%, var(--mega-b) 100%);
+      color: var(--mega-ink);
+    }
+    .duo-glow {
+      position: absolute;
+      left: 480px;
+      top: 700px;
+      width: 760px;
+      height: 760px;
+      margin: -380px 0 0 -380px;
+      border-radius: 50%;
+    }
+    #duo-left .duo-glow {
+      background: radial-gradient(circle, var(--accent) 0%, rgba(255, 249, 240, 0.5) 40%, rgba(255, 249, 240, 0) 70%);
+    }
+    #duo-right .duo-glow {
+      background: radial-gradient(circle, rgba(255, 249, 240, 0.3) 0%, rgba(255, 249, 240, 0.1) 40%, rgba(255, 249, 240, 0) 70%);
+    }
+    .duo-head {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 120px;
+      text-align: center;
+    }
+    .duo-name {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 96px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .duo-name span {
+      display: inline-block;
+    }
+    .duo-rule {
+      width: 160px;
+      height: 3px;
+      margin: 26px auto 20px;
+      background: currentColor;
+    }
+    .duo-tagline {
+      font-family: "Georgia Text", Georgia, serif;
+      font-size: 28px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .duo-product {
+      position: absolute;
+      left: 480px;
+      top: 690px;
+      width: 0;
+      height: 0;
+    }
+    #duo-kopi-img {
+      position: absolute;
+      height: 540px;
+      width: auto;
+      left: -245px;
+      top: -270px;
+    }
+    #duo-mega-img {
+      position: absolute;
+      height: 560px;
+      width: auto;
+      left: -160px;
+      top: -280px;
+    }
+    #duo-overlay {
+      position: absolute;
+      inset: 0;
+    }
+    #duo-seam {
+      position: absolute;
+      left: 958px;
+      top: 0;
+      width: 4px;
+      height: 1080px;
+      background: var(--accent);
+      transform-origin: center top;
+    }
+    #duo-badge {
+      position: absolute;
+      left: 960px;
+      top: 940px;
+      width: 0;
+      height: 0;
+    }
+    #duo-badge-pill {
+      position: absolute;
+      left: -125px;
+      top: -62px;
+      width: 250px;
+      height: 124px;
+      border-radius: 62px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #duo-badge-pill img {
+      display: block;
+      width: 160px;
+      height: auto;
+    }
+  </style>
+  <div id="root" data-composition-id="duo" data-width="1920" data-height="1080">
+    <div id="duo-left" class="duo-half clip" data-start="0" data-duration="4.7" data-track-index="0">
+      <div id="duo-left-inner" class="duo-half" style="left: 0" data-layout-ignore>
+        <div class="duo-glow" data-layout-ignore></div>
+        <div class="duo-product"><img id="duo-kopi-img" src="assets/kopi-ratu-cutout.png" alt="Kopi Ratu pouches" /></div>
+        <div class="duo-head">
+          <h2 id="duo-kopi-name" class="duo-name"><span id="duo-kopi-w1">KOPI</span> <span id="duo-kopi-w2">RATU</span></h2>
+          <div id="duo-kopi-rule" class="duo-rule"></div>
+          <div id="duo-kopi-tag" class="duo-tagline">Inspiring Addiction</div>
+        </div>
+      </div>
+    </div>
+    <div id="duo-right" class="duo-half clip" data-start="0" data-duration="4.7" data-track-index="1">
+      <div id="duo-right-inner" class="duo-half" style="left: 0" data-layout-ignore>
+        <div class="duo-glow" data-layout-ignore></div>
+        <div class="duo-product"><img id="duo-mega-img" src="assets/mega-ratu-cutout.png" alt="Mega Ratu box and bottle" /></div>
+        <div class="duo-head">
+          <h2 id="duo-mega-name" class="duo-name"><span id="duo-mega-w1">MEGA</span> <span id="duo-mega-w2">RATU</span></h2>
+          <div id="duo-mega-rule" class="duo-rule"></div>
+          <div id="duo-mega-tag" class="duo-tagline">Campuran Minuman Botani</div>
+        </div>
+      </div>
+    </div>
+    <div id="duo-overlay" class="clip" data-start="0" data-duration="4.7" data-track-index="2" data-layout-ignore>
+      <div id="duo-seam"></div>
+      <div id="duo-badge">
+        <div id="duo-badge-pill"><img id="duo-logo-img" src="assets/jrm-logo-kopi.png" alt="JRM Holistik" /></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // The two halves slide in from opposite sides and meet in the middle.
+    tl.fromTo("#duo-left-inner", { x: -960 }, { x: 0, duration: 0.7, ease: "power3.inOut" }, 0);
+    tl.fromTo("#duo-right-inner", { x: 960 }, { x: 0, duration: 0.7, ease: "power3.inOut" }, 0);
+    tl.fromTo("#duo-seam", { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "power3.out" }, 0.6);
+
+    // Names on top, word by word, then the rules and taglines.
+    ["#duo-kopi-w1", "#duo-mega-w1", "#duo-kopi-w2", "#duo-mega-w2"].forEach((sel, i) => {
+      tl.fromTo(
+        sel,
+        { opacity: 0, filter: "blur(6px)" },
+        { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
+        0.75 + i * 0.09,
+      );
+    });
+    tl.fromTo(["#duo-kopi-rule", "#duo-mega-rule"], { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 1.1);
+    tl.fromTo(
+      ["#duo-kopi-tag", "#duo-mega-tag"],
+      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
+      1.3,
+    );
+
+    // JRM Holistik badge lands on the seam.
+    tl.fromTo(
+      "#duo-badge-pill",
+      { opacity: 0, scale: 0.85, filter: "blur(8px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" },
+      1.6,
+    );
+
+    window.__timelines["duo"] = tl;
+  </script>
+</template>

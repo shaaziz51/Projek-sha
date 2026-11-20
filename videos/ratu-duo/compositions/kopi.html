@@ -1,0 +1,158 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia Text";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --bg-a: #ffffff;
+      --bg-b: #e1b377;
+      --ink: #54232f;
+      --accent: #fff9f0;
+    }
+    #kopi-stage {
+      position: absolute;
+      inset: 0;
+    }
+    #kopi-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, var(--bg-a) 0%, var(--bg-a) 28%, var(--bg-b) 100%);
+    }
+    #kopi-glow {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 980px;
+      height: 980px;
+      margin: -490px 0 0 -490px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent) 0%, rgba(255, 249, 240, 0.55) 38%, rgba(255, 249, 240, 0) 70%);
+    }
+    #kopi-product {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 0;
+      height: 0;
+    }
+    #kopi-product img {
+      position: absolute;
+      height: 780px;
+      width: auto;
+      left: -353px;
+      top: -390px;
+    }
+    #kopi-text {
+      position: absolute;
+      left: 180px;
+      top: 0;
+      bottom: 0;
+      width: 820px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--ink);
+    }
+    #kopi-name {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 128px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    #kopi-name span {
+      display: inline-block;
+    }
+    #kopi-name .sp {
+      width: 0.32em;
+    }
+    #kopi-rule {
+      width: 300px;
+      height: 3px;
+      margin: 38px 0 26px 6px;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+    #kopi-tagline {
+      font-family: "Georgia Text", Georgia, serif;
+      font-size: 40px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+    #kopi-logo {
+      margin: 64px 0 0 4px;
+    }
+    #kopi-logo img {
+      display: block;
+      width: 300px;
+      height: auto;
+    }
+  </style>
+  <div id="root" data-composition-id="kopi" data-width="1920" data-height="1080">
+    <div id="kopi-stage" data-layout-ignore>
+      <div id="kopi-bg" data-layout-ignore></div>
+      <div id="kopi-glow" data-layout-ignore></div>
+      <div id="kopi-product" class="clip" data-start="0" data-duration="4.25" data-track-index="0">
+        <img id="kopi-product-img" src="assets/kopi-ratu-cutout.png" alt="Kopi Ratu pouches" />
+      </div>
+      <div id="kopi-text" class="clip" data-start="0" data-duration="4.25" data-track-index="1">
+        <h1 id="kopi-name" aria-label="KOPI RATU">
+          <span id="kopi-l1">K</span><span id="kopi-l2">O</span><span id="kopi-l3">P</span><span id="kopi-l4">I</span><span id="kopi-l5" class="sp"> </span><span id="kopi-l6">R</span><span id="kopi-l7">A</span><span id="kopi-l8">T</span><span id="kopi-l9">U</span>
+        </h1>
+        <div id="kopi-rule"></div>
+        <div id="kopi-tagline">Inspiring Addiction</div>
+        <div id="kopi-logo"><img id="kopi-logo-img" src="assets/jrm-logo-kopi.png" alt="JRM Holistik" /></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const T = 0; // when this scene's own animation starts (after any slide-in)
+
+    // Product settles into focus.
+    tl.fromTo("#kopi-glow", { opacity: 0.5, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, T);
+    tl.fromTo(
+      "#kopi-product-img",
+      { opacity: 0.55, y: 30, scale: 1.04, filter: "blur(6px)" },
+      { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" },
+      T,
+    );
+
+    // The name appears letter by letter.
+    ["#kopi-l1", "#kopi-l2", "#kopi-l3", "#kopi-l4", "#kopi-l6", "#kopi-l7", "#kopi-l8", "#kopi-l9"].forEach((sel, i) => {
+      tl.fromTo(
+        sel,
+        { opacity: 0, filter: "blur(6px)" },
+        { opacity: 1, filter: "blur(0px)", duration: 0.22, ease: "power4.out" },
+        T + 0.45 + i * 0.13,
+      );
+    });
+
+    // Rule, tagline, then the JRM Holistik logo.
+    tl.fromTo("#kopi-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, T + 1.6);
+    tl.fromTo(
+      "#kopi-tagline",
+      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
+      T + 1.85,
+    );
+    tl.fromTo(
+      "#kopi-logo-img",
+      { opacity: 0, y: 14, filter: "blur(8px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" },
+      T + 2.25,
+    );
+
+    // Pushed off to the left as Mega Ratu slides in.
+    tl.fromTo("#kopi-stage", { x: 0 }, { x: -1920, duration: 0.6, ease: "power3.inOut" }, 3.6);
+
+    window.__timelines["kopi"] = tl;
+  </script>
+</template>

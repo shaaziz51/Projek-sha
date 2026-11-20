@@ -1,0 +1,158 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Georgia Text";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --bg-a: #450a10;
+      --bg-b: #460c23;
+      --ink: #f2d49b;
+      --accent: #fff9f0;
+    }
+    #mega-stage {
+      position: absolute;
+      inset: 0;
+    }
+    #mega-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, var(--bg-a) 0%, var(--bg-b) 100%);
+    }
+    #mega-glow {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 980px;
+      height: 980px;
+      margin: -490px 0 0 -490px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 249, 240, 0.34) 0%, rgba(255, 249, 240, 0.12) 38%, rgba(255, 249, 240, 0) 70%);
+    }
+    #mega-product {
+      position: absolute;
+      left: 1470px;
+      top: 540px;
+      width: 0;
+      height: 0;
+    }
+    #mega-product img {
+      position: absolute;
+      height: 780px;
+      width: auto;
+      left: -223px;
+      top: -390px;
+    }
+    #mega-text {
+      position: absolute;
+      left: 180px;
+      top: 0;
+      bottom: 0;
+      width: 820px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--ink);
+    }
+    #mega-name {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 128px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    #mega-name span {
+      display: inline-block;
+    }
+    #mega-name .sp {
+      width: 0.32em;
+    }
+    #mega-rule {
+      width: 300px;
+      height: 3px;
+      margin: 38px 0 26px 6px;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+    #mega-tagline {
+      font-family: "Georgia Text", Georgia, serif;
+      font-size: 40px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+    #mega-logo {
+      margin: 64px 0 0 4px;
+    }
+    #mega-logo img {
+      display: block;
+      width: 300px;
+      height: auto;
+    }
+  </style>
+  <div id="root" data-composition-id="mega" data-width="1920" data-height="1080">
+    <div id="mega-stage" data-layout-ignore>
+      <div id="mega-bg" data-layout-ignore></div>
+      <div id="mega-glow" data-layout-ignore></div>
+      <div id="mega-product" class="clip" data-start="0" data-duration="5" data-track-index="0">
+        <img id="mega-product-img" src="assets/mega-ratu-cutout.png" alt="Mega Ratu box and bottle" />
+      </div>
+      <div id="mega-text" class="clip" data-start="0" data-duration="5" data-track-index="1">
+        <h1 id="mega-name" aria-label="MEGA RATU">
+          <span id="mega-l1">M</span><span id="mega-l2">E</span><span id="mega-l3">G</span><span id="mega-l4">A</span><span id="mega-l5" class="sp"> </span><span id="mega-l6">R</span><span id="mega-l7">A</span><span id="mega-l8">T</span><span id="mega-l9">U</span>
+        </h1>
+        <div id="mega-rule"></div>
+        <div id="mega-tagline">Campuran Minuman Botani</div>
+        <div id="mega-logo"><img id="mega-logo-img" src="assets/jrm-logo-mega.png" alt="JRM Holistik" /></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const T = 0.6; // when this scene's own animation starts (after any slide-in)
+
+    // Slides in from the right, pushing Kopi Ratu out.
+    tl.fromTo("#mega-stage", { x: 1920 }, { x: 0, duration: 0.6, ease: "power3.inOut" }, 0);
+
+    // Product settles into focus.
+    tl.fromTo("#mega-glow", { opacity: 0.5, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, T);
+    tl.fromTo(
+      "#mega-product-img",
+      { opacity: 1, y: 30, scale: 1.04, filter: "blur(6px)" },
+      { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" },
+      T,
+    );
+
+    // The name appears letter by letter.
+    ["#mega-l1", "#mega-l2", "#mega-l3", "#mega-l4", "#mega-l6", "#mega-l7", "#mega-l8", "#mega-l9"].forEach((sel, i) => {
+      tl.fromTo(
+        sel,
+        { opacity: 0, filter: "blur(6px)" },
+        { opacity: 1, filter: "blur(0px)", duration: 0.22, ease: "power4.out" },
+        T + 0.45 + i * 0.13,
+      );
+    });
+
+    // Rule, tagline, then the JRM Holistik logo.
+    tl.fromTo("#mega-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, T + 1.6);
+    tl.fromTo(
+      "#mega-tagline",
+      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
+      T + 1.85,
+    );
+    tl.fromTo(
+      "#mega-logo-img",
+      { opacity: 0, y: 14, filter: "blur(8px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" },
+      T + 2.25,
+    );
+
+    window.__timelines["mega"] = tl;
+  </script>
+</template>
