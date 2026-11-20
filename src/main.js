@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { buildMegaRatu } from "./megaRatu.js";
+import { buildKopiRatu } from "./kopiRatu.js";
 
-// One full turn in 5 seconds at 30 fps. Every frame is a function of its frame number,
+// Kopi Ratu and Mega Ratu side by side, each making one full turn in 5 seconds at 30 fps. Every frame is a function of its frame number,
 // so the live view and the saved frames show exactly the same motion.
 export const FPS = 30;
 export const SECONDS = 5;
@@ -48,18 +49,18 @@ scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.4;
 
 const camera = new THREE.PerspectiveCamera(30, width() / height(), 0.1, 100);
-camera.position.set(0, 3.6, 15.5);
-camera.lookAt(0, 2.55, 0);
+camera.position.set(0, 4.0, 16.8);
+camera.lookAt(0, 2.85, 0);
 
 // --- Light: warm key that casts the soft shadow, a cool fill, a cherry rim ---
 const key = new THREE.DirectionalLight("#fff4e6", 2.0);
 key.position.set(-3, 11, 6);
 key.castShadow = true;
-key.shadow.mapSize.set(1024, 1024);
-key.shadow.camera.left = -6;
-key.shadow.camera.right = 6;
-key.shadow.camera.top = 6;
-key.shadow.camera.bottom = -6;
+key.shadow.mapSize.set(1536, 1536);
+key.shadow.camera.left = -10;
+key.shadow.camera.right = 10;
+key.shadow.camera.top = 8;
+key.shadow.camera.bottom = -8;
 key.shadow.camera.near = 1;
 key.shadow.camera.far = 30;
 key.shadow.radius = 28;
@@ -81,8 +82,8 @@ floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
 scene.add(floor);
 
-// A soft dark patch right under the product, so it sits on the ground at every angle.
-function contactShadow() {
+// A soft dark patch right under each product, so it sits on the ground at every angle.
+function contactShadow(w, d, x) {
   const c = document.createElement("canvas");
   c.width = c.height = 256;
   const g = c.getContext("2d");
@@ -93,14 +94,13 @@ function contactShadow() {
   g.fillStyle = grad;
   g.fillRect(0, 0, 256, 256);
   const mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(5.2, 3.6),
+    new THREE.PlaneGeometry(w, d),
     new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }),
   );
   mesh.rotation.x = -Math.PI / 2;
-  mesh.position.y = 0.002;
+  mesh.position.set(x, 0.002, 0);
   return mesh;
 }
-scene.add(contactShadow());
 
 // --- Product ---
 const manager = new THREE.LoadingManager();
@@ -115,14 +115,25 @@ const textures = {
   front: load("textures/mega-box-front.png"),
   side: load("textures/mega-box-side.png"),
   label: load("textures/mega-bottle-label.png"),
+  pouchFront: load("textures/kopi-pouch-front.png"),
+  pouchBack: load("textures/kopi-pouch-back.png"),
+  sachet: load("textures/kopi-sachet-front.png"),
 };
-const { group: product } = buildMegaRatu(textures);
-scene.add(product);
+const KOPI_X = -3.3;
+const MEGA_X = 3.3;
+const { group: kopi } = buildKopiRatu(textures);
+kopi.position.x = KOPI_X;
+const { group: mega } = buildMegaRatu(textures);
+mega.position.x = MEGA_X;
+scene.add(kopi, mega);
+scene.add(contactShadow(6.4, 4.2, KOPI_X), contactShadow(5.2, 3.6, MEGA_X));
+const products = [kopi, mega];
 
 // The frame number alone sets the pose.
 function setFrame(n) {
   const f = ((n % FRAMES) + FRAMES) % FRAMES;
-  product.rotation.y = (f / FRAMES) * Math.PI * 2;
+  const angle = (f / FRAMES) * Math.PI * 2;
+  for (const p of products) p.rotation.y = angle;
 }
 
 function render(n) {
@@ -136,7 +147,8 @@ const ready = new Promise((resolve) => {
 
 if (capture) {
   // Used by tools/render-frames.cjs: draw frame n and hand back the PNG.
-  window.mega = {
+  window.capture = {
+    name: "ratu-pair",
     frames: FRAMES,
     fps: FPS,
     ready,

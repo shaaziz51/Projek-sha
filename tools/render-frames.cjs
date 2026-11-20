@@ -1,10 +1,10 @@
-// Saves every frame of the Mega Ratu turn as a PNG, then joins them into an MP4.
+// Saves every frame of the turning products as PNGs, then joins them into an MP4.
 //
 //   node tools/render-frames.cjs
 //
 // Needs Playwright with Chromium (npm i -D playwright && npx playwright install chromium)
-// and ffmpeg on the PATH. Output: renders/mega-ratu-frames/frame_0000.png ... and
-// renders/mega-ratu-turn.mp4.
+// and ffmpeg on the PATH. Output: renders/<name>-frames/frame_0000.png ... and
+// renders/<name>-turn.mp4, where <name> comes from the scene (window.capture.name).
 //
 //   node tools/render-frames.cjs --only 0,40,75   saves just those frames, no MP4 (for a quick look)
 const fs = require("fs");
@@ -24,10 +24,6 @@ function loadPlaywright() {
   const root = path.resolve(__dirname, "..");
   const onlyArg = process.argv.indexOf("--only");
   const only = onlyArg > -1 ? process.argv[onlyArg + 1].split(",").map(Number) : null;
-  const framesDir = path.join(root, "renders", "mega-ratu-frames");
-  const mp4 = path.join(root, "renders", "mega-ratu-turn.mp4");
-  fs.rmSync(framesDir, { recursive: true, force: true });
-  fs.mkdirSync(framesDir, { recursive: true });
 
   const { createServer } = await import("vite");
   const server = await createServer({ root, server: { port: 5199, strictPort: true }, logLevel: "error" });
@@ -41,13 +37,21 @@ function loadPlaywright() {
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
 
   await page.goto("http://localhost:5199/?capture", { waitUntil: "networkidle" });
-  await page.waitForFunction(() => window.mega);
-  await page.evaluate(() => window.mega.ready);
-  const { frames, fps } = await page.evaluate(() => ({ frames: window.mega.frames, fps: window.mega.fps }));
+  await page.waitForFunction(() => window.capture);
+  await page.evaluate(() => window.capture.ready);
+  const { name, frames, fps } = await page.evaluate(() => ({
+    name: window.capture.name,
+    frames: window.capture.frames,
+    fps: window.capture.fps,
+  }));
+  const framesDir = path.join(root, "renders", `${name}-frames`);
+  const mp4 = path.join(root, "renders", `${name}-turn.mp4`);
+  fs.rmSync(framesDir, { recursive: true, force: true });
+  fs.mkdirSync(framesDir, { recursive: true });
 
   const list = only || Array.from({ length: frames }, (_, i) => i);
   for (const n of list) {
-    const url = await page.evaluate((i) => window.mega.frame(i), n);
+    const url = await page.evaluate((i) => window.capture.frame(i), n);
     const file = path.join(framesDir, `frame_${String(n).padStart(4, "0")}.png`);
     fs.writeFileSync(file, Buffer.from(url.split(",")[1], "base64"));
     if (n % 30 === 0) console.log(`frame ${n}/${frames}`);
