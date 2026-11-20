@@ -1,0 +1,95 @@
+<template>
+  <style>
+    @font-face { font-family: "Georgia"; src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --olive: #5c6631;
+      --olive-dark: #4b5428;
+      --sand: #ead3a4;
+      --coffee: #3b1a0c;
+    }
+    #ben-ground { position: absolute; inset: 0; }
+    #ben-ground-fill {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 45% 55%, var(--olive) 0%, var(--olive) 55%, var(--olive-dark) 100%);
+    }
+    #ben-art { position: absolute; inset: 0; }
+    #ben-art svg { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: visible; }
+
+    /* The green-espresso poster's stacked serif line, set ragged right, one or two words a line */
+    #ben-copy {
+      position: absolute;
+      left: 486px;
+      width: 402px;
+      top: 318px;
+      font-family: "Georgia", serif;
+      font-size: 74px;
+      line-height: 1.14;
+      color: var(--sand);
+    }
+    #ben-copy .ln { display: block; white-space: nowrap; }
+  </style>
+
+  <div id="root" data-composition-id="benefits" data-width="1080" data-height="1920">
+    <div id="ben-ground" class="clip" data-start="0" data-duration="4.9" data-track-index="0" data-layout-ignore>
+      <div id="ben-ground-fill"></div>
+    </div>
+
+    <div id="ben-art" class="clip" data-start="0" data-duration="4.9" data-track-index="1" data-layout-ignore data-layout-allow-overflow>
+      <svg viewBox="0 0 1080 1920">
+        <!-- shadow under the cup -->
+        <ellipse id="ben-cup-shadow" cx="392" cy="1236" rx="190" ry="22" fill="#2f3516" opacity="0.45" />
+        <!-- the pour: a thin stream from above into the cup -->
+        <path id="ben-stream" d="M372 -40 C374 300 368 640 378 1012" fill="none" stroke="#3b1a0c" stroke-width="15" stroke-linecap="round" />
+        <!-- cup -->
+        <g id="ben-cup">
+          <path d="M520 1050 C590 1046 604 1120 548 1150" fill="none" stroke="#efe6d4" stroke-width="22" stroke-linecap="round" />
+          <path d="M228 1002 H532 L512 1166 C506 1206 470 1230 430 1230 H330 C290 1230 254 1206 248 1166 Z" fill="#efe6d4" />
+          <path d="M248 1166 C254 1206 290 1230 330 1230 H372 C330 1222 300 1196 292 1150 L276 1004 H228 Z" fill="#d9ceb8" />
+          <ellipse cx="380" cy="1004" rx="152" ry="26" fill="#f6efe2" />
+          <ellipse id="ben-coffee" cx="380" cy="1008" rx="132" ry="19" fill="#8a4f24" />
+          <ellipse id="ben-crema" cx="380" cy="1008" rx="70" ry="9" fill="#b9773f" />
+        </g>
+      </svg>
+    </div>
+
+    <div id="ben-copy" class="clip" data-start="0.5" data-duration="4.4" data-track-index="2">
+      <span class="ln" id="ben-l1">Good for</span>
+      <span class="ln" id="ben-l2">focus,</span>
+      <span class="ln" id="ben-l3">stamina</span>
+      <span class="ln" id="ben-l4">&amp; emotion/</span>
+      <span class="ln" id="ben-l5">stress.</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const stream = document.getElementById("ben-stream");
+    const LEN = Math.ceil(stream.getTotalLength()) + 2;
+
+    // 0-0.6 s: the stream pours down and the olive ground floods in behind it
+    tl.fromTo("#ben-ground-fill", { clipPath: "inset(0% 0% 100% 0%)" },
+      { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" }, 0);
+    tl.fromTo("#ben-cup", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 0.15);
+    tl.fromTo("#ben-cup-shadow", { opacity: 0 }, { opacity: 0.45, duration: 0.5, ease: "power2.out" }, 0.2);
+    tl.fromTo(stream, { attr: { "stroke-dasharray": LEN, "stroke-dashoffset": LEN } },
+      { attr: { "stroke-dashoffset": 0 }, duration: 0.55, ease: "power2.in" }, 0.25);
+    // the cup fills while it pours
+    tl.fromTo(["#ben-coffee", "#ben-crema"], { scale: 0.35, transformOrigin: "50% 50%" },
+      { scale: 1, duration: 1.6, ease: "power1.out" }, 0.8);
+    // 2.6-3.1 s: the pour stops, its tail falls into the cup
+    tl.fromTo(stream, { attr: { "stroke-dashoffset": 0 } },
+      { attr: { "stroke-dashoffset": -LEN }, duration: 0.5, ease: "power2.in", immediateRender: false }, 2.6);
+
+    // 0.6-1.6 s: the line stacks in, a word or two at a time
+    ["#ben-l1", "#ben-l2", "#ben-l3", "#ben-l4", "#ben-l5"].forEach((sel, i) => {
+      tl.fromTo(sel, { opacity: 0, filter: "blur(6px)", y: 14 },
+        { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "power3.out" }, 0.6 + i * 0.2);
+    });
+
+    window.__timelines["benefits"] = tl;
+  </script>
+</template>
