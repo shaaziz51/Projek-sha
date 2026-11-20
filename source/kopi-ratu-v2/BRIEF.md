@@ -21,8 +21,20 @@ Status: **waiting for more images from the client before building.**
 3. M\*\*\*\*\*u, 5 stars, November 12, 2026: "Alhamdulillah dah sampai.. kopi ratu ni original.. kalau kat shoope ada yg tiruan.. saya dah kena.. rasa lain sikit.." (with two photos of the pouch)
    - Note: mentions counterfeits on another marketplace; check with the client before showing this part.
 4. f\*\*e, 5 stars: "Sedap sangat entah ke berapa kali beli pun tak pasti. Sangat2 suka tau"
+5. (no name shown), Kualiti produk: "Terbaik. Klau badan rasa lesu mmg ambil kopi ni.. Hampir 13 tahun minum kopi ratu ni. Mmg terbaik sngt2 mmg xnk tukar kopi lain"
 
-## Reference: "Coffee Touch" poster (references/)
+## References (references/)
+
+- **Coffee Touch poster** (inspo-coffee-touch-poster.jpg), described below. Sent twice.
+- **Green espresso pour** (inspo-green-espresso-pour.jpg): painted, textured olive-green ground; a hand
+  pours espresso from a glass jug in a long thin stream into a cream cup; a short serif line set ragged
+  right, one or two words per line ("Good / ideas / begin / with / good / espresso."). Calm, painterly,
+  lots of empty space; the motion idea is the pour.
+- **Watercolour espresso** (inspo-watercolour-espresso.jpg): textured cream paper; a flowing brown
+  script headline ("Espresso") with a soft offset shadow; watercolour cups, one with a coffee splash;
+  justified condensed serif capitals as body text wrapping around the cups; a calligraphic flourish.
+
+### Coffee Touch poster
 
 Vertical poster: cream paper ground with film-grain noise; big rounded retro serif headline in red
 ("Coffee Touch") at the top; a top-down coffee cup with a long hard shadow in the middle; two small
