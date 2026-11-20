@@ -1,0 +1,334 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Chicle";
+      src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Georgia";
+      src: local("Georgia"), url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2");
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      --gold: #e1b377;
+      --ink: #54232f;
+      --cream: #fff9f0;
+      --bean: #6b3a1f;
+      --bean-dark: #3a1e0f;
+    }
+    /* Ground: brand gold, flooding to cream for the second beat */
+    #promo-ground {
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+    }
+    #promo-ground-cream {
+      position: absolute;
+      inset: 0;
+      background: var(--cream);
+      opacity: 0;
+    }
+
+    /* Beat 1-3: giant cream KOPI / RATU behind the product */
+    #promo-giant {
+      position: absolute;
+      inset: 0;
+    }
+    .giant-row {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 600px;
+      line-height: 1;
+      color: var(--cream);
+      white-space: nowrap;
+    }
+    .giant-row span {
+      display: inline-block;
+    }
+    #giant-kopi {
+      top: 330px;
+    }
+    #giant-ratu {
+      top: 880px;
+    }
+
+    /* Beat 4: stacked repeating words, as in the coffee-break reference */
+    #promo-stack {
+      position: absolute;
+      inset: 0;
+    }
+    .stack-row {
+      position: absolute;
+      font-family: "Chicle", Georgia, serif;
+      font-size: 300px;
+      line-height: 1;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    #stack-1 { top: 250px; left: 60px; }
+    #stack-2 { top: 520px; left: 60px; }
+    #stack-3 { top: 790px; left: 60px; }
+    #stack-4 { top: 1060px; right: 60px; text-align: right; }
+    #stack-5 { top: 1330px; right: 60px; text-align: right; }
+    #stack-6 { top: 1600px; right: 60px; text-align: right; }
+
+    /* Beans: drawn coffee beans with a soft shadow */
+    .bean {
+      position: absolute;
+      overflow: visible;
+    }
+    .bean-inner {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 14px 10px rgba(58, 30, 15, 0.28));
+    }
+
+    /* Product */
+    #promo-product {
+      position: absolute;
+      left: 540px;
+      top: 940px;
+      width: 0;
+      height: 0;
+    }
+    #promo-product-move {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    #promo-product-img {
+      position: absolute;
+      width: 620px;
+      height: auto;
+      left: -310px;
+      top: -343px;
+      filter: drop-shadow(0 40px 36px rgba(58, 30, 15, 0.35));
+    }
+
+    /* Copy */
+    .copy {
+      position: absolute;
+      font-family: "Georgia", serif;
+      color: var(--ink);
+    }
+    .copy .w {
+      display: inline-block;
+    }
+    #copy-logo {
+      left: 120px;
+      top: 300px;
+    }
+    #copy-logo img {
+      display: block;
+      width: 210px;
+      height: auto;
+    }
+    #copy-tagline {
+      right: 192px;
+      top: 312px;
+      font-size: 44px;
+      font-style: italic;
+      text-align: right;
+      line-height: 1.15;
+    }
+    /* One copy slot between the logo row and the product; one message at a time */
+    #copy-herba,
+    #copy-manis {
+      left: 120px;
+      top: 452px;
+      width: 768px;
+      font-size: 46px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    #copy-serving {
+      left: 120px;
+      top: 452px;
+      width: 768px;
+      text-align: center;
+    }
+    #copy-serving-pill {
+      display: inline-block;
+      padding: 16px 40px 18px;
+      border-radius: 999px;
+      background: var(--cream);
+      border: 3px solid var(--ink);
+      font-size: 46px;
+      line-height: 1.1;
+    }
+
+    /* End card */
+    #end-logo {
+      position: absolute;
+      left: 540px;
+      top: 1092px;
+      width: 0;
+      height: 0;
+    }
+    #end-logo img {
+      position: absolute;
+      width: 300px;
+      height: auto;
+      left: -150px;
+      top: -84px;
+    }
+    #end-url {
+      position: absolute;
+      left: 120px;
+      right: 120px;
+      top: 1192px;
+      text-align: center;
+      font-family: "Georgia", serif;
+      font-size: 40px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+  </style>
+
+  <div id="root" data-composition-id="promo" data-width="1080" data-height="1920">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="bean-shape" viewBox="-52 -34 104 68">
+          <ellipse rx="50" ry="32" fill="#6b3a1f" />
+          <ellipse cx="-12" cy="-12" rx="26" ry="10" fill="#8a5232" opacity="0.7" />
+          <path d="M-38 6 C-14 -14 12 18 38 -6" fill="none" stroke="#3a1e0f" stroke-width="7" stroke-linecap="round" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- Ground (whole film) -->
+    <div id="promo-ground" class="clip" data-start="0" data-duration="10" data-track-index="0" data-layout-ignore>
+      <div id="promo-ground-cream" data-layout-ignore></div>
+    </div>
+
+    <!-- Beat 1-3 (0-5.2 s): giant KOPI / RATU -->
+    <div id="promo-giant" class="clip" data-start="0" data-duration="5.3" data-track-index="1" data-layout-ignore data-layout-allow-overflow>
+      <div id="giant-kopi" class="giant-row"><span>K</span><span>O</span><span>P</span><span>I</span></div>
+      <div id="giant-ratu" class="giant-row"><span>R</span><span>A</span><span>T</span><span>U</span></div>
+    </div>
+
+    <!-- Beat 4-5 (5.0-10 s): stacked repeating words -->
+    <div id="promo-stack" class="clip" data-start="5" data-duration="5" data-track-index="1" data-layout-ignore data-layout-allow-overflow>
+      <div id="stack-1" class="stack-row">kopi kopi</div>
+      <div id="stack-2" class="stack-row">kopi kopi</div>
+      <div id="stack-3" class="stack-row">kopi kopi</div>
+      <div id="stack-4" class="stack-row">ratu ratu</div>
+      <div id="stack-5" class="stack-row">ratu ratu</div>
+      <div id="stack-6" class="stack-row">ratu ratu</div>
+    </div>
+
+    <!-- Beans behind the product -->
+    <div id="beans-back" class="clip" data-start="0" data-duration="10" data-track-index="2" data-layout-ignore>
+      <svg id="bean-b1" class="bean" style="left:40px;top:690px;width:110px;height:72px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b2" class="bean" style="left:910px;top:640px;width:84px;height:55px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b3" class="bean" style="left:930px;top:820px;width:96px;height:63px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b4" class="bean" style="left:120px;top:1180px;width:62px;height:41px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b5" class="bean" style="left:150px;top:1440px;width:78px;height:51px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b6" class="bean" style="left:900px;top:1460px;width:70px;height:46px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-b7" class="bean" style="left:640px;top:1640px;width:84px;height:55px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+    </div>
+
+    <!-- Product -->
+    <div id="promo-product" class="clip" data-start="0" data-duration="10" data-track-index="3" data-layout-allow-overflow>
+      <div id="promo-product-move">
+        <img id="promo-product-img" src="assets/kopi-ratu-cutout.png" alt="Kopi Ratu pouch and sachets" />
+      </div>
+    </div>
+
+    <!-- Beans in front of the product -->
+    <div id="beans-front" class="clip" data-start="0" data-duration="10" data-track-index="4" data-layout-ignore>
+      <svg id="bean-f1" class="bean" style="left:860px;top:860px;width:76px;height:50px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-f2" class="bean" style="left:60px;top:900px;width:92px;height:60px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-f3" class="bean" style="left:930px;top:1240px;width:104px;height:68px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+      <svg id="bean-f4" class="bean" style="left:300px;top:1560px;width:66px;height:43px"><g class="bean-inner"><use href="#bean-shape" /></g></svg>
+    </div>
+
+    <!-- Copy, beats 2-3 -->
+    <div id="copy-logo" class="copy clip" data-start="1.1" data-duration="4.0" data-track-index="5"><img id="copy-logo-img" src="assets/jrm-logo.png" alt="JRM Holistik" /></div>
+    <div id="copy-tagline" class="copy clip" data-start="1.6" data-duration="3.5" data-track-index="6"><span class="w">Inspiring</span><br /><span class="w">Addiction.</span></div>
+    <div id="copy-herba" class="copy clip" data-start="1.85" data-duration="1.8" data-track-index="7"><span class="w">Herba</span> <span class="w">ginseng,</span> <span class="w">maca,</span> <span class="w">damiana</span> <span class="w">&amp;</span> <span class="w">tongkat</span> <span class="w">ali.</span></div>
+    <div id="copy-manis" class="copy clip" data-start="3.65" data-duration="1.35" data-track-index="7"><span class="w">Rasa</span> <span class="w">rendah.</span><br /><span class="w">Kurang</span> <span class="w">manis.</span></div>
+    <div id="copy-serving" class="copy clip" data-start="5.6" data-duration="1.8" data-track-index="7"><span id="copy-serving-pill"><span class="w">15</span> <span class="w">hidangan</span> <span class="w">sebungkus</span></span></div>
+
+    <!-- End card (7.6-10 s) -->
+    <div id="end-logo" class="clip" data-start="7.6" data-duration="2.4" data-track-index="5" data-layout-allow-overflow>
+      <img id="end-logo-img" src="assets/jrm-logo.png" alt="JRM Holistik" />
+    </div>
+    <div id="end-url" class="clip" data-start="7.8" data-duration="2.2" data-track-index="6"><span id="end-url-text">www.jrm.com.my</span></div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const BACK = ["#bean-b1", "#bean-b2", "#bean-b3", "#bean-b4", "#bean-b5", "#bean-b6", "#bean-b7"];
+    const FRONT = ["#bean-f1", "#bean-f2", "#bean-f3", "#bean-f4"];
+    // Fixed per-bean turn and drift (deterministic, no randomness at draw time).
+    const SPIN = [-24, 32, -40, 18, 46, -30, 22, 28, -36, 40, -20];
+    const DRIFT = [-34, -22, -40, -28, -18, -36, -26, -44, -30, -24, -38];
+
+    // ---- Beat 1 (0-1.0 s): the pouch drops onto the giant words ----
+    // The giant words are on screen from frame 0 (the thumbnail); the pouch drops onto them.
+    tl.fromTo("#promo-product-move", { y: -430, rotation: -14, filter: "blur(5px)" },
+      { y: 0, rotation: -5, filter: "blur(0px)", duration: 0.85, ease: "power3.out" }, 0);
+    tl.fromTo("#promo-product-move", { scaleX: 1, scaleY: 1 },
+      { scaleX: 1.03, scaleY: 0.97, duration: 0.09, ease: "power1.out", yoyo: true, repeat: 1, transformOrigin: "50% 100%" }, 0.82);
+
+    // ---- Beat 2 (0.7-2.0 s): beans burst out from behind the pouch, then drift ----
+    [...BACK, ...FRONT].forEach((sel, i) => {
+      const el = document.querySelector(sel);
+      const cx = 540 - (parseFloat(el.style.left) + parseFloat(el.style.width) / 2);
+      const cy = 960 - (parseFloat(el.style.top) + parseFloat(el.style.height) / 2);
+      tl.fromTo(sel, { x: cx * 0.85, y: cy * 0.85, scale: 0.2, rotation: 0, opacity: 0 },
+        { x: 0, y: 0, scale: 1, rotation: SPIN[i], opacity: 1, duration: 0.8, ease: "expo.out" }, 0.7 + i * 0.03);
+      tl.fromTo(sel, { y: 0 }, { y: DRIFT[i], rotation: SPIN[i] * 1.5, duration: 8.4, ease: "none", immediateRender: false }, 1.6);
+    });
+
+    // JRM logo, top left
+    tl.fromTo("#copy-logo-img", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 1.1);
+
+    // ---- Beat 3 (1.6-5.0 s): callouts, word by word ----
+    tl.fromTo("#copy-tagline .w", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.09 }, 1.6);
+    tl.fromTo("#copy-herba .w", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.08 }, 1.85);
+    tl.fromTo("#copy-herba .w", { opacity: 1, filter: "blur(0px)" },
+      { opacity: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in", immediateRender: false }, 3.5);
+    tl.fromTo("#copy-manis .w", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.09 }, 3.65);
+    // everything on the gold ground leaves cleanly before the colour change
+    tl.fromTo(["#copy-logo-img", "#copy-tagline .w"], { opacity: 1, filter: "blur(0px)" },
+      { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in", immediateRender: false }, 4.75);
+    tl.fromTo("#copy-manis .w", { opacity: 1, filter: "blur(0px)" },
+      { opacity: 0, filter: "blur(8px)", duration: 0.13, ease: "power2.in", immediateRender: false }, 4.85);
+
+    // ---- Beat 4 (5.0-7.6 s): colour flood to cream, stacked words slide in, pouch swings ----
+    tl.fromTo(".giant-row span", { yPercent: 0, opacity: 1 }, { yPercent: 30, opacity: 0, duration: 0.3, ease: "power3.in", stagger: 0.02, immediateRender: false }, 4.95);
+    tl.fromTo("#promo-ground-cream", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut", immediateRender: false }, 5.0);
+    tl.fromTo(["#stack-1", "#stack-2", "#stack-3"], { xPercent: -110 },
+      { xPercent: 0, duration: 0.7, ease: "expo.out", stagger: 0.08 }, 5.1);
+    tl.fromTo(["#stack-4", "#stack-5", "#stack-6"], { xPercent: 110 },
+      { xPercent: 0, duration: 0.7, ease: "expo.out", stagger: 0.08 }, 5.2);
+    // the rows keep sliding slowly, in opposite directions
+    tl.fromTo(["#stack-1", "#stack-3", "#stack-5"], { x: 0 }, { x: -120, duration: 4.2, ease: "none", immediateRender: false }, 5.8);
+    tl.fromTo(["#stack-2", "#stack-4", "#stack-6"], { x: 0 }, { x: 120, duration: 4.2, ease: "none", immediateRender: false }, 5.8);
+    tl.fromTo("#promo-product-move", { rotation: -5 }, { rotation: 5, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 5.0);
+    tl.fromTo("#copy-serving-pill", { scale: 0.6, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }, 5.6);
+    tl.fromTo("#copy-serving-pill", { opacity: 1 }, { opacity: 0, duration: 0.15, ease: "power2.in", immediateRender: false }, 7.2);
+
+    // ---- Beat 5 (7.6-10 s): end card ----
+    // the stacked words step back to a faint texture so the end card reads
+    tl.fromTo("#promo-stack", { opacity: 1 }, { opacity: 0.13, duration: 0.45, ease: "power2.inOut", immediateRender: false }, 7.3);
+    tl.fromTo("#promo-product-move", { y: 0, scale: 1, rotation: 5 }, { y: -200, scale: 0.72, rotation: 0, duration: 0.6, ease: "power3.inOut", immediateRender: false }, 7.35);
+    tl.fromTo("#end-logo-img", { opacity: 0, scale: 0.86, filter: "blur(8px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 7.75);
+    tl.fromTo("#end-url-text", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 7.8);
+
+    window.__timelines["promo"] = tl;
+  </script>
+</template>
