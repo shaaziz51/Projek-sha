@@ -1,0 +1,30 @@
+{
+  "text": [],
+  "stickers": [],
+  "sfx": [
+    {
+      "t": 4.69,
+      "type": "pop",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 7.56,
+      "type": "whoosh",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 16.47,
+      "type": "whoosh",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    }
+  ]
+}
