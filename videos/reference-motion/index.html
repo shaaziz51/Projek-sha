@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference motion only</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body { margin: 0; height: 100%; background: #2a2a2a; overflow: hidden }
+  #stage { position: absolute; left: 0; top: 0; width: 720px; height: 1280px; background: #2a2a2a; overflow: hidden;
+           transform-origin: 0 0; perspective: 900px; font-family: Arial, Helvetica, sans-serif }
+  .abs { position: absolute; left: 0; top: 0 }
+  .body { position: absolute; left: 50%; top: 50%; height: 120px; border-radius: 32px; background: #6e6e6e;
+          transform: translate(-50%, -50%) }
+  .logo { position: absolute; left: 50%; top: 50%; width: 90px; height: 90px; margin: -45px 0 0 -45px;
+          border-radius: 22px; background: #d9d9d9; transform-style: preserve-3d }
+  .logo i { position: absolute; left: 18px; right: 18px; top: 40px; height: 10px; background: #8a8a8a; border-radius: 5px }
+  .bar { position: absolute; height: 14px; border-radius: 7px; background: #a6a6a6; transform-origin: 0 50% }
+  .dot { position: absolute; width: 12px; height: 12px; border-radius: 6px; background: #a6a6a6 }
+  .pill { position: absolute; width: 70px; height: 26px; border-radius: 13px; background: #a6a6a6 }
+  .card { position: absolute; width: 530px; height: 100px; margin: -50px 0 0 -265px; border-radius: 28px; background: #5c5c5c }
+  .card .ball { position: absolute; left: -26px; top: -4px; width: 96px; height: 96px; border-radius: 48px; background: #9a9a9a }
+  .card .bar { left: 92px; top: 30px; width: 200px }
+  .card .pill { right: 22px; top: 37px }
+  #cap { position: absolute; left: 24px; top: 24px; color: #cfcfcf; font-size: 26px; font-weight: bold }
+  #cap span { display: block; font-size: 20px; font-weight: normal; color: #9a9a9a; margin-top: 4px }
+</style>
+</head>
+<body>
+<!--
+  Motion-only copy of source.mp4: every position, size, tilt and timing is measured from the reference frames
+  (see TRANSITIONS.md); the look is deliberately plain grey. Contract: window.anim = { tl, duration, seek, play, pause }.
+-->
+<div id="stage">
+  <div id="c1" class="card"><div class="ball"></div><div class="bar"></div><div class="pill"></div></div>
+  <div id="c2" class="card"><div class="ball"></div><div class="bar"></div><div class="pill"></div></div>
+  <div id="c3" class="card"><div class="ball"></div><div class="bar"></div><div class="pill"></div></div>
+  <div id="c4" class="card"><div class="ball"></div><div class="bar"></div><div class="pill"></div></div>
+  <div id="hdr" class="abs">
+    <div id="hbody" class="body">
+      <div id="b-title" class="bar" style="left:120px;top:30px;width:170px"></div>
+      <div id="b-sub" class="bar" style="left:120px;top:54px;width:140px;height:11px"></div>
+      <div class="dot" style="left:120px;top:80px"></div><div class="dot" style="left:138px;top:80px"></div>
+      <div class="dot" style="left:156px;top:80px"></div><div class="dot" style="left:174px;top:80px"></div>
+      <div class="dot" style="left:192px;top:80px"></div>
+      <div id="b-chat" class="pill" style="right:24px;top:47px"></div>
+    </div>
+    <div id="logo" class="logo"><i></i></div>
+  </div>
+  <div id="cap">0.00 s<span></span></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(() => {
+const DUR = 12.6;
+const lerp = (a, b, p) => a + (b - a) * p;
+const EASE = {};
+const ease = (e) => EASE[e] || (EASE[e] = gsap.parseEase(e));
+// kf: value at time t from measured keys [[t, v, ease], ...]; linear between dense samples.
+function kf(t, K) {
+  if (t <= K[0][0]) return K[0][1];
+  for (let i = 1; i < K.length; i++) if (t <= K[i][0]) {
+    const [t0, v0] = K[i - 1], [t1, v1, e] = K[i];
+    return lerp(v0, v1, ease(e || 'none')((t - t0) / (t1 - t0)));
+  }
+  return K[K.length - 1][1];
+}
+
+// ---- Header group: drop + bounce, unfold, slide, rise, absorb, return, shrink (keys measured, px / s / deg) ----
+const HX = [[0, 363], [2.17, 363], [2.20, 349], [2.23, 337], [2.37, 315], [2.60, 335], [3.0, 340], [9.40, 344],
+            [9.73, 366], [9.87, 406], [9.93, 428], [10.00, 407], [10.10, 368], [10.20, 362], [10.30, 363]];
+const HY = [[0, 191], [0.07, 296], [0.13, 527], [0.20, 683], [0.27, 684], [0.33, 637], [0.40, 616], [0.50, 640],
+            [0.60, 648], [0.80, 638], [1.0, 639], [1.17, 647], [1.23, 628], [1.30, 625], [1.33, 649], [1.47, 654],
+            [3.85, 650], [3.93, 643], [4.00, 629], [4.10, 579], [4.20, 486], [4.30, 409], [4.40, 357], [4.53, 312],
+            [4.60, 295], [4.80, 240], [5.00, 212], [5.30, 200], [5.60, 197], [6.67, 197], [6.95, 207, 'sine.inOut'],
+            [7.30, 207], [7.63, 200], [8.33, 205], [8.50, 290], [8.60, 400], [8.67, 520, 'power2.in'],
+            [8.75, 600, 'power2.out'], [8.83, 625], [8.90, 637], [9.00, 650], [9.17, 654], [12.6, 654]];
+const HROT = [[0, 0], [1.17, -0.7], [1.20, -3.9], [1.23, -8], [1.27, -10.5], [1.30, -9.8], [1.33, -8.8], [1.37, -6.8],
+              [1.40, -2.9], [1.43, 5.5], [1.47, 6.1], [1.53, 5.9], [1.57, 5.4], [1.60, 4.8], [1.63, 3.9], [1.67, 2.3],
+              [1.70, 0.6], [1.73, 0], [2.17, 0.4], [2.23, 1.8], [2.37, 1.3], [3.0, 1.4], [6.67, 1.4], [6.95, 2.4, 'sine.inOut'],
+              [7.30, 2.4], [7.67, 2.4], [7.72, -8, 'power2.out'], [8.00, 0, 'power2.inOut'],
+              [8.07, 0], [8.12, 6, 'power2.out'], [8.35, 0, 'power2.inOut'],
+              [8.40, 0], [8.45, -5, 'power2.out'], [8.62, 0, 'power2.inOut'],
+              [8.67, 0], [8.70, 7.7, 'power2.out'], [8.77, 6.6], [8.83, 4.6], [8.90, 2.5], [8.97, 0], [12.6, 0]];
+const HW = [[0, 90], [1.17, 100], [1.20, 193], [1.23, 240], [1.27, 282], [1.30, 323], [1.33, 364], [1.37, 404],
+            [1.40, 441], [1.43, 484], [1.47, 519], [1.50, 530], [1.53, 520], [1.57, 499], [1.60, 477], [1.63, 461],
+            [1.67, 456], [1.70, 458], [1.73, 467], [1.77, 476], [1.80, 483], [1.83, 485], [1.87, 483], [1.90, 479],
+            [1.93, 475], [1.97, 472], [2.00, 471], [2.17, 477], [2.20, 509], [2.23, 534], [2.27, 545], [2.30, 534],
+            [2.33, 515], [2.37, 509], [3.0, 520], [9.40, 507], [9.53, 475], [9.73, 475], [9.80, 491], [9.87, 550],
+            [9.93, 543], [10.00, 474], [10.07, 357], [10.13, 261], [10.20, 175], [10.27, 90]];
+const HH = [[0, 90], [1.17, 90], [1.27, 120]];
+// logo inside the group: local x (slides), size (drop / shrink), 3D spin
+const LX = [[0, 0], [2.03, 0], [2.23, -197, 'power3.out'], [2.60, -190], [9.47, -190], [9.60, -50, 'power2.in'],
+            [9.80, 186, 'power2.out'], [9.90, 171], [10.00, 102], [10.10, 44], [10.20, 2], [10.30, 0]];
+const LS = [[0, 0.28], [0.07, 0.34], [0.13, 0.52], [0.20, 0.72], [0.27, 0.86], [0.33, 0.96], [0.40, 0.99],
+            [0.50, 1], [11.33, 1], [11.50, 0.35, 'power2.in'], [11.60, 0, 'power1.in']];
+const LSTRETCH = [[0, 1.5], [0.13, 1.35], [0.20, 1.05], [0.27, 1]];         // motion-blur stretch while falling
+const LSPIN = [[0, 0], [1.20, 0], [2.25, 540, 'power2.out']];
+
+// ---- Service cards: [enter keys], [absorb keys]  (y, scale, tilt) ----
+const CARDS = [
+  { id: 'c1', t0: 3.97,
+    y: [[3.97, 884], [4.03, 844], [4.10, 785], [4.17, 704], [4.23, 637], [4.33, 578], [4.40, 547], [4.47, 521],
+        [4.53, 499], [4.60, 482], [4.80, 430], [5.00, 405], [5.30, 397], [5.60, 395], [6.67, 395], [6.95, 405, 'sine.inOut'],
+        [7.30, 405], [7.50, 360, 'power1.in'], [7.67, 215, 'power2.in']],
+    s: [[3.97, 0.18], [4.03, 0.42], [4.10, 0.65], [4.17, 0.88], [4.23, 1.02], [4.33, 1.0], [7.30, 1.0], [7.67, 0.55, 'power2.in']],
+    r: [[3.97, 0], [4.23, 0], [4.60, 3], [12.6, 3]], gone: 7.67 },
+  { id: 'c2', t0: 4.30,
+    y: [[4.30, 862], [4.33, 834], [4.40, 782], [4.47, 737], [4.53, 704], [4.60, 685], [4.67, 675], [4.73, 667],
+        [4.80, 656], [4.87, 646], [4.93, 635], [5.00, 629], [5.07, 625], [5.20, 617], [5.60, 608], [6.67, 608],
+        [6.95, 618, 'sine.inOut'], [7.30, 618], [7.60, 598], [7.67, 580], [8.07, 210, 'power2.in']],
+    s: [[4.30, 0.30], [4.33, 0.41], [4.40, 0.65], [4.47, 0.91], [4.53, 1.09], [4.60, 1.07], [4.67, 1.05], [4.73, 1.01],
+        [4.80, 1.03], [4.87, 1.06], [4.93, 1.06], [5.00, 1.03], [5.07, 1.0], [5.20, 1.01], [5.60, 1.0], [7.67, 1.0],
+        [8.07, 0.55, 'power2.in']],
+    r: [[4.30, 0], [4.47, 0.7], [4.53, 3.8], [4.60, 5.9], [4.67, 6.0], [4.73, 4.8], [4.80, 4.4], [12.6, 4.4]], gone: 8.07 },
+  { id: 'c3', t0: 4.67,
+    y: [[4.67, 931], [4.73, 899], [4.80, 868], [4.87, 846], [4.93, 837], [5.00, 836], [5.07, 834], [5.13, 829],
+        [5.20, 823], [5.27, 820], [5.60, 815], [6.67, 815], [6.95, 827, 'sine.inOut'], [7.30, 827], [7.70, 811],
+        [7.97, 757], [8.07, 722], [8.13, 689], [8.20, 650], [8.27, 596], [8.33, 513], [8.40, 300, 'power2.in']],
+    s: [[4.67, 0.35], [4.73, 0.59], [4.80, 0.83], [4.87, 1.02], [4.93, 1.08], [5.00, 1.0], [5.07, 0.96], [5.13, 0.95],
+        [5.20, 0.99], [5.27, 1.0], [8.20, 1.0], [8.40, 0.55, 'power2.in']],
+    r: [[4.67, 0], [4.87, 1.7], [4.93, 3.7], [5.13, 2.2], [5.27, 2.7], [5.60, 2.6], [12.6, 2.6]], gone: 8.40 },
+  { id: 'c4', t0: 5.00,
+    y: [[5.00, 1121], [5.07, 1096], [5.13, 1071], [5.20, 1060], [5.27, 1053], [5.33, 1055], [5.60, 1051], [6.67, 1048],
+        [6.95, 1061, 'sine.inOut'], [7.30, 1061], [7.70, 1051], [8.00, 1017], [8.13, 991], [8.27, 958], [8.40, 912],
+        [8.50, 863], [8.57, 816], [8.60, 782], [8.67, 610, 'power2.in']],
+    s: [[5.00, 0.36], [5.07, 0.59], [5.13, 0.83], [5.20, 0.98], [5.27, 1.08], [5.33, 1.02], [5.53, 1.0], [8.50, 1.0],
+        [8.67, 0.55, 'power2.in']],
+    r: [[5.00, 0], [5.20, 1.2], [5.27, 4.3], [5.40, 3.6], [5.60, 3.0], [12.6, 2.8]], gone: 8.67 },
+];
+const FLASH = [7.67, 8.07, 8.40, 8.67];        // a card lands in the header: flash + tilt kick + scale pop
+
+// ---- Transition labels shown on screen ----
+const LABELS = [
+  [0.00, 'T1 Logo drops in'], [0.20, 'T2 Bounce and settle'], [0.60, 'Hold'], [1.17, 'T3 Logo opens into a card'],
+  [2.03, 'T4 Logo slides left, details reveal'], [2.80, 'Hold'], [3.83, 'T5 Header rises, card 1 enters'],
+  [4.30, 'T6 Card 2 enters'], [4.67, 'T7 Card 3 enters'], [5.00, 'T8 Card 4 enters'], [5.60, 'Hold'],
+  [6.67, 'T9 Stack floats'], [7.30, 'T10 Card 1 into header'], [7.67, 'T11 Card 2 into header'],
+  [8.07, 'T12 Card 3 into header'], [8.40, 'T13 Card 4 into header'], [8.67, 'T14 Header returns to centre'],
+  [9.43, 'T15 Details hide, logo slides right'], [9.93, 'T16 Card folds into the logo'], [10.30, 'Hold'],
+  [11.33, 'T17 Logo shrinks out'], [11.60, 'Empty (loops)'],
+];
+
+const $ = (id) => document.getElementById(id);
+const hdr = $('hdr'), hbody = $('hbody'), logo = $('logo'), cap = $('cap');
+const bars = [$('b-title'), $('b-sub')], dots = [...hbody.querySelectorAll('.dot')], chat = $('b-chat');
+
+function draw(t) {
+  if (t >= DUR - 1e-6) t = 0;                                  // the loop lands exactly on frame 0
+  // header group
+  let pop = 1, flashAmt = 0;
+  for (const f of FLASH) if (t >= f && t < f + 0.3) { const p = (t - f) / 0.3; pop = 1 + 0.06 * (1 - p); flashAmt = Math.max(flashAmt, 1 - p); }
+  gsap.set(hdr, { x: kf(t, HX), y: kf(t, HY), rotation: kf(t, HROT), scale: pop });
+  const shown = t >= 1.17 && t < 10.27;
+  gsap.set(hbody, { width: kf(t, HW), height: kf(t, HH), autoAlpha: shown ? 1 : 0,
+                    backgroundColor: gsap.utils.interpolate('#6e6e6e', '#efefef', flashAmt) });
+  // details: title wipes from under the logo, then subtitle, dots, chat pill; hidden again 9.43-9.55
+  const out = t >= 9.43 ? Math.min(1, (t - 9.43) / 0.12) : 0;
+  gsap.set(bars[0], { scaleX: kf(t, [[2.10, 0], [2.30, 1, 'power2.out']]) * (1 - out) });
+  gsap.set(bars[1], { scaleX: kf(t, [[2.35, 0], [2.55, 1, 'power2.out']]) * (1 - out) });
+  dots.forEach((d, i) => gsap.set(d, { scale: kf(t, [[2.50 + i * 0.06, 0], [2.62 + i * 0.06, 1, 'back.out(2)']]) * (1 - out) }));
+  gsap.set(chat, { scale: kf(t, [[2.55, 0], [2.80, 1, 'back.out(1.7)']]) * (1 - out) });
+  // logo
+  gsap.set(logo, { x: kf(t, LX), scaleX: kf(t, LS), scaleY: kf(t, LS) * kf(t, LSTRETCH), rotationY: kf(t, LSPIN),
+                   autoAlpha: t < 11.60 ? 1 : 0 });
+  // service cards
+  for (const c of CARDS) {
+    const el = $(c.id), on = t >= c.t0 && t < c.gone;
+    gsap.set(el, { x: 363, y: kf(t, c.y), scale: kf(t, c.s), rotation: kf(t, c.r), autoAlpha: on ? 1 : 0 });
+  }
+  // caption: time and current transition
+  let lab = LABELS[0][1];
+  for (const [s, l] of LABELS) if (t >= s) lab = l;
+  cap.firstChild.nodeValue = t.toFixed(2) + ' s';
+  cap.lastChild.textContent = lab;
+}
+
+const tl = gsap.timeline({ paused: true, repeat: -1, onUpdate: () => draw(tl.time()) });
+tl.set({}, {}, DUR);
+
+function fit() {
+  const s = Math.min(innerWidth / 720, innerHeight / 1280);
+  gsap.set('#stage', { scale: s, x: (innerWidth - 720 * s) / 2, y: (innerHeight - 1280 * s) / 2 });
+}
+addEventListener('resize', fit);
+
+window.anim = {
+  tl, duration: DUR,
+  seek(t) { t = Math.min(DUR, Math.max(0, t)); tl.pause(); tl.time(t, false); draw(t); },
+  play(from = 0) { tl.time(from); tl.play(); },
+  pause() { tl.pause(); }
+};
+const qs = new URLSearchParams(location.search);
+fit();
+anim.seek(0);
+if (qs.has('t')) anim.seek(parseFloat(qs.get('t')));
+else if (!qs.has('external')) tl.play(0);
+document.documentElement.dataset.ready = '1';
+})();
+</script>
+</body>
+</html>
