@@ -196,7 +196,7 @@ function draw(t) {
   // ---- grounds: cola purple -> gold; beige -> rosy brown floods out of the header at the first merge;
   //      linen -> rosy pink bursts out of the box; the grape picture fades in for the end card ----
   const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT);
-  const boxX = hx - 70, boxY = hy + 6;
+  const boxX = hx, boxY = hy;                                // the box closes around the bottle, in the centre
   gsap.set('#bg2', { clipPath: iris(kf(t, [[7.67, 0], [8.10, 1, 'power2.inOut']]), hx, mapY(7.7, 200)) });
   gsap.set('#bg3', { clipPath: iris(kf(t, [[BURST_AT, 0], [BURST_AT + 0.35, 1, 'power3.out']]), boxX, boxY) });
   gsap.set('#bg4', { opacity: kf(t, [[END_IN, 0], [END_IN + 0.4, 1, 'power2.out']]), scale: kf(t, [[END_IN, 1.08], [END_IN + 0.6, 1, 'power2.out']]) });
@@ -221,7 +221,7 @@ function draw(t) {
   // ---- bottle ----
   const size = kf(t, LS) * kf(t, SIZE);
   const bx = kf(t, LX) * 1.376, a = hr * Math.PI / 180;
-  const bShift = kf(t, [[10.30, 0], [10.55, 120, 'power3.out'], [10.70, 104], [10.85, 110, 'sine.inOut']]);
+  const bShift = 0;                                          // the bottle stays in the centre, inside the box
   const endMove = kf(t, [[END_IN, 0], [END_IN + 0.45, 1, 'power3.inOut']]);
   const bAx = hx + bx * Math.cos(a) * pop + bShift, bAy = hy + bx * Math.sin(a) * pop;
   const bottle = { x: lerp(bAx, 540, endMove), y: lerp(bAy, 860, endMove), rot: hr * (1 - endMove), size: BOTTLE_H * size * pop,
@@ -229,12 +229,14 @@ function draw(t) {
   gsap.set(glow, { x: bx + bShift, scale: size, opacity: (t < END_IN ? 1 : 0) * kf(t, [[2.03, 1], [2.40, 0.55], [8.84, 0.55], [9.2, 1]]) });
   gsap.set('#endglow', { x: 540, y: 860, opacity: kf(t, [[END_IN, 0], [END_IN + 0.5, 1]]) });
 
-  // ---- 3D box: springs out from behind the bottle (10.30), bursts open (10.85) ----
-  const boxS = kf(t, [[10.30, 0.55], [10.55, 1.05, 'power3.out'], [10.68, 0.98], [10.82, 1.0, 'sine.inOut']]);
-  const box = { visible: t >= 10.30 && t < BURST_AT + 0.7, z: -400, x: hx + kf(t, [[10.30, 120], [10.55, -95, 'power3.out'], [10.68, -62], [10.82, -70, 'sine.inOut']]),
-                y: boxY, size: BOTTLE_H * (window.megaStage3D ? window.megaStage3D.boxToBottle : 1.1) * boxS,
-                rot: kf(t, [[10.30, 0], [10.45, -4], [10.62, 2.5], [10.80, 0]]),
-                spin: kf(t, [[10.30, 90], [10.75, 24, 'power3.out']]), explode: kf(t, [[BURST_AT, 0], [BURST_AT + 0.7, 1]]) };
+  // ---- 3D box: its six faces fly in and close around the bottle (the explosion played backwards), it squeezes
+  //      for a beat (anticipation), then bursts open (10.85) and only the bottle is left in the centre ----
+  const assemble = kf(t, [[10.30, 1], [10.70, 0, 'power3.out']]), blast = kf(t, [[BURST_AT, 0], [BURST_AT + 0.7, 1]]);
+  const boxS = kf(t, [[10.70, 1], [10.80, 0.96, 'power2.inOut'], [BURST_AT, 1.03, 'power2.out']]);
+  const box = { visible: t >= 10.30 && t < BURST_AT + 0.7, z: 0, x: boxX, y: boxY,
+                size: BOTTLE_H * (window.megaStage3D ? window.megaStage3D.boxToBottle : 1.1) * boxS,
+                rot: kf(t, [[10.70, 0], [10.76, -2], [10.82, 2], [BURST_AT, 0]]),
+                spin: kf(t, [[10.30, 70], [10.70, 24, 'power3.out']]), explode: t < BURST_AT ? assemble : blast };
 
   // ---- ingredients burst out of the box: fly out fast and slow down, float, then fly off as the end card comes ----
   const burst = BURST.map(([ang, dx, dy, sz, dir], i) => {
@@ -244,7 +246,7 @@ function draw(t) {
     const leave = kf(t, [[BURST_OUT, 1], [BURST_OUT + 0.35, 2.4, 'power3.in']]);
     const k = go * drift * leave;
     return { visible: t >= BURST_AT && t < BURST_OUT + 0.35, z: (i % 3 - 1) * 200,
-             x: boxX + 70 + Math.cos(r) * dx * k, y: boxY + Math.sin(r) * dy * k,
+             x: boxX + Math.cos(r) * dx * k, y: boxY + Math.sin(r) * dy * k,
              size: sz * kf(t, [[BURST_AT, 0.2], [BURST_AT + 0.4, 1, 'back.out(1.6)']]),
              rot: dir * 18 * go, spin: dir * (220 * (1 - go) + 25 * Math.sin((t - BURST_AT) * Math.PI * 2 / 2.2)) };
   });
