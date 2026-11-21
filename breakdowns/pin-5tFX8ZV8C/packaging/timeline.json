@@ -1,0 +1,438 @@
+{
+  "text": [
+    {
+      "id": "text_009",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 0.0,
+      "t1": 4.8,
+      "text": "Filled with/Hazelnut cream/& Milk chocolate",
+      "bbox": [
+        0.0903,
+        0.7906,
+        0.3736,
+        0.1032
+      ],
+      "style": {
+        "fill": "#fdfbf8",
+        "fill_name": "white",
+        "weight": 0.029
+      },
+      "style_zh": "white text, line height 3.8% (about 49px)",
+      "anim_in": null,
+      "anim_out": {
+        "kind": "cut_out",
+        "kind_zh": "hard out"
+      },
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_012",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 0.5,
+      "t1": 4.6,
+      "text": "Chocolate",
+      "bbox": [
+        0.6569,
+        0.8188,
+        0.2334,
+        0.0602
+      ],
+      "style": {
+        "fill": "#f0fcf7",
+        "fill_name": "white",
+        "stroke": "#034024",
+        "stroke_name": "green",
+        "stroke_ratio": 0.021,
+        "weight": 0.05
+      },
+      "style_zh": "white text, green outline, line height 4.8% (about 62px)",
+      "anim_in": {
+        "kind": "cut",
+        "kind_zh": "hard in"
+      },
+      "anim_out": {
+        "kind": "cut_out",
+        "kind_zh": "hard out"
+      },
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_033",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 5.0,
+      "t1": 10.6,
+      "text": "Filled with/Pumpkin spice/White chocolate",
+      "bbox": [
+        0.0903,
+        0.7898,
+        0.3527,
+        0.1023
+      ],
+      "style": {
+        "fill": "#fcfdf9",
+        "fill_name": "white",
+        "weight": 0.029
+      },
+      "style_zh": "white text, line height 3.8% (about 48px)",
+      "anim_in": {
+        "kind": "reveal",
+        "kind_zh": "type-on"
+      },
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_035",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 4.0,
+      "t1": 6.6,
+      "text": "White chocolate",
+      "bbox": [
+        0.0944,
+        0.8586,
+        0.3444,
+        0.032
+      ],
+      "style": {
+        "fill": "#fcfdf9",
+        "fill_name": "white",
+        "weight": 0.095
+      },
+      "style_zh": "white text, line height 3.2% (about 41px)",
+      "anim_in": null,
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_038",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 6.0,
+      "t1": 7.7,
+      "text": "Chocolate",
+      "bbox": [
+        0.6708,
+        0.8203,
+        0.2056,
+        0.0547
+      ],
+      "style": {
+        "fill": "#fdf9ec",
+        "fill_name": "white",
+        "stroke": "#b2621d",
+        "stroke_name": "orange",
+        "stroke_ratio": 0.011,
+        "weight": 0.054
+      },
+      "style_zh": "white text, orange outline, line height 4.3% (about 55px)",
+      "anim_in": null,
+      "anim_out": {
+        "kind": "fade_out",
+        "kind_zh": "fade out"
+      },
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_052",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 8.0,
+      "t1": 10.6,
+      "text": "White chocolate",
+      "bbox": [
+        0.0958,
+        0.8586,
+        0.3458,
+        0.0328
+      ],
+      "style": {
+        "fill": "#fcfdf9",
+        "fill_name": "white",
+        "stroke": "#b7a67e",
+        "stroke_name": "yellow",
+        "stroke_ratio": 0.015,
+        "weight": 0.093
+      },
+      "style_zh": "white text, yellow outline, line height 3.3% (about 42px)",
+      "anim_in": null,
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_064",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 11.0,
+      "t1": 15.2,
+      "text": "Filled with/Dark chocolate/& Marshmallow",
+      "bbox": [
+        0.0903,
+        0.7898,
+        0.35,
+        0.1055
+      ],
+      "style": {
+        "fill": "#fdfdfd",
+        "fill_name": "white",
+        "weight": 0.034
+      },
+      "style_zh": "white text, line height 3.8% (about 49px)",
+      "anim_in": {
+        "kind": "cut",
+        "kind_zh": "hard in"
+      },
+      "anim_out": {
+        "kind": "slide_out",
+        "kind_zh": "slide out"
+      },
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_089",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 15.5,
+      "t1": 18.1,
+      "text": "Filled with/Peppermint",
+      "bbox": [
+        0.0875,
+        0.7906,
+        0.2861,
+        0.0805
+      ],
+      "style": {
+        "fill": "#fdfafa",
+        "fill_name": "white",
+        "weight": 0.045
+      },
+      "style_zh": "white text, line height 4.4% (about 56px)",
+      "anim_in": null,
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_090",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 15.5,
+      "t1": 18.1,
+      "text": "Dark chocolate",
+      "bbox": [
+        0.0903,
+        0.8555,
+        0.3417,
+        0.0391
+      ],
+      "style": {
+        "fill": "#fdfbfe",
+        "fill_name": "white",
+        "stroke": "#770f1b",
+        "stroke_name": "red",
+        "stroke_ratio": 0.012,
+        "weight": 0.076
+      },
+      "style_zh": "white text, red outline, line height 3.8% (about 49px)",
+      "anim_in": null,
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_107",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 18.5,
+      "t1": 20.6,
+      "text": "Filled with/Dark chocolate",
+      "bbox": [
+        0.0931,
+        0.7914,
+        0.3402,
+        0.1024
+      ],
+      "style": {
+        "fill": "#fcfcfc",
+        "fill_name": "white",
+        "weight": 0.029
+      },
+      "style_zh": "white text, line height 3.7% (about 47px)",
+      "anim_in": {
+        "kind": "fade",
+        "kind_zh": "fade in"
+      },
+      "anim_out": null,
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    },
+    {
+      "id": "text_108",
+      "kind": "subtitle",
+      "kind_zh": "subtitle",
+      "t0": 18.5,
+      "t1": 20.7,
+      "text": "peppermint",
+      "bbox": [
+        0.0875,
+        0.7914,
+        0.2875,
+        0.0805
+      ],
+      "style": {
+        "fill": "#fcfcfc",
+        "fill_name": "white",
+        "weight": 0.037
+      },
+      "style_zh": "white text, line height 4.9% (about 63px)",
+      "anim_in": {
+        "kind": "fade",
+        "kind_zh": "fade in"
+      },
+      "anim_out": {
+        "kind": "cut_out",
+        "kind_zh": "hard out"
+      },
+      "mid_motion": null,
+      "follows": null,
+      "part_of_picture": false,
+      "anchor": null,
+      "persistent": null
+    }
+  ],
+  "stickers": [],
+  "sfx": [
+    {
+      "t": 0.05,
+      "type": "whoosh",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": {
+        "type": "subtitle_in",
+        "what": "subtitle \"Filled with Haze\" appears",
+        "dt": -0.05,
+        "ref": "text_009"
+      }
+    },
+    {
+      "t": 4.97,
+      "type": "pop",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": {
+        "type": "subtitle_in",
+        "what": "subtitle \"Filled with Pump\" appears",
+        "dt": 0.03,
+        "ref": "text_033"
+      }
+    },
+    {
+      "t": 7.55,
+      "type": "click",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 11.83,
+      "type": "click",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 13.2,
+      "type": "pop",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 15.66,
+      "type": "whoosh",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": {
+        "type": "subtitle_in",
+        "what": "subtitle \"Filled with Pepp\" appears",
+        "dt": -0.16,
+        "ref": "text_089"
+      }
+    },
+    {
+      "t": 19.63,
+      "type": "pop",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    },
+    {
+      "t": 20.9,
+      "type": "whoosh",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": {
+        "type": "cut",
+        "what": "cut",
+        "dt": -0.06,
+        "ref": null
+      }
+    },
+    {
+      "t": 23.49,
+      "type": "click",
+      "description": null,
+      "source": "effects_stem",
+      "confidence": "medium",
+      "on": null
+    }
+  ]
+}

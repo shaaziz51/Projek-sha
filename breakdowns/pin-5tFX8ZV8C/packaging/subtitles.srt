@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:04,800
+Filled with
+Hazelnut cream
+& Milk chocolate
+
+2
+00:00:00,500 --> 00:00:04,600
+Chocolate
+
+3
+00:00:04,000 --> 00:00:06,600
+White chocolate
+
+4
+00:00:05,000 --> 00:00:10,600
+Filled with
+Pumpkin spice
+White chocolate
+
+5
+00:00:06,000 --> 00:00:07,700
+Chocolate
+
+6
+00:00:08,000 --> 00:00:10,600
+White chocolate
+
+7
+00:00:11,000 --> 00:00:15,200
+Filled with
+Dark chocolate
+& Marshmallow
+
+8
+00:00:15,500 --> 00:00:18,100
+Filled with
+Peppermint
+
+9
+00:00:15,500 --> 00:00:18,100
+Dark chocolate
+
+10
+00:00:18,500 --> 00:00:20,600
+Filled with
+Dark chocolate
+
+11
+00:00:18,500 --> 00:00:20,700
+peppermint

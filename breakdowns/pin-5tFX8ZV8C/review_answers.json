@@ -1,0 +1,633 @@
+{
+ "by": "Claude (agent visual review)",
+ "shots": [
+  {
+   "id": "shot_001",
+   "time": "0.00-4.80",
+   "label_probs": {
+    "code_render": 0.9,
+    "cg_3d": 0.04,
+    "ai_video": 0.03,
+    "still_motion": 0.03
+   },
+   "image_source": "photo",
+   "evidence": [
+    "Two flat solid-colour panels split the 9:16 frame vertically; no texture, grain or lighting falloff on the backgrounds. The ingredient pile and the pouch are clean cut-out photos/renders with hard alpha edges, moving rigidly (slide, tilt, scale) with no deformation, no texture boiling and no physics. The pouch is masked by the panel seam, so it slides out from 'behind' the left panel: a layer mask, typical of an After Effects / template composite. Fixed layout repeats in every flavour shot: 'Just the Fun Part' logo top-right, 'Real Belgian Chocolate' badge bottom-right, 'Filled with ...' caption bottom-left.",
+    "Element motion is perfectly linear/eased keyframe motion (pouch rotates about a fixed pivot and slides out then back), the hallmark of keyframed 2D animation rather than a camera or a generative model."
+   ],
+   "description": "Split-screen product card for the 'Hazelnut cream & milk chocolate' flavour. Background: brown (#8B3A1A-ish) left / dark green right, split at roughly 1/3 width. Left panel: a column of whole hazelnuts with two green hazelnut leaves stacked in a tall column, with a slight drift/scale. Right panel: white pouch with green accents, 'Waffle Cones, filled with hazelnut cream & milk chocolate' which slides out from behind the seam, tilts about 10-15 degrees, holds, then slides back behind the seam before the transition. Fixed overlays: 'Just the Fun Part' white logo top-right, white 'Filled with / <flavour>' caption in a rounded hand-lettered font bottom-left, circular 'Real Belgian Chocolate' badge bottom-right. Transition in: the next colour panels wipe in as sliding rectangular blocks (panel wipe, about 0.3 s).",
+   "narrative": {
+    "role": "hook",
+    "point": "Open straight on the product and its first flavour, with no intro, so the viewer sees what is being sold within the first second"
+   },
+   "embedded_assets": [
+    {
+     "kind": "product_photo",
+     "what": "Product pouch packshot (flavour artwork), cut out",
+     "is_real_material": true
+    },
+    {
+     "kind": "photo",
+     "what": "Ingredient cut-out photo (pile)",
+     "is_real_material": true
+    },
+    {
+     "kind": "logo",
+     "what": "'Just the Fun Part' brand logo and 'Real Belgian Chocolate' badge",
+     "is_real_material": true
+    }
+   ],
+   "ai_edits": [],
+   "same_clip_as": null,
+   "replication": {
+    "image_prompt": "",
+    "video_prompt": "",
+    "video_prompt_en": ""
+   },
+   "performance": null
+  },
+  {
+   "id": "shot_002",
+   "time": "4.80-10.88",
+   "label_probs": {
+    "code_render": 0.9,
+    "cg_3d": 0.04,
+    "ai_video": 0.03,
+    "still_motion": 0.03
+   },
+   "image_source": "photo",
+   "evidence": [
+    "Two flat solid-colour panels split the 9:16 frame vertically; no texture, grain or lighting falloff on the backgrounds. The ingredient pile and the pouch are clean cut-out photos/renders with hard alpha edges, moving rigidly (slide, tilt, scale) with no deformation, no texture boiling and no physics. The pouch is masked by the panel seam, so it slides out from 'behind' the left panel: a layer mask, typical of an After Effects / template composite. Fixed layout repeats in every flavour shot: 'Just the Fun Part' logo top-right, 'Real Belgian Chocolate' badge bottom-right, 'Filled with ...' caption bottom-left.",
+    "Element motion is perfectly linear/eased keyframe motion (pouch rotates about a fixed pivot and slides out then back), the hallmark of keyframed 2D animation rather than a camera or a generative model."
+   ],
+   "description": "Split-screen product card for the 'Pumpkin spice white chocolate' flavour. Background: tan/beige left / orange right, split at roughly 1/3 width. Left panel: cubes of pumpkin, cinnamon sticks and white chocolate chunks stacked in a tall column, with a slight drift/scale. Right panel: white pouch with orange Halloween graphics (pumpkins, bats), 'Pumpkin spice white chocolate' which slides out from behind the seam, tilts about 10-15 degrees, holds, then slides back behind the seam before the transition. Fixed overlays: 'Just the Fun Part' white logo top-right, white 'Filled with / <flavour>' caption in a rounded hand-lettered font bottom-left, circular 'Real Belgian Chocolate' badge bottom-right. Transition in: the next colour panels wipe in as sliding rectangular blocks (panel wipe, about 0.3 s).",
+   "narrative": {
+    "role": "info",
+    "point": "Show the second flavour with the same layout, swapping only the colours and the ingredient pile"
+   },
+   "embedded_assets": [
+    {
+     "kind": "product_photo",
+     "what": "Product pouch packshot (flavour artwork), cut out",
+     "is_real_material": true
+    },
+    {
+     "kind": "photo",
+     "what": "Ingredient cut-out photo (pile)",
+     "is_real_material": true
+    },
+    {
+     "kind": "logo",
+     "what": "'Just the Fun Part' brand logo and 'Real Belgian Chocolate' badge",
+     "is_real_material": true
+    }
+   ],
+   "ai_edits": [],
+   "same_clip_as": null,
+   "replication": {
+    "image_prompt": "",
+    "video_prompt": "",
+    "video_prompt_en": ""
+   },
+   "performance": null
+  },
+  {
+   "id": "shot_003",
+   "time": "10.88-15.64",
+   "label_probs": {
+    "code_render": 0.9,
+    "cg_3d": 0.04,
+    "ai_video": 0.03,
+    "still_motion": 0.03
+   },
+   "image_source": "photo",
+   "evidence": [
+    "Two flat solid-colour panels split the 9:16 frame vertically; no texture, grain or lighting falloff on the backgrounds. The ingredient pile and the pouch are clean cut-out photos/renders with hard alpha edges, moving rigidly (slide, tilt, scale) with no deformation, no texture boiling and no physics. The pouch is masked by the panel seam, so it slides out from 'behind' the left panel: a layer mask, typical of an After Effects / template composite. Fixed layout repeats in every flavour shot: 'Just the Fun Part' logo top-right, 'Real Belgian Chocolate' badge bottom-right, 'Filled with ...' caption bottom-left.",
+    "Element motion is perfectly linear/eased keyframe motion (pouch rotates about a fixed pivot and slides out then back), the hallmark of keyframed 2D animation rather than a camera or a generative model."
+   ],
+   "description": "Split-screen product card for the 'Dark chocolate & marshmallow' flavour. Background: pale pink left / coral red right, split at roughly 1/3 width. Left panel: a column of white marshmallow cubes stacked in a tall column, with a slight drift/scale. Right panel: red pouch, 'S'mores Waffle Cones', dark chocolate & marshmallow which slides out from behind the seam, tilts about 10-15 degrees, holds, then slides back behind the seam before the transition. Fixed overlays: 'Just the Fun Part' white logo top-right, white 'Filled with / <flavour>' caption in a rounded hand-lettered font bottom-left, circular 'Real Belgian Chocolate' badge bottom-right. Transition in: the next colour panels wipe in as sliding rectangular blocks (panel wipe, about 0.3 s).",
+   "narrative": {
+    "role": "info",
+    "point": "Third flavour in the same template; the repetition builds a 'range' feeling"
+   },
+   "embedded_assets": [
+    {
+     "kind": "product_photo",
+     "what": "Product pouch packshot (flavour artwork), cut out",
+     "is_real_material": true
+    },
+    {
+     "kind": "photo",
+     "what": "Ingredient cut-out photo (pile)",
+     "is_real_material": true
+    },
+    {
+     "kind": "logo",
+     "what": "'Just the Fun Part' brand logo and 'Real Belgian Chocolate' badge",
+     "is_real_material": true
+    }
+   ],
+   "ai_edits": [],
+   "same_clip_as": null,
+   "replication": {
+    "image_prompt": "",
+    "video_prompt": "",
+    "video_prompt_en": ""
+   },
+   "performance": null
+  },
+  {
+   "id": "shot_004",
+   "time": "15.64-20.84",
+   "label_probs": {
+    "code_render": 0.9,
+    "cg_3d": 0.04,
+    "ai_video": 0.03,
+    "still_motion": 0.03
+   },
+   "image_source": "photo",
+   "evidence": [
+    "Two flat solid-colour panels split the 9:16 frame vertically; no texture, grain or lighting falloff on the backgrounds. The ingredient pile and the pouch are clean cut-out photos/renders with hard alpha edges, moving rigidly (slide, tilt, scale) with no deformation, no texture boiling and no physics. The pouch is masked by the panel seam, so it slides out from 'behind' the left panel: a layer mask, typical of an After Effects / template composite. Fixed layout repeats in every flavour shot: 'Just the Fun Part' logo top-right, 'Real Belgian Chocolate' badge bottom-right, 'Filled with ...' caption bottom-left.",
+    "Element motion is perfectly linear/eased keyframe motion (pouch rotates about a fixed pivot and slides out then back), the hallmark of keyframed 2D animation rather than a camera or a generative model."
+   ],
+   "description": "Split-screen product card for the 'Peppermint dark chocolate' flavour. Background: dark red left / green right (Christmas colours), split at roughly 1/3 width. Left panel: a column of dark chocolate shards with fresh mint sprigs top and bottom stacked in a tall column, with a slight drift/scale. Right panel: white pouch with red/green Christmas graphics, 'Peppermint dark chocolate' which slides out from behind the seam, tilts about 10-15 degrees, holds, then slides back behind the seam before the transition. Fixed overlays: 'Just the Fun Part' white logo top-right, white 'Filled with / <flavour>' caption in a rounded hand-lettered font bottom-left, circular 'Real Belgian Chocolate' badge bottom-right. Transition in: the next colour panels wipe in as sliding rectangular blocks (panel wipe, about 0.3 s).",
+   "narrative": {
+    "role": "info",
+    "point": "Fourth and last flavour, the seasonal/holiday variant"
+   },
+   "embedded_assets": [
+    {
+     "kind": "product_photo",
+     "what": "Product pouch packshot (flavour artwork), cut out",
+     "is_real_material": true
+    },
+    {
+     "kind": "photo",
+     "what": "Ingredient cut-out photo (pile)",
+     "is_real_material": true
+    },
+    {
+     "kind": "logo",
+     "what": "'Just the Fun Part' brand logo and 'Real Belgian Chocolate' badge",
+     "is_real_material": true
+    }
+   ],
+   "ai_edits": [],
+   "same_clip_as": null,
+   "replication": {
+    "image_prompt": "",
+    "video_prompt": "",
+    "video_prompt_en": ""
+   },
+   "performance": null
+  },
+  {
+   "id": "shot_005",
+   "time": "20.84-27.88",
+   "label_probs": {
+    "code_render": 0.96,
+    "cg_3d": 0.016,
+    "ai_video": 0.012,
+    "still_motion": 0.012
+   },
+   "image_source": "graphic",
+   "evidence": [
+    "Flat single-colour red background (2 colours make up 95% of pixels), 95% of the background never changes; only white text moves.",
+    "Words fly in one at a time, huge and rotated with motion blur, then shrink into a centred 3-line lock-up: classic kinetic-typography animation."
+   ],
+   "description": "End card / slogan. Starts with the peppermint scene being wiped off by a solid deep-red panel (about 20.84-20.9 s). Kinetic typography on deep red (#9A0010-ish): white rounded hand-lettered words fly in one by one, oversized, rotated, with motion blur, then shrink and settle into a centred lock-up: 'Only The Best Part / Of The / Sundae Cone!' (Only ~21.0 s, The ~22.6 s, Best Part ~23.5 s, Of The ~24.3 s, Sundae Cone! ~25.4-26.6 s). A white smile curve (the logo's smile) pops in under the text around 27.5 s, then the panels wipe straight back into the hazelnut scene (27.7-27.88 s) so the video loops seamlessly.",
+   "narrative": {
+    "role": "payoff",
+    "point": "Close on the brand promise as one punchy slogan, then loop back to the start so it replays endlessly"
+   },
+   "embedded_assets": [],
+   "ai_edits": [],
+   "same_clip_as": null,
+   "replication": {
+    "image_prompt": "",
+    "video_prompt": "",
+    "video_prompt_en": ""
+   },
+   "performance": null
+  }
+ ],
+ "aspects": {
+  "camera": {
+   "setups": "No camera: everything is a 2D motion-graphics composite of cut-out photos/packshots on flat colour panels.",
+   "gear_guess": "After Effects / Canva / CapCut-style template, or code (Remotion/HTML) — any keyframe compositor"
+  },
+  "lighting": {
+   "lighting_overall": "Not applicable (flat colour panels); product cut-outs carry their own studio packshot lighting: soft, even, front-lit."
+  },
+  "grade": {
+   "grade_overall": "High-saturation flat brand colours, one colour pair per flavour; no grade applied."
+  },
+  "editing": {
+   "editing": "4 flavour cards of about 5-6 s each, joined by panel-block wipes, then a 7 s kinetic-type end card that wipes back to the first card for a seamless loop."
+  },
+  "format": {
+   "format": "9:16 product-range promo / Pinterest-style ad, no voice-over, music bed + whoosh/pop SFX on transitions and text."
+  }
+ },
+ "story": {
+  "summary": "A 28-second looping product-range ad for 'Just the Fun Part' chocolate-filled mini waffle cones: four flavour cards built on one template, ending with the slogan 'Only The Best Part Of The Sundae Cone!'.",
+  "hook": "0-1 s: no intro; the first frame is already a full product card (hazelnut pile + pouch on brown/green) with 'Filled with Hazelnut cream & Milk chocolate' readable at once.",
+  "highlights": [
+   "One template, four colourways (0-20.8 s): only the colours, ingredient pile and pouch change, so viewers compare flavours at a glance and the production cost is minimal.",
+   "Ingredient-first composition in every card: the raw ingredients (hazelnuts, pumpkin and cinnamon, marshmallows, mint and dark chocolate) sit next to the pack and sell the taste before the packaging does.",
+   "Pouch slides out from behind the colour seam (e.g. 1.4-3.7 s): a simple mask trick that gives depth and motion without any 3D.",
+   "Seamless loop (27.7-27.88 s): the end card wipes straight back into the first frame, so on autoplay feeds the ad replays without a visible restart."
+  ]
+ },
+ "cast": {
+  "style": "Flat two-tone colour blocking, cut-out product and ingredient photography, white rounded hand-lettered type; bold seasonal palettes.",
+  "characters": [
+   {
+    "id": "A",
+    "name": "'Just the Fun Part' Waffle Cones pouch",
+    "kind": "product",
+    "look": "Stand-up snack pouch (about 4.2 oz / 120 g, 'bite-sized'), mini sundae-cone illustrations, flavour-specific colourway: white/green (hazelnut), white/orange Halloween (pumpkin spice), red S'mores, white/red Christmas (peppermint)",
+    "role": "hero product",
+    "voice": "",
+    "shots": [
+     1,
+     2,
+     3,
+     4
+    ]
+   }
+  ],
+  "scenes": [
+   {
+    "id": "S1",
+    "where": "Flat split-colour background (two vertical panels)",
+    "when": "n/a",
+    "look": "Colour pair changes per flavour: brown/green, tan/orange, pink/coral, dark red/green",
+    "shots": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   {
+    "id": "S2",
+    "where": "Solid deep-red end card",
+    "when": "n/a",
+    "look": "Single flat red with white kinetic type",
+    "shots": [
+     5
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "Ingredient piles",
+    "note": "Hazelnuts and leaves; pumpkin cubes, cinnamon sticks and white chocolate; marshmallows; dark chocolate shards and mint",
+    "shots": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   {
+    "name": "'Real Belgian Chocolate' badge + 'Just the Fun Part' logo",
+    "note": "persistent brand overlays",
+    "shots": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   }
+  ]
+ },
+ "packaging": {
+  "stickers": [],
+  "text": [
+   {
+    "id": "text_001",
+    "kind": "title"
+   },
+   {
+    "id": "text_002",
+    "kind": "scene"
+   },
+   {
+    "id": "text_003",
+    "kind": "scene"
+   },
+   {
+    "id": "text_004",
+    "kind": "scene"
+   },
+   {
+    "id": "text_005",
+    "kind": "scene"
+   },
+   {
+    "id": "text_006",
+    "kind": "scene"
+   },
+   {
+    "id": "text_008",
+    "kind": "scene"
+   },
+   {
+    "id": "text_007",
+    "kind": "scene"
+   },
+   {
+    "id": "text_010",
+    "kind": "scene"
+   },
+   {
+    "id": "text_011",
+    "kind": "scene"
+   },
+   {
+    "id": "text_013",
+    "kind": "scene"
+   },
+   {
+    "id": "text_014",
+    "kind": "scene"
+   },
+   {
+    "id": "text_015",
+    "kind": "scene"
+   },
+   {
+    "id": "text_017",
+    "kind": "scene"
+   },
+   {
+    "id": "text_018",
+    "kind": "scene"
+   },
+   {
+    "id": "text_016",
+    "kind": "scene"
+   },
+   {
+    "id": "text_019",
+    "kind": "scene"
+   },
+   {
+    "id": "text_020",
+    "kind": "scene"
+   },
+   {
+    "id": "text_021",
+    "kind": "scene"
+   },
+   {
+    "id": "text_022",
+    "kind": "scene"
+   },
+   {
+    "id": "text_023",
+    "kind": "scene"
+   },
+   {
+    "id": "text_024",
+    "kind": "scene"
+   },
+   {
+    "id": "text_025",
+    "kind": "scene"
+   },
+   {
+    "id": "text_026",
+    "kind": "scene"
+   },
+   {
+    "id": "text_027",
+    "kind": "scene"
+   },
+   {
+    "id": "text_028",
+    "kind": "scene"
+   },
+   {
+    "id": "text_029",
+    "kind": "scene"
+   },
+   {
+    "id": "text_030",
+    "kind": "scene"
+   },
+   {
+    "id": "text_031",
+    "kind": "scene"
+   },
+   {
+    "id": "text_032",
+    "kind": "scene"
+   },
+   {
+    "id": "text_034",
+    "kind": "scene"
+   },
+   {
+    "id": "text_036",
+    "kind": "scene"
+   },
+   {
+    "id": "text_037",
+    "kind": "scene"
+   },
+   {
+    "id": "text_039",
+    "kind": "scene"
+   },
+   {
+    "id": "text_040",
+    "kind": "scene"
+   },
+   {
+    "id": "text_041",
+    "kind": "scene"
+   },
+   {
+    "id": "text_042",
+    "kind": "scene"
+   },
+   {
+    "id": "text_043",
+    "kind": "scene"
+   },
+   {
+    "id": "text_045",
+    "kind": "scene"
+   },
+   {
+    "id": "text_046",
+    "kind": "scene"
+   },
+   {
+    "id": "text_047",
+    "kind": "scene"
+   },
+   {
+    "id": "text_044",
+    "kind": "title"
+   },
+   {
+    "id": "text_048",
+    "kind": "scene"
+   },
+   {
+    "id": "text_049",
+    "kind": "scene"
+   },
+   {
+    "id": "text_050",
+    "kind": "scene"
+   },
+   {
+    "id": "text_051",
+    "kind": "scene"
+   },
+   {
+    "id": "text_053",
+    "kind": "scene"
+   },
+   {
+    "id": "text_054",
+    "kind": "scene"
+   },
+   {
+    "id": "text_055",
+    "kind": "scene"
+   },
+   {
+    "id": "text_056",
+    "kind": "scene"
+   },
+   {
+    "id": "text_057",
+    "kind": "scene"
+   },
+   {
+    "id": "text_058",
+    "kind": "scene"
+   },
+   {
+    "id": "text_059",
+    "kind": "scene"
+   },
+   {
+    "id": "text_060",
+    "kind": "scene"
+   },
+   {
+    "id": "text_061",
+    "kind": "scene"
+   },
+   {
+    "id": "text_062",
+    "kind": "scene"
+   },
+   {
+    "id": "text_063",
+    "kind": "scene"
+   },
+   {
+    "id": "text_065",
+    "kind": "scene"
+   },
+   {
+    "id": "text_066",
+    "kind": "scene"
+   },
+   {
+    "id": "text_067",
+    "kind": "scene"
+   },
+   {
+    "id": "text_069",
+    "kind": "scene"
+   },
+   {
+    "id": "text_068",
+    "kind": "scene"
+   },
+   {
+    "id": "text_070",
+    "kind": "scene"
+   },
+   {
+    "id": "text_071",
+    "kind": "scene"
+   },
+   {
+    "id": "text_072",
+    "kind": "scene"
+   },
+   {
+    "id": "text_073",
+    "kind": "scene"
+   },
+   {
+    "id": "text_074",
+    "kind": "scene"
+   },
+   {
+    "id": "text_075",
+    "kind": "scene"
+   },
+   {
+    "id": "text_076",
+    "kind": "scene"
+   },
+   {
+    "id": "text_077",
+    "kind": "scene"
+   },
+   {
+    "id": "text_078",
+    "kind": "scene"
+   },
+   {
+    "id": "text_079",
+    "kind": "scene"
+   },
+   {
+    "id": "text_080",
+    "kind": "scene"
+   },
+   {
+    "id": "text_081",
+    "kind": "scene"
+   },
+   {
+    "id": "text_082",
+    "kind": "scene"
+   },
+   {
+    "id": "text_083",
+    "kind": "scene"
+   },
+   {
+    "id": "text_084",
+    "kind": "scene"
+   },
+   {
+    "id": "text_086",
+    "kind": "scene"
+   },
+   {
+    "id": "text_087",
+    "kind": "scene"
+   },
+   {
+    "id": "text_085",
+    "kind": "scene"
+   }
+  ],
+  "missed": []
+ }
+}
