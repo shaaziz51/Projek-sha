@@ -6,18 +6,28 @@
 <title>Mega Ratu test 02</title>
 <link rel="icon" href="data:,">
 <style>
+  /* Title font: Mersiqual. Put its file at assets/fonts/mersiqual.woff2 (or .otf/.ttf, then change the url);
+     until then the browser falls back to Chicle. */
+  @font-face { font-family: "Mersiqual"; src: url("assets/fonts/mersiqual.woff2") format("woff2"); font-display: block; }
   @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); font-display: block; }
   @font-face { font-family: "Gelasio"; src: url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); font-display: block; }
   :root {
-    --cola-purple: #2B0B2E; --cola-purple-mid: #4A1A45; --gold-ground: #D9A84E;   /* background for this video */
-    --mega-gold: #F2D49B; --cream: #FFF9F0; --mega-wine-a: #450A10;
-    --font-title: "Chicle", Georgia, serif; --font-text: "Gelasio", Georgia, serif;
+    /* grounds, in the order they appear */
+    --cola-purple: #2B0B2E; --cola-purple-mid: #4A1A45; --gold-ground: #D9A84E;   /* 0 - 7.7 s  */
+    --beige: #F5F5DC; --rosy-brown: #BC8F8F;                                       /* the merge  */
+    --linen: #FAF0E6; --rosy-pink: #F4C2C2;                                        /* the burst  */
+    --mega-gold: #F2D49B; --cream: #FFF9F0; --mega-wine-a: #450A10; --ink: #54232F;
+    --font-title: "Mersiqual", "Chicle", Georgia, serif; --font-text: "Gelasio", Georgia, serif;
     --glass-fill: rgba(36, 8, 36, 0.55); --glass-border: rgba(242, 212, 155, 0.40);
     --glass-shadow: 0 24px 48px rgba(30, 0, 18, 0.40), inset 0 1px 0 rgba(255, 249, 240, 0.20);
   }
   html, body { margin: 0; height: 100%; background: var(--cola-purple); overflow: hidden }
-  #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; transform-origin: 0 0;
-           background: linear-gradient(180deg, var(--cola-purple) 0%, var(--cola-purple-mid) 55%, var(--gold-ground) 100%) }
+  #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; transform-origin: 0 0 }
+  .bg { position: absolute; inset: 0 }
+  #bg1 { background: linear-gradient(180deg, var(--cola-purple) 0%, var(--cola-purple-mid) 55%, var(--gold-ground) 100%) }
+  #bg2 { background: linear-gradient(180deg, var(--beige) 0%, var(--rosy-brown) 100%) }
+  #bg3 { background: linear-gradient(180deg, var(--linen) 0%, var(--rosy-pink) 100%) }
+  #bg4 { background: url("assets/end-bg.jpg") center / cover no-repeat }
   .abs { position: absolute; left: 0; top: 0 }
   .glass { background: var(--glass-fill); border: 1.5px solid var(--glass-border); box-shadow: var(--glass-shadow);
            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px) }
@@ -41,20 +51,24 @@
   .card b { position: absolute; left: 136px; top: 32px; font-family: var(--font-title); font-weight: 400; font-size: 64px;
             line-height: 1; color: var(--mega-gold); white-space: nowrap }
   #stage3d { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none }
-  #endlogo { position: absolute; left: 0; top: 0; width: 420px; height: 234px; margin: -117px 0 0 -210px }
-  #endlogo img { display: block; width: 420px; height: 234px }
-  #endtitle { position: absolute; left: 0; top: 0; width: 600px; margin-left: -300px; text-align: center;
-              font-family: var(--font-title); font-size: 96px; line-height: 1; color: var(--mega-gold) }
+  #endlogo { position: absolute; left: 0; top: 0; width: 300px; height: 167px; margin: -83.5px 0 0 -150px }
+  #endlogo img { display: block; width: 300px; height: 167px }
+  #tagline { position: absolute; left: 0; top: 0; width: 700px; margin-left: -350px; text-align: center; white-space: nowrap;
+             font-family: var(--font-title); font-size: 50px; line-height: 1.1; color: var(--ink) }
 </style>
 </head>
 <body>
 <!--
-  Mega Ratu test, 15 s. Motion: videos/reference-motion (T1-T17), plan: motion.md.
-  Fonts and colours from design.md; this video's background is cola purple -> gold.
-  The bottle and the ingredients are 3D (assets/stage3d.js). Words come from the Mega Ratu box.
+  Mega Ratu test 02, 15 s. Motion: videos/reference-motion (T1-T14), plan: motion.md.
+  Changes from test 01: the bottle grows with each merged ingredient to 300 %; grounds change per scene;
+  the box bursts open and throws 3D ingredients around it; end card on the grape picture with logo, bottle, tagline.
   Contract: window.anim = { tl, duration, seek(t), play(from), pause() }.
 -->
 <div id="stage">
+  <div id="bg1" class="bg"></div>
+  <div id="bg2" class="bg"></div>
+  <div id="bg3" class="bg"></div>
+  <div id="bg4" class="bg"></div>
   <div id="flash"></div>
   <div id="c1" class="card glass"><b>Anggur</b></div>
   <div id="c2" class="card glass"><b>Strawberi</b></div>
@@ -70,9 +84,10 @@
       <div id="hpill"><i></i></div>
     </div>
   </div>
+  <div id="endglow" class="abs"><div id="glow2" style="position:absolute;left:0;top:0;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(circle, rgba(255,249,240,0.55) 0%, rgba(255,249,240,0.18) 40%, rgba(255,249,240,0) 68%)"></div></div>
   <canvas id="stage3d" width="1080" height="1920"></canvas>
-  <div id="endlogo"><img src="assets/jrm-logo-mega.png" alt="JRM Holistik"></div>
-  <div id="endtitle">Mega Ratu</div>
+  <div id="endlogo"><img src="assets/jrm-logo-maroon.png" alt="JRM Holistik"></div>
+  <div id="tagline">drink your inner beauty</div>
 </div>
 
 <script type="importmap">{ "imports": { "three": "./assets/three/three.module.js" } }</script>
@@ -93,8 +108,7 @@ function kf(t, K) {
 }
 
 // ---- Keys measured on the reference (720x1280): videos/reference-motion ----
-const HX = [[0, 363], [2.17, 363], [2.20, 349], [2.23, 337], [2.37, 315], [2.60, 335], [3.0, 340], [9.40, 344],
-            [9.73, 366], [9.87, 406], [9.93, 428], [10.00, 407], [10.10, 368], [10.20, 362], [10.30, 363]];
+const HX = [[0, 363], [2.17, 363], [2.20, 349], [2.23, 337], [2.37, 315], [2.60, 335], [3.0, 340], [9.0, 344], [9.6, 363, 'sine.inOut']];
 const HY = [[0, 191], [0.07, 296], [0.13, 527], [0.20, 683], [0.27, 684], [0.33, 637], [0.40, 616], [0.50, 640],
             [0.60, 648], [0.80, 638], [1.0, 639], [1.17, 647], [1.23, 628], [1.30, 625], [1.33, 649], [1.47, 654],
             [3.85, 650], [3.93, 643], [4.00, 629], [4.10, 579], [4.20, 486], [4.30, 409], [4.40, 357], [4.53, 312],
@@ -108,19 +122,24 @@ const HROT = [[0, 0], [1.17, -0.7], [1.20, -3.9], [1.23, -8], [1.27, -10.5], [1.
               [8.07, 0], [8.12, 6, 'power2.out'], [8.35, 0, 'power2.inOut'],
               [8.40, 0], [8.45, -5, 'power2.out'], [8.62, 0, 'power2.inOut'],
               [8.67, 0], [8.70, 7.7, 'power2.out'], [8.77, 6.6], [8.83, 4.6], [8.90, 2.5], [8.97, 0]];
+// header card width; after the merge it folds into the grown bottle (T16's fold, 9.43-9.83)
 const HW = [[0, 90], [1.17, 100], [1.20, 193], [1.23, 240], [1.27, 282], [1.30, 323], [1.33, 364], [1.37, 404],
             [1.40, 441], [1.43, 484], [1.47, 519], [1.50, 530], [1.53, 520], [1.57, 499], [1.60, 477], [1.63, 461],
             [1.67, 456], [1.70, 458], [1.73, 467], [1.77, 476], [1.80, 483], [1.83, 485], [1.87, 483], [1.90, 479],
             [1.93, 475], [1.97, 472], [2.00, 471], [2.17, 477], [2.20, 509], [2.23, 534], [2.27, 545], [2.30, 534],
-            [2.33, 515], [2.37, 509], [3.0, 520], [9.40, 507], [9.53, 475], [9.73, 475], [9.80, 491], [9.87, 550],
-            [9.93, 543], [10.00, 474], [10.07, 357], [10.13, 261], [10.20, 175], [10.27, 90]];
-const LX = [[0, 0], [2.03, 0], [2.23, -197, 'power3.out'], [2.60, -190], [9.47, -190], [9.60, -50, 'power2.in'],
-            [9.80, 186, 'power2.out'], [9.90, 171], [10.00, 102], [10.10, 44], [10.20, 2], [10.30, 0]];
-const LS = [[0, 0.28], [0.07, 0.34], [0.13, 0.52], [0.20, 0.72], [0.27, 0.86], [0.33, 0.96], [0.40, 0.99], [0.50, 1],
-            [11.33, 1], [11.50, 0.35, 'power2.in'], [11.60, 0, 'power1.in']];
+            [2.33, 515], [2.37, 509], [3.0, 520], [9.43, 520], [9.52, 545, 'power2.out'], [9.83, 120, 'power2.in']];
+// bottle: slides to the card's left end at T4, then steps back to the centre with each merged ingredient
+const LX = [[0, 0], [2.03, 0], [2.23, -197, 'power3.out'], [2.60, -190], [7.67, -190], [7.82, -142, 'power3.out'],
+            [8.07, -142], [8.22, -95, 'power3.out'], [8.40, -95], [8.55, -48, 'power3.out'], [8.67, -48], [8.82, 0, 'power3.out']];
+const LS = [[0, 0.28], [0.07, 0.34], [0.13, 0.52], [0.20, 0.72], [0.27, 0.86], [0.33, 0.96], [0.40, 0.99], [0.50, 1]];
 const LSTRETCH = [[0, 1.5], [0.13, 1.35], [0.20, 1.05], [0.27, 1]];
 const LSPIN = [[0, 0], [1.20, 0], [2.25, 360, 'power2.out']];
-const DOCK = [[2.03, 1], [2.23, 0.35, 'power3.out'], [9.93, 0.35], [10.27, 1, 'power3.out']];  // 680 px -> 238 px in the card
+// size: 680 px alone; 238 px docked; then 150 / 200 / 250 / 300 % of docked as each ingredient merges (springy step)
+const DOCKED = 0.35;
+const SIZE = [[2.03, 1], [2.23, DOCKED, 'power3.out'],
+              [7.67, DOCKED], [7.84, DOCKED * 1.5, 'back.out(2.2)'], [8.07, DOCKED * 1.5], [8.24, DOCKED * 2.0, 'back.out(2.2)'],
+              [8.40, DOCKED * 2.0], [8.57, DOCKED * 2.5, 'back.out(2.2)'], [8.67, DOCKED * 2.5], [8.84, DOCKED * 3.0, 'back.out(2.2)'],
+              [11.90, DOCKED * 3.0], [12.35, 540 / 680, 'power3.inOut']];
 const CARDS = [
   { id: 'c1', t0: 3.97, gone: 7.67, item: 'grapes',
     y: [[3.97, 884], [4.03, 844], [4.10, 785], [4.17, 704], [4.23, 637], [4.33, 578], [4.40, 547], [4.47, 521],
@@ -149,55 +168,88 @@ const CARDS = [
         [8.50, 863], [8.57, 816], [8.60, 782], [8.67, 610, 'power2.in']],
     s: [[5.00, 0.36], [5.07, 0.59], [5.13, 0.83], [5.20, 0.98], [5.27, 1.08], [5.33, 1.02], [5.53, 1.0], [8.50, 1.0],
         [8.67, 0.55, 'power2.in']],
-    r: [[5.00, 0], [5.20, 1.2], [5.27, 4.3], [5.40, 3.6], [5.60, 3.0], [12.6, 2.8]] },
+    r: [[5.00, 0], [5.20, 1.2], [5.27, 4.3], [5.40, 3.6], [5.60, 3.0]] },
 ];
-// A card lands in the header: pop, tilt kick (in HROT), and a flash in one brand colour (design.md)
-const FLASH = [[7.67, '#94050D'], [8.07, '#E1B377'], [8.40, '#FFF9F0'], [8.67, '#F2D49B']];
-// End card: the JRM Holistik logo repeats the bottle's drop and bounce (T1-T2), 12.0-15.0 s
-const END = 12.0;
+// flashes: each merged card (brand colours), then the box bursting
+const FLASH = [[7.67, '#94050D'], [8.07, '#E1B377'], [8.40, '#FFF9F0'], [8.67, '#F2D49B'], [10.85, '#FFF9F0']];
+const BURST_AT = 10.85, BURST_OUT = 11.90;   // box bursts open; ingredients leave as the end card comes in
+const END_IN = 11.90;                        // grape picture end card
 
 // ---- Reference (720x1280) -> this frame (1080x1920), inside the TikTok clear area ----
 const CX = 450;
 const mapX = (x) => CX + (x - 363) * 1.25;
 const mapY = (t, y) => t < 3.8 ? 824 + (y - 640) * 1.5 : 0.919 * y + 227;
 const BOTTLE_H = 680, ITEM_H = 150;
-const ICON = [-283, -4];                                   // ingredient centre in card coordinates
+const ICON = [-283, -4];
+
+// burst targets around the box and bottle: angle (deg), distance x/y (px), size (px), spin direction
+const BURST = [[200, 330, 470, 170, 1], [245, 300, 560, 150, -1], [290, 260, 610, 160, 1], [335, 330, 520, 140, -1],
+               [20, 360, 430, 175, 1], [65, 300, 560, 150, -1], [110, 270, 610, 165, 1], [155, 330, 520, 140, -1],
+               [180, 380, 300, 130, 1]];
 
 const $ = (id) => document.getElementById(id);
 const hdr = $('hdr'), hbody = $('hbody'), glow = $('glow'), flash = $('flash'), hflash = $('hflash');
 const clip = (p) => 'inset(0 ' + ((1 - p) * 100).toFixed(2) + '% 0 0)';
+const iris = (p, x, y) => 'circle(' + (p * 2300).toFixed(1) + 'px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
 
 function draw(t) {
-  // flash after each card lands
+  // ---- grounds: cola purple -> gold; beige -> rosy brown floods out of the header at the first merge;
+  //      linen -> rosy pink bursts out of the box; the grape picture fades in for the end card ----
+  const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT);
+  const boxX = hx - 70, boxY = hy + 6;
+  gsap.set('#bg2', { clipPath: iris(kf(t, [[7.67, 0], [8.10, 1, 'power2.inOut']]), hx, mapY(7.7, 200)) });
+  gsap.set('#bg3', { clipPath: iris(kf(t, [[BURST_AT, 0], [BURST_AT + 0.35, 1, 'power3.out']]), boxX, boxY) });
+  gsap.set('#bg4', { opacity: kf(t, [[END_IN, 0], [END_IN + 0.4, 1, 'power2.out']]), scale: kf(t, [[END_IN, 1.08], [END_IN + 0.6, 1, 'power2.out']]) });
+
+  // ---- flashes ----
   let amt = 0, col = '#FFF9F0';
   for (const [f, c] of FLASH) if (t >= f && t < f + 0.3) { const a = 1 - (t - f) / 0.3; if (a > amt) { amt = a; col = c; } }
   const pop = 1 + 0.06 * amt;
-  const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT);
   gsap.set(hdr, { x: hx, y: hy, rotation: hr, scale: pop });
-  gsap.set(flash, { x: hx, y: hy, opacity: amt * 0.55, background: 'radial-gradient(circle, ' + col + ' 0%, transparent 62%)' });
+  const fx = t >= BURST_AT ? boxX : hx;
+  gsap.set(flash, { x: fx, y: hy, opacity: amt * 0.6, background: 'radial-gradient(circle, ' + col + ' 0%, transparent 62%)' });
   gsap.set(hflash, { opacity: amt * 0.85, backgroundColor: col });
-  gsap.set(hbody, { width: kf(t, HW) * 1.25, height: kf(t, [[1.17, 110], [1.27, 170]]), autoAlpha: t >= 1.17 && t < 10.27 ? 1 : 0 });
-  // header words: in after T4, out at T15
-  const out = t >= 9.43 ? Math.min(1, (t - 9.43) / 0.12) : 0;
+
+  // ---- header card: opens (T3), fills (T4), rises (T5), merges (T10-T13), words go as the last card lands, folds into the bottle ----
+  gsap.set(hbody, { width: kf(t, HW) * 1.25, height: kf(t, [[1.17, 110], [1.27, 170]]), autoAlpha: t >= 1.17 && t < 9.83 ? 1 : 0 });
+  const out = t >= 8.07 ? Math.min(1, (t - 8.07) / 0.15) : 0;   // words leave once the growing bottle covers them
   gsap.set('#h-title', { clipPath: clip(kf(t, [[2.10, 0], [2.30, 1, 'power2.out']]) * (1 - out)) });
   gsap.set('#h-sub', { clipPath: clip(kf(t, [[2.35, 0], [2.55, 1, 'power2.out']]) * (1 - out)) });
   gsap.set('#h-size', { clipPath: clip(kf(t, [[2.50, 0], [2.70, 1, 'power2.out']]) * (1 - out)) });
   gsap.set('#hpill', { scale: kf(t, [[2.55, 0], [2.80, 1, 'back.out(1.7)']]) * (1 - out) });
-  // bottle: drop, bounce, one 3D turn, docks small in the card, returns full size, shrinks out
-  const ls = kf(t, LS) * kf(t, DOCK);
+
+  // ---- bottle ----
+  const size = kf(t, LS) * kf(t, SIZE);
   const bx = kf(t, LX) * 1.376, a = hr * Math.PI / 180;
-  gsap.set(glow, { x: bx + kf(t, [[10.30, 0], [10.55, 20, 'power3.out']]), scale: ls * kf(t, [[10.30, 1], [10.55, 1.15]]), opacity: kf(t, [[2.03, 1], [2.40, 0.55], [9.93, 0.55], [10.27, 1]]) });
-  // 10.30-11.60: the 3D box springs out from behind the bottle (the T3 spring), the bottle steps right to make room
-  const boxOn = t >= 10.30 && t < 11.60;
   const bShift = kf(t, [[10.30, 0], [10.55, 120, 'power3.out'], [10.70, 104], [10.85, 110, 'sine.inOut']]);
-  const bottle = { x: hx + bx * Math.cos(a) * pop + bShift, y: hy + bx * Math.sin(a) * pop, rot: hr, size: BOTTLE_H * ls * pop,
-                   stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) };
-  const boxS = kf(t, [[10.30, 0.55], [10.55, 1.05, 'power3.out'], [10.68, 0.98], [10.82, 1.0, 'sine.inOut']]) * kf(t, LS);
-  const box = { visible: boxOn, z: -400, x: hx + kf(t, [[10.30, 120], [10.55, -95, 'power3.out'], [10.68, -62], [10.82, -70, 'sine.inOut']]),
-                y: hy + 6, size: BOTTLE_H * (window.megaStage3D ? window.megaStage3D.boxToBottle : 1.1) * boxS,
+  const endMove = kf(t, [[END_IN, 0], [END_IN + 0.45, 1, 'power3.inOut']]);
+  const bAx = hx + bx * Math.cos(a) * pop + bShift, bAy = hy + bx * Math.sin(a) * pop;
+  const bottle = { x: lerp(bAx, 540, endMove), y: lerp(bAy, 860, endMove), rot: hr * (1 - endMove), size: BOTTLE_H * size * pop,
+                   stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) + (t > END_IN + 0.45 ? 10 * Math.sin((t - END_IN - 0.45) * Math.PI * 2 / 3) : 0) };
+  gsap.set(glow, { x: bx + bShift, scale: size, opacity: (t < END_IN ? 1 : 0) * kf(t, [[2.03, 1], [2.40, 0.55], [8.84, 0.55], [9.2, 1]]) });
+  gsap.set('#endglow', { x: 540, y: 860, opacity: kf(t, [[END_IN, 0], [END_IN + 0.5, 1]]) });
+
+  // ---- 3D box: springs out from behind the bottle (10.30), bursts open (10.85) ----
+  const boxS = kf(t, [[10.30, 0.55], [10.55, 1.05, 'power3.out'], [10.68, 0.98], [10.82, 1.0, 'sine.inOut']]);
+  const box = { visible: t >= 10.30 && t < BURST_AT + 0.7, z: -400, x: hx + kf(t, [[10.30, 120], [10.55, -95, 'power3.out'], [10.68, -62], [10.82, -70, 'sine.inOut']]),
+                y: boxY, size: BOTTLE_H * (window.megaStage3D ? window.megaStage3D.boxToBottle : 1.1) * boxS,
                 rot: kf(t, [[10.30, 0], [10.45, -4], [10.62, 2.5], [10.80, 0]]),
-                spin: kf(t, [[10.30, 90], [10.75, 24, 'power3.out']]) + (t > 10.75 ? 4 * Math.sin((t - 10.75) * Math.PI * 2 / 1.6) : 0) };
-  // ingredient cards, each carrying its 3D ingredient
+                spin: kf(t, [[10.30, 90], [10.75, 24, 'power3.out']]), explode: kf(t, [[BURST_AT, 0], [BURST_AT + 0.7, 1]]) };
+
+  // ---- ingredients burst out of the box: fly out fast and slow down, float, then fly off as the end card comes ----
+  const burst = BURST.map(([ang, dx, dy, sz, dir], i) => {
+    const r = ang * Math.PI / 180;
+    const go = kf(t, [[BURST_AT + i * 0.02, 0], [BURST_AT + 0.55 + i * 0.02, 1, 'expo.out']]);
+    const drift = 1 + 0.05 * kf(t, [[BURST_AT + 0.55, 0], [BURST_OUT, 1, 'sine.inOut']]);
+    const leave = kf(t, [[BURST_OUT, 1], [BURST_OUT + 0.35, 2.4, 'power3.in']]);
+    const k = go * drift * leave;
+    return { visible: t >= BURST_AT && t < BURST_OUT + 0.35, z: (i % 3 - 1) * 200,
+             x: boxX + 70 + Math.cos(r) * dx * k, y: boxY + Math.sin(r) * dy * k,
+             size: sz * kf(t, [[BURST_AT, 0.2], [BURST_AT + 0.4, 1, 'back.out(1.6)']]),
+             rot: dir * 18 * go, spin: dir * (220 * (1 - go) + 25 * Math.sin((t - BURST_AT) * Math.PI * 2 / 2.2)) };
+  });
+
+  // ---- ingredient cards ----
   const items = {};
   CARDS.forEach((c, i) => {
     const on = t >= c.t0 && t < c.gone;
@@ -205,15 +257,16 @@ function draw(t) {
     gsap.set($(c.id), { x: CX, y, scale: s, rotation: r, autoAlpha: on ? 1 : 0 });
     items[c.item] = { visible: on, x: CX + (ICON[0] * Math.cos(ra) - ICON[1] * Math.sin(ra)) * s,
                       y: y + (ICON[0] * Math.sin(ra) + ICON[1] * Math.cos(ra)) * s, rot: r, size: ITEM_H * s,
-                      spin: 28 * Math.sin((t - c.t0) * Math.PI * 2 / 3.2) + (i % 2 ? -12 : 12) };   // gentle turn to show depth
+                      spin: 28 * Math.sin((t - c.t0) * Math.PI * 2 / 3.2) + (i % 2 ? -12 : 12) };
   });
-  if (window.megaStage3D) window.megaStage3D.render({ bottle, box, items });
-  // end card: logo drops and bounces at x 540, then the name wipes in under it
-  const te = t - END;
-  const lsE = kf(te, LS.slice(0, 8));
-  gsap.set('#endlogo', { x: 540, y: 824 + (kf(te, HY.slice(0, 11)) - 640) * 1.5, scaleX: lsE, scaleY: lsE * kf(te, LSTRETCH),
+  if (window.megaStage3D) window.megaStage3D.render({ bottle, box, items, burst });
+
+  // ---- end card: logo drops in on top (T1-T2), the tagline wipes in under the bottle ----
+  const te = t - (END_IN + 0.3);
+  const lsE = kf(te, LS);
+  gsap.set('#endlogo', { x: 540, y: 470 + (kf(te, HY.slice(0, 11)) - 640) * 0.9, scaleX: lsE, scaleY: lsE * kf(te, LSTRETCH),
                          autoAlpha: te >= 0 ? 1 : 0 });
-  gsap.set('#endtitle', { x: 540, y: 975, clipPath: clip(kf(te, [[0.70, 0], [0.90, 1, 'power2.out']])), autoAlpha: te >= 0.7 ? 1 : 0 });
+  gsap.set('#tagline', { x: 540, y: 1158, clipPath: clip(kf(te, [[0.75, 0], [1.05, 1, 'power2.out']])), autoAlpha: te >= 0.75 ? 1 : 0 });
 }
 
 const tl = gsap.timeline({ paused: true, onUpdate: () => draw(tl.time()) });

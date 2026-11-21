@@ -75,12 +75,36 @@ function buildBottle() {
 // ---- Box: the real box faces (front cut from the product photo, plain sides with the gold band) ----
 const loadTex = async (url) => { const t = await new THREE.TextureLoader().loadAsync(url); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
 const boxFront = await loadTex("assets/mega-box-front.png"), boxSide = await loadTex("assets/mega-box-side.png");
+// Six separate faces, so the box can burst apart: each face remembers its resting place and outward direction.
+const BOX_FACES = [];
 function buildBox() {
   const b = megaRatu.box, w = b.x1 - b.x0 + 4, h = b.y1 - b.y0, d = w * 0.85;
-  const card = (map) => new THREE.MeshStandardMaterial({ map, roughness: 0.55, metalness: 0, color: "#d0d0d0" });
-  const plain = new THREE.MeshStandardMaterial({ color: "#121012", roughness: 0.6 });
-  // face order: +x, -x, +y, -y, +z (front), -z (back)
-  return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), [card(boxSide), card(boxSide), plain, plain, card(boxFront), card(boxSide)]);
+  const card = (map) => new THREE.MeshStandardMaterial({ map, roughness: 0.55, metalness: 0, color: "#d0d0d0", side: THREE.DoubleSide });
+  const plain = new THREE.MeshStandardMaterial({ color: "#121012", roughness: 0.6, side: THREE.DoubleSide });
+  const g = new THREE.Group();
+  const face = (gw, gh, mat, pos, rot, out, spin) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(gw, gh), mat);
+    m.position.set(...pos); m.rotation.set(...rot);
+    m.userData = { pos: new THREE.Vector3(...pos), rot: new THREE.Euler(...rot), out: new THREE.Vector3(...out), spin: new THREE.Vector3(...spin) };
+    g.add(m); BOX_FACES.push(m);
+  };
+  face(w, h, card(boxFront), [0, 0, d / 2], [0, 0, 0], [0.2, 0.25, 1], [0.6, 1.4, 0.4]);
+  face(w, h, card(boxSide), [0, 0, -d / 2], [0, Math.PI, 0], [-0.2, 0.3, -1], [-0.8, 1.1, 0.5]);
+  face(d, h, card(boxSide), [w / 2, 0, 0], [0, Math.PI / 2, 0], [1, 0.15, 0.2], [0.4, -0.9, 1.2]);
+  face(d, h, card(boxSide), [-w / 2, 0, 0], [0, -Math.PI / 2, 0], [-1, 0.2, 0.15], [-0.5, 1.0, -1.1]);
+  face(w, d, plain, [0, h / 2, 0], [-Math.PI / 2, 0, 0], [0.1, 1, 0.2], [1.3, 0.3, 0.6]);
+  face(w, d, plain, [0, -h / 2, 0], [Math.PI / 2, 0, 0], [-0.1, -1, 0.2], [-1.2, 0.4, -0.5]);
+  return g;
+}
+// explode 0..1: faces fly outward (a box height and a half), tumble, and shrink away
+function explodeBox(e) {
+  const k = 1 - Math.pow(1 - Math.min(1, e), 3);          // fast out, slowing (like an explosion)
+  for (const m of BOX_FACES) {
+    const u = m.userData;
+    m.position.copy(u.pos).addScaledVector(u.out, k * 520);
+    m.rotation.set(u.rot.x + u.spin.x * k * 3, u.rot.y + u.spin.y * k * 3, u.rot.z + u.spin.z * k * 3);
+    m.scale.setScalar(Math.max(0.001, 1 - Math.max(0, e - 0.35) / 0.65));
+  }
 }
 export const BOX_TO_BOTTLE = (megaRatu.box.y1 - megaRatu.box.y0) / (megaRatu.bottle.bottomY - megaRatu.bottle.topY);
 
@@ -178,6 +202,9 @@ const models = {
   miniBottle: centred(buildBottle()),
   box: centred(buildBox()),
 };
+// ingredients that burst out of the box (built once; placed per frame)
+const BURST = ["grapes", "strawberry", "seeds", "grapes", "strawberry", "seeds", "grapes", "strawberry", "seeds"].map(
+  (k) => centred(k === "grapes" ? buildGrapes() : k === "strawberry" ? buildStrawberry() : buildSeeds()));
 
 function place(obj, { x, y, size, rot = 0, spin = 0, tilt = 0.1, stretch = 1, z = 0, visible = true }) {
   obj.visible = visible && size > 0.5;
@@ -189,9 +216,11 @@ function place(obj, { x, y, size, rot = 0, spin = 0, tilt = 0.1, stretch = 1, z 
 
 window.megaStage3D = {
   boxToBottle: BOX_TO_BOTTLE,
-  render({ bottle, box, items = {} }) {
+  render({ bottle, box, items = {}, burst = [] }) {
     place(models.bottle, bottle);
     place(models.box, box || { visible: false, size: 0 });
+    explodeBox(box && box.explode ? box.explode : 0);
+    BURST.forEach((m, i) => place(m, burst[i] || { visible: false, size: 0 }));
     for (const k of ["grapes", "strawberry", "seeds", "miniBottle"]) place(models[k], items[k] || { visible: false, size: 0 });
     renderer.render(scene, camera);
   },
