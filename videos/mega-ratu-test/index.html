@@ -33,9 +33,8 @@
   #hpill i { position: absolute; right: 5px; top: 5px; width: 40px; height: 40px; border-radius: 20px; background: var(--mega-wine-a) }
   #hpill i::after { content: ""; position: absolute; left: 13px; top: 14px; width: 10px; height: 10px;
                     border-top: 3px solid var(--mega-gold); border-right: 3px solid var(--mega-gold); transform: rotate(45deg) }
-  #bottle { position: absolute; left: 0; top: 0; width: 92px; height: 340px; margin: -170px 0 0 -46px }
-  #bottle img { display: block; width: 92px; height: 340px }
-  #glow { position: absolute; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
+  #bottle3d { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none }
+  #glow { position: absolute; left: 0; top: 0; width: 1040px; height: 1040px; margin: -520px 0 0 -520px; border-radius: 50%;
           background: radial-gradient(circle, rgba(255, 249, 240, 0.30) 0%, rgba(255, 249, 240, 0.10) 38%, rgba(255, 249, 240, 0) 68%) }
   .card { position: absolute; left: 0; top: 0; width: 640px; height: 130px; margin: -65px 0 0 -320px; border-radius: 32px }
   .card svg { position: absolute; left: -38px; top: -14px; width: 150px; height: 150px; overflow: visible }
@@ -81,10 +80,13 @@
       <div id="hpill"><i></i></div>
     </div>
     <div id="glow"></div>
-    <div id="bottle"><img src="assets/bottle.png" alt="Mega Ratu bottle"></div>
-  </div>
+    </div>
+  <!-- the bottle, in 3D (assets/bottle3d.js), drawn above the cards and the header -->
+  <canvas id="bottle3d" width="1080" height="1920"></canvas>
 </div>
 
+<script type="importmap">{ "imports": { "three": "./assets/three/three.module.js" } }</script>
+<script type="module" src="assets/bottle3d.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (() => {
@@ -145,7 +147,9 @@ const mapY = (t, y) => t < 3.8 ? 824 + (y - 640) * 1.5   // drop and bounce: dis
 const W = (w) => w * 1.25;                               // card widths x1.25 (max 680 px inside 120-780)
 
 const $ = (id) => document.getElementById(id);
-const hdr = $('hdr'), hbody = $('hbody'), bottle = $('bottle'), glow = $('glow');
+const hdr = $('hdr'), hbody = $('hbody'), glow = $('glow');
+const BOTTLE_H = 680;                                    // 200 % of the previous 340 px
+const DOCKED = 0.35;                                     // 238 px once docked in the card, as before
 const clip = (p) => 'inset(0 ' + ((1 - p) * 100).toFixed(2) + '% 0 0)';
 
 function draw(t) {
@@ -158,11 +162,14 @@ function draw(t) {
   gsap.set('#h-size', { clipPath: clip(kf(t, [[2.50, 0], [2.70, 1, 'power2.out']])) });
   gsap.set('#hpill', { scale: kf(t, [[2.55, 0], [2.80, 1, 'back.out(1.7)']]) });
   // bottle: drop, bounce, one 3D turn, slide to the card's left end
-  // the bottle settles to 70 % as it docks in the card, so it doesn't overlap the cards below
-  const ls = kf(t, LS) * kf(t, [[2.03, 1], [2.23, 0.7, 'power3.out']]);
+  // the bottle settles to 35 % (238 px) as it docks in the card, so it doesn't overlap the cards below
+  const ls = kf(t, LS) * kf(t, [[2.03, 1], [2.23, DOCKED, 'power3.out']]);
   const bx = kf(t, LX) * 1.376;
-  gsap.set(bottle, { x: bx, scaleX: ls, scaleY: ls * kf(t, LSTRETCH), rotationY: kf(t, LSPIN) });
   gsap.set(glow, { x: bx, scale: ls, opacity: kf(t, [[2.03, 1], [2.40, 0.55]]) });  // glow stays put while it spins
+  // 3D bottle: same anchor as the header group, so it moves, tilts and slides with it
+  const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT), a = hr * Math.PI / 180;
+  if (window.megaBottle3D) window.megaBottle3D.render({ x: hx + bx * Math.cos(a), y: hy + bx * Math.sin(a), rot: hr,
+    height: BOTTLE_H * ls, stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) });
   // ingredient cards
   for (const c of CARDS) {
     gsap.set($(c.id), { x: CX, y: mapY(t, kf(t, c.y)), scale: kf(t, c.s), rotation: kf(t, c.r),
@@ -185,7 +192,8 @@ window.anim = {
 };
 const qs = new URLSearchParams(location.search);
 fit();
-Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 3000))]).then(() => {
+const bottleReady = window.megaBottle3D ? Promise.resolve() : new Promise((r) => addEventListener('bottle3d-ready', r, { once: true }));
+Promise.all([Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 3000))]), bottleReady]).then(() => {
   anim.seek(0);
   if (qs.has('t')) anim.seek(parseFloat(qs.get('t')));
   else if (!qs.has('external')) tl.play(0);

@@ -115,6 +115,8 @@ Adjustments made while building, to use in the full 15 s version:
 - **Positions:** the bottle rests at y 824 (not 960), so the whole stack fits the clear area. Stack slots: header
   408, Anggur 590, Strawberi 786, Biji Crista 976, 300 mL 1190. Vertical reference distances are ×1.5 for the drop
   and ×0.92 for the stack; widths are ×1.25 (header 650 px), centred at x 450.
-- **Bottle:** 340 px tall on its own. It settles to 70 % (238 px) as it slides into the header, so it doesn't
-  overlap the cards below. A soft cream glow (`#FFF9F0`, 30 % at the centre) sits behind it, because the dark bottle
-  disappears against the wine ground. The glow doesn't spin with the bottle.
+- **Bottle (update): 3D and 200 % larger.** The bottle is now a real 3D model (`assets/bottle3d.js`, three.js),
+  turned from the outline traced off the product photo: glossy wine glass, gold metal cap, and the label wrapped on the
+  curve. On its own it is **680 px tall** (200 % of the first version's 340 px). It settles to 35 % (238 px, the same
+  size as before) as it slides into the header, so it doesn't overlap the cards below. A soft cream glow (`#FFF9F0`)
+  sits behind it and doesn't spin with it. The one 3D turn (T3) now shows a real round bottle, not a flat card.
