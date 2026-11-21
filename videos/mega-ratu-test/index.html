@@ -9,15 +9,15 @@
   @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); font-display: block; }
   @font-face { font-family: "Gelasio"; src: url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); font-display: block; }
   :root {
-    --cherry-red: #C8102E; --cherry-purple: #6E1E62;            /* background for this video */
+    --cola-purple: #2B0B2E; --cola-purple-mid: #4A1A45; --gold-ground: #D9A84E;   /* background for this video */
     --mega-gold: #F2D49B; --cream: #FFF9F0; --mega-wine-a: #450A10;
     --font-title: "Chicle", Georgia, serif; --font-text: "Gelasio", Georgia, serif;
-    --glass-fill: rgba(60, 8, 32, 0.42); --glass-border: rgba(242, 212, 155, 0.40);
+    --glass-fill: rgba(36, 8, 36, 0.55); --glass-border: rgba(242, 212, 155, 0.40);
     --glass-shadow: 0 24px 48px rgba(30, 0, 18, 0.40), inset 0 1px 0 rgba(255, 249, 240, 0.20);
   }
-  html, body { margin: 0; height: 100%; background: var(--cherry-red); overflow: hidden }
+  html, body { margin: 0; height: 100%; background: var(--cola-purple); overflow: hidden }
   #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; transform-origin: 0 0;
-           background: linear-gradient(180deg, var(--cherry-red) 0%, var(--cherry-purple) 100%) }
+           background: linear-gradient(180deg, var(--cola-purple) 0%, var(--cola-purple-mid) 55%, var(--gold-ground) 100%) }
   .abs { position: absolute; left: 0; top: 0 }
   .glass { background: var(--glass-fill); border: 1.5px solid var(--glass-border); box-shadow: var(--glass-shadow);
            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px) }
@@ -50,7 +50,7 @@
 <body>
 <!--
   Mega Ratu test, 15 s. Motion: videos/reference-motion (T1-T17), plan: motion.md.
-  Fonts and colours from design.md; this video's background is cherry red -> cherry purple.
+  Fonts and colours from design.md; this video's background is cola purple -> gold.
   The bottle and the ingredients are 3D (assets/stage3d.js). Words come from the Mega Ratu box.
   Contract: window.anim = { tl, duration, seek(t), play(from), pause() }.
 -->
@@ -186,9 +186,17 @@ function draw(t) {
   // bottle: drop, bounce, one 3D turn, docks small in the card, returns full size, shrinks out
   const ls = kf(t, LS) * kf(t, DOCK);
   const bx = kf(t, LX) * 1.376, a = hr * Math.PI / 180;
-  gsap.set(glow, { x: bx, scale: ls, opacity: kf(t, [[2.03, 1], [2.40, 0.55], [9.93, 0.55], [10.27, 1]]) });
-  const bottle = { x: hx + bx * Math.cos(a) * pop, y: hy + bx * Math.sin(a) * pop, rot: hr, size: BOTTLE_H * ls * pop,
+  gsap.set(glow, { x: bx + kf(t, [[10.30, 0], [10.55, 20, 'power3.out']]), scale: ls * kf(t, [[10.30, 1], [10.55, 1.15]]), opacity: kf(t, [[2.03, 1], [2.40, 0.55], [9.93, 0.55], [10.27, 1]]) });
+  // 10.30-11.60: the 3D box springs out from behind the bottle (the T3 spring), the bottle steps right to make room
+  const boxOn = t >= 10.30 && t < 11.60;
+  const bShift = kf(t, [[10.30, 0], [10.55, 120, 'power3.out'], [10.70, 104], [10.85, 110, 'sine.inOut']]);
+  const bottle = { x: hx + bx * Math.cos(a) * pop + bShift, y: hy + bx * Math.sin(a) * pop, rot: hr, size: BOTTLE_H * ls * pop,
                    stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) };
+  const boxS = kf(t, [[10.30, 0.55], [10.55, 1.05, 'power3.out'], [10.68, 0.98], [10.82, 1.0, 'sine.inOut']]) * kf(t, LS);
+  const box = { visible: boxOn, z: -400, x: hx + kf(t, [[10.30, 120], [10.55, -95, 'power3.out'], [10.68, -62], [10.82, -70, 'sine.inOut']]),
+                y: hy + 6, size: BOTTLE_H * (window.megaStage3D ? window.megaStage3D.boxToBottle : 1.1) * boxS,
+                rot: kf(t, [[10.30, 0], [10.45, -4], [10.62, 2.5], [10.80, 0]]),
+                spin: kf(t, [[10.30, 90], [10.75, 24, 'power3.out']]) + (t > 10.75 ? 4 * Math.sin((t - 10.75) * Math.PI * 2 / 1.6) : 0) };
   // ingredient cards, each carrying its 3D ingredient
   const items = {};
   CARDS.forEach((c, i) => {
@@ -199,7 +207,7 @@ function draw(t) {
                       y: y + (ICON[0] * Math.sin(ra) + ICON[1] * Math.cos(ra)) * s, rot: r, size: ITEM_H * s,
                       spin: 28 * Math.sin((t - c.t0) * Math.PI * 2 / 3.2) + (i % 2 ? -12 : 12) };   // gentle turn to show depth
   });
-  if (window.megaStage3D) window.megaStage3D.render({ bottle, items });
+  if (window.megaStage3D) window.megaStage3D.render({ bottle, box, items });
   // end card: logo drops and bounces at x 540, then the name wipes in under it
   const te = t - END;
   const lsE = kf(te, LS.slice(0, 8));

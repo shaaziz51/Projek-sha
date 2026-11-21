@@ -72,6 +72,18 @@ function buildBottle() {
   return g;
 }
 
+// ---- Box: the real box faces (front cut from the product photo, plain sides with the gold band) ----
+const loadTex = async (url) => { const t = await new THREE.TextureLoader().loadAsync(url); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+const boxFront = await loadTex("assets/mega-box-front.png"), boxSide = await loadTex("assets/mega-box-side.png");
+function buildBox() {
+  const b = megaRatu.box, w = b.x1 - b.x0 + 4, h = b.y1 - b.y0, d = w * 0.85;
+  const card = (map) => new THREE.MeshStandardMaterial({ map, roughness: 0.55, metalness: 0, color: "#d0d0d0" });
+  const plain = new THREE.MeshStandardMaterial({ color: "#121012", roughness: 0.6 });
+  // face order: +x, -x, +y, -y, +z (front), -z (back)
+  return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), [card(boxSide), card(boxSide), plain, plain, card(boxFront), card(boxSide)]);
+}
+export const BOX_TO_BOTTLE = (megaRatu.box.y1 - megaRatu.box.y0) / (megaRatu.bottle.bottomY - megaRatu.bottle.topY);
+
 // ---- Grape cluster: berries in a tapering cone, stem and one leaf ----
 function buildGrapes() {
   const g = new THREE.Group();
@@ -164,19 +176,22 @@ const models = {
   strawberry: centred(buildStrawberry()),
   seeds: centred(buildSeeds()),
   miniBottle: centred(buildBottle()),
+  box: centred(buildBox()),
 };
 
-function place(obj, { x, y, size, rot = 0, spin = 0, tilt = 0.1, stretch = 1, visible = true }) {
+function place(obj, { x, y, size, rot = 0, spin = 0, tilt = 0.1, stretch = 1, z = 0, visible = true }) {
   obj.visible = visible && size > 0.5;
   if (!obj.visible) return;
-  obj.position.set(x, -y, 0);
+  obj.position.set(x, -y, z);
   obj.rotation.set(tilt, THREE.MathUtils.degToRad(spin), -THREE.MathUtils.degToRad(rot), "ZXY");
   obj.scale.set(size, size * stretch, size);
 }
 
 window.megaStage3D = {
-  render({ bottle, items = {} }) {
+  boxToBottle: BOX_TO_BOTTLE,
+  render({ bottle, box, items = {} }) {
     place(models.bottle, bottle);
+    place(models.box, box || { visible: false, size: 0 });
     for (const k of ["grapes", "strawberry", "seeds", "miniBottle"]) place(models[k], items[k] || { visible: false, size: 0 });
     renderer.render(scene, camera);
   },

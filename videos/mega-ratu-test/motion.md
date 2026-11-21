@@ -125,9 +125,13 @@ Adjustments made while building, to use in the full 15 s version:
 
 `videos/mega-ratu-test.mp4` (1080×1920, 30 fps, 15.0 s), from `index.html` and `assets/stage3d.js`.
 
-- **Background (this video only):** cherry red `#C8102E` at the top to cherry purple `#6E1E62` at the bottom,
-  instead of the wine gradient. The glass cards are darkened (`rgba(60, 8, 32, 0.42)`) so the gold text still
-  reads on the brighter ground.
+- **Background (this video only):** cola purple to gold: `#2B0B2E` at the top, `#4A1A45` at 55 %, `#D9A84E` at the
+  bottom, instead of the wine gradient. The glass cards are darker (`rgba(36, 8, 36, 0.55)`) so the gold text
+  reads over the gold lower part.
+- **3D box, 10.30–11.60:** the Mega Ratu box (its real front, cut from the product photo) springs out from behind the
+  bottle with the T3 spring: 55 % → 105 % → 100 % size, sliding 215 px left while turning from edge-on to 24°, as the
+  bottle steps 110 px right. They stand together like the product photo, the box swaying gently (±4°), and both
+  shrink out at 11.33–11.60.
 - **3D ingredients:** each card carries a 3D model that turns gently (±28°) to show its depth: a grape cluster
   (Anggur), a strawberry with seeds and leaf crown (Strawberi), three seeds (Biji Crista), and a small Mega Ratu
   bottle (300 mL). The models fly into the header with their cards.
