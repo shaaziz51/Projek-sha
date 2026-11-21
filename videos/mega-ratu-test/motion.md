@@ -102,3 +102,19 @@ transition whose movement is copied.
 - Add a call to action at the end (for example "@Kak_sha_jrm TikTok showcase", as in the Kopi Ratu videos)?
 - Are the four flash colours right, or should all four be Mega gold?
 - Any Mega Ratu benefits to show? None are on the box, so this test shows only the box's words.
+
+## As built: scene 1 sample (0–5 s)
+
+`videos/mega-ratu-test/index.html` → `videos/mega-ratu-test-scene1.mp4` (1080×1920, 30 fps, 5.0 s).
+`motion-check.mp4` plays it next to the reference: the moves land on the same frames.
+
+Adjustments made while building, to use in the full 15 s version:
+
+- **Times are the reference's exact times** (T3 starts at 1.17, the cards at 3.97 / 4.30 / 4.67 / 5.00), not the
+  rounded times in the table above.
+- **Positions:** the bottle rests at y 824 (not 960), so the whole stack fits the clear area. Stack slots: header
+  408, Anggur 590, Strawberi 786, Biji Crista 976, 300 mL 1190. Vertical reference distances are ×1.5 for the drop
+  and ×0.92 for the stack; widths are ×1.25 (header 650 px), centred at x 450.
+- **Bottle:** 340 px tall on its own. It settles to 70 % (238 px) as it slides into the header, so it doesn't
+  overlap the cards below. A soft cream glow (`#FFF9F0`, 30 % at the centre) sits behind it, because the dark bottle
+  disappears against the wine ground. The glow doesn't spin with the bottle.
