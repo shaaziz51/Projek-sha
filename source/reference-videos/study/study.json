@@ -1,0 +1,56 @@
+{
+ "video": "apple-ui-animation.mp4",
+ "width": 720,
+ "height": 1280,
+ "fps": 30.0,
+ "duration": 12.595,
+ "frames": 378,
+ "frames_every": 0.25,
+ "frame_count_saved": 50,
+ "cuts": [],
+ "sheet": {
+  "cols": 6,
+  "rows": 5,
+  "every": 0.5
+ },
+ "palette": [
+  {
+   "hex": "#040304",
+   "share": 0.7548
+  },
+  {
+   "hex": "#1A1516",
+   "share": 0.0882
+  },
+  {
+   "hex": "#2B2728",
+   "share": 0.0732
+  },
+  {
+   "hex": "#424041",
+   "share": 0.0161
+  },
+  {
+   "hex": "#595C5D",
+   "share": 0.0103
+  },
+  {
+   "hex": "#ACABAC",
+   "share": 0.0066
+  },
+  {
+   "hex": "#E4E4E4",
+   "share": 0.0061
+  },
+  {
+   "hex": "#717175",
+   "share": 0.0053
+  },
+  {
+   "hex": "#939294",
+   "share": 0.0044
+  }
+ ],
+ "source_loop_seam": 1.64,
+ "source_loops": true
+}
