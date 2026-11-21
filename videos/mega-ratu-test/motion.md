@@ -120,3 +120,17 @@ Adjustments made while building, to use in the full 15 s version:
   curve. On its own it is **680 px tall** (200 % of the first version's 340 px). It settles to 35 % (238 px, the same
   size as before) as it slides into the header, so it doesn't overlap the cards below. A soft cream glow (`#FFF9F0`)
   sits behind it and doesn't spin with it. The one 3D turn (T3) now shows a real round bottle, not a flat card.
+
+## As built: full 15 s
+
+`videos/mega-ratu-test.mp4` (1080×1920, 30 fps, 15.0 s), from `index.html` and `assets/stage3d.js`.
+
+- **Background (this video only):** cherry red `#C8102E` at the top to cherry purple `#6E1E62` at the bottom,
+  instead of the wine gradient. The glass cards are darkened (`rgba(60, 8, 32, 0.42)`) so the gold text still
+  reads on the brighter ground.
+- **3D ingredients:** each card carries a 3D model that turns gently (±28°) to show its depth: a grape cluster
+  (Anggur), a strawberry with seeds and leaf crown (Strawberi), three seeds (Biji Crista), and a small Mega Ratu
+  bottle (300 mL). The models fly into the header with their cards.
+- **Timeline:** follows the reference exactly from T1 to T17. The bottle grows back to full size as the card folds
+  into it (9.93–10.27), holds, and shrinks out at 11.33–11.60. After an empty beat, the JRM Holistik logo drops in
+  and bounces at 12.00 (x 540, centred), and "Mega Ratu" wipes in under it at 12.70. Both hold to 15.0.

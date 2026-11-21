@@ -9,88 +9,78 @@
   @font-face { font-family: "Chicle"; src: url("assets/fonts/chicle-latin-400-normal.woff2") format("woff2"); font-display: block; }
   @font-face { font-family: "Gelasio"; src: url("assets/fonts/gelasio-latin-400-normal.woff2") format("woff2"); font-display: block; }
   :root {
-    --mega-wine-a: #450A10; --mega-wine-b: #460C23; --mega-gold: #F2D49B; --cream: #FFF9F0;
+    --cherry-red: #C8102E; --cherry-purple: #6E1E62;            /* background for this video */
+    --mega-gold: #F2D49B; --cream: #FFF9F0; --mega-wine-a: #450A10;
     --font-title: "Chicle", Georgia, serif; --font-text: "Gelasio", Georgia, serif;
-    --glass-fill: rgba(110, 30, 55, 0.5); --glass-border: rgba(242, 212, 155, 0.35);
-    --glass-shadow: 0 24px 48px rgba(20, 2, 6, 0.45), inset 0 1px 0 rgba(255, 249, 240, 0.18);
+    --glass-fill: rgba(60, 8, 32, 0.42); --glass-border: rgba(242, 212, 155, 0.40);
+    --glass-shadow: 0 24px 48px rgba(30, 0, 18, 0.40), inset 0 1px 0 rgba(255, 249, 240, 0.20);
   }
-  html, body { margin: 0; height: 100%; background: var(--mega-wine-a); overflow: hidden }
+  html, body { margin: 0; height: 100%; background: var(--cherry-red); overflow: hidden }
   #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; transform-origin: 0 0;
-           background: linear-gradient(180deg, var(--mega-wine-a) 0%, var(--mega-wine-b) 100%); perspective: 1400px }
+           background: linear-gradient(180deg, var(--cherry-red) 0%, var(--cherry-purple) 100%) }
   .abs { position: absolute; left: 0; top: 0 }
-  /* glass, after design.md */
   .glass { background: var(--glass-fill); border: 1.5px solid var(--glass-border); box-shadow: var(--glass-shadow);
            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px) }
+  #flash { position: absolute; left: 0; top: 0; width: 1400px; height: 1400px; margin: -700px 0 0 -700px; border-radius: 50%; opacity: 0 }
   #hbody { position: absolute; left: 50%; top: 50%; border-radius: 34px; transform: translate(-50%, -50%); overflow: hidden }
+  #hflash { position: absolute; inset: 0; opacity: 0 }
   .t-title { position: absolute; left: 112px; top: 18px; font-family: var(--font-title); font-size: 62px; line-height: 1;
              color: var(--mega-gold); white-space: nowrap }
   .t-sub { position: absolute; left: 114px; top: 90px; font-family: var(--font-text); font-size: 30px; line-height: 1;
            color: var(--cream); white-space: nowrap }
   .t-size { position: absolute; left: 114px; top: 128px; font-family: var(--font-text); font-size: 24px; line-height: 1;
-            color: var(--cream); opacity: 0.75; white-space: nowrap }
+            color: var(--cream); opacity: 0.8; white-space: nowrap }
   #hpill { position: absolute; right: 22px; top: 50%; width: 92px; height: 50px; margin-top: -25px; border-radius: 25px;
            background: var(--mega-gold) }
   #hpill i { position: absolute; right: 5px; top: 5px; width: 40px; height: 40px; border-radius: 20px; background: var(--mega-wine-a) }
   #hpill i::after { content: ""; position: absolute; left: 13px; top: 14px; width: 10px; height: 10px;
                     border-top: 3px solid var(--mega-gold); border-right: 3px solid var(--mega-gold); transform: rotate(45deg) }
-  #bottle3d { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none }
   #glow { position: absolute; left: 0; top: 0; width: 1040px; height: 1040px; margin: -520px 0 0 -520px; border-radius: 50%;
           background: radial-gradient(circle, rgba(255, 249, 240, 0.30) 0%, rgba(255, 249, 240, 0.10) 38%, rgba(255, 249, 240, 0) 68%) }
   .card { position: absolute; left: 0; top: 0; width: 640px; height: 130px; margin: -65px 0 0 -320px; border-radius: 32px }
-  .card svg { position: absolute; left: -38px; top: -14px; width: 150px; height: 150px; overflow: visible }
   .card b { position: absolute; left: 136px; top: 32px; font-family: var(--font-title); font-weight: 400; font-size: 64px;
             line-height: 1; color: var(--mega-gold); white-space: nowrap }
+  #stage3d { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none }
+  #endlogo { position: absolute; left: 0; top: 0; width: 420px; height: 234px; margin: -117px 0 0 -210px }
+  #endlogo img { display: block; width: 420px; height: 234px }
+  #endtitle { position: absolute; left: 0; top: 0; width: 600px; margin-left: -300px; text-align: center;
+              font-family: var(--font-title); font-size: 96px; line-height: 1; color: var(--mega-gold) }
 </style>
 </head>
 <body>
 <!--
-  Mega Ratu test, first scene (0-5 s): motion from videos/reference-motion (T1-T8), plan in motion.md,
-  fonts and colours from design.md. Contract: window.anim = { tl, duration, seek(t), play(from), pause() }.
+  Mega Ratu test, 15 s. Motion: videos/reference-motion (T1-T17), plan: motion.md.
+  Fonts and colours from design.md; this video's background is cherry red -> cherry purple.
+  The bottle and the ingredients are 3D (assets/stage3d.js). Words come from the Mega Ratu box.
+  Contract: window.anim = { tl, duration, seek(t), play(from), pause() }.
 -->
 <div id="stage">
-  <!-- ingredient cards: words from the Mega Ratu box; gold line icons drawn (no ingredient photos exist) -->
-  <div id="c1" class="card glass">
-    <svg viewBox="-75 -75 150 150" fill="none" stroke="#F2D49B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M0 -50 C4 -60 14 -64 24 -62" /><path d="M2 -46 C14 -54 30 -52 36 -40 C22 -36 10 -38 2 -46 Z" />
-      <circle cx="-18" cy="-24" r="14" /><circle cx="10" cy="-24" r="14" /><circle cx="36" cy="-20" r="13" />
-      <circle cx="-6" cy="2" r="14" /><circle cx="22" cy="4" r="14" /><circle cx="6" cy="28" r="14" /></svg>
-    <b>Anggur</b></div>
-  <div id="c2" class="card glass">
-    <svg viewBox="-75 -75 150 150" fill="none" stroke="#F2D49B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M-30 -30 C-10 -42 10 -42 30 -30 C40 0 22 40 0 52 C-22 40 -40 0 -30 -30 Z" />
-      <path d="M-26 -34 L-12 -46 L0 -36 L12 -46 L26 -34" /><path d="M0 -40 L0 -58" />
-      <circle cx="-12" cy="-10" r="1.5" /><circle cx="12" cy="-6" r="1.5" /><circle cx="0" cy="12" r="1.5" />
-      <circle cx="-14" cy="20" r="1.5" /><circle cx="14" cy="22" r="1.5" /></svg>
-    <b>Strawberi</b></div>
-  <div id="c3" class="card glass">
-    <svg viewBox="-75 -75 150 150" fill="none" stroke="#F2D49B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M0 -46 C28 -30 34 10 0 46 C-34 10 -28 -30 0 -46 Z" /><path d="M0 -30 C10 -10 10 14 0 32" /></svg>
-    <b>Biji Crista</b></div>
-  <div id="c4" class="card glass">
-    <svg viewBox="-75 -75 150 150" fill="none" stroke="#F2D49B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M-8 -60 H8 V-34 C22 -26 24 -12 24 0 V44 C24 54 18 58 10 58 H-10 C-18 58 -24 54 -24 44 V0 C-24 -12 -22 -26 -8 -34 Z" />
-      <path d="M-24 6 H24" /><path d="M-24 34 H24" /></svg>
-    <b>300 mL</b></div>
-
+  <div id="flash"></div>
+  <div id="c1" class="card glass"><b>Anggur</b></div>
+  <div id="c2" class="card glass"><b>Strawberi</b></div>
+  <div id="c3" class="card glass"><b>Biji Crista</b></div>
+  <div id="c4" class="card glass"><b>300 mL</b></div>
   <div id="hdr" class="abs">
+    <div id="glow"></div>
     <div id="hbody" class="glass">
+      <div id="hflash"></div>
       <div id="h-title" class="t-title">Mega Ratu</div>
       <div id="h-sub" class="t-sub">Campuran Minuman Botani</div>
       <div id="h-size" class="t-size">300 mL</div>
       <div id="hpill"><i></i></div>
     </div>
-    <div id="glow"></div>
-    </div>
-  <!-- the bottle, in 3D (assets/bottle3d.js), drawn above the cards and the header -->
-  <canvas id="bottle3d" width="1080" height="1920"></canvas>
+  </div>
+  <canvas id="stage3d" width="1080" height="1920"></canvas>
+  <div id="endlogo"><img src="assets/jrm-logo-mega.png" alt="JRM Holistik"></div>
+  <div id="endtitle">Mega Ratu</div>
 </div>
 
 <script type="importmap">{ "imports": { "three": "./assets/three/three.module.js" } }</script>
-<script type="module" src="assets/bottle3d.js"></script>
+<script type="module" src="assets/stage3d.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (() => {
-const DUR = 5.0;
+const DUR = 15.0;
 const lerp = (a, b, p) => a + (b - a) * p;
 const EASE = {}; const ease = (e) => EASE[e] || (EASE[e] = gsap.parseEase(e));
 function kf(t, K) {
@@ -102,79 +92,120 @@ function kf(t, K) {
   return K[K.length - 1][1];
 }
 
-// ---- Keys measured on the reference (720x1280), from videos/reference-motion/index.html ----
-const HX = [[0, 363], [2.17, 363], [2.20, 349], [2.23, 337], [2.37, 315], [2.60, 335], [3.0, 340]];
+// ---- Keys measured on the reference (720x1280): videos/reference-motion ----
+const HX = [[0, 363], [2.17, 363], [2.20, 349], [2.23, 337], [2.37, 315], [2.60, 335], [3.0, 340], [9.40, 344],
+            [9.73, 366], [9.87, 406], [9.93, 428], [10.00, 407], [10.10, 368], [10.20, 362], [10.30, 363]];
 const HY = [[0, 191], [0.07, 296], [0.13, 527], [0.20, 683], [0.27, 684], [0.33, 637], [0.40, 616], [0.50, 640],
             [0.60, 648], [0.80, 638], [1.0, 639], [1.17, 647], [1.23, 628], [1.30, 625], [1.33, 649], [1.47, 654],
             [3.85, 650], [3.93, 643], [4.00, 629], [4.10, 579], [4.20, 486], [4.30, 409], [4.40, 357], [4.53, 312],
-            [4.60, 295], [4.80, 240], [5.00, 212]];
+            [4.60, 295], [4.80, 240], [5.00, 212], [5.30, 200], [5.60, 197], [6.67, 197], [6.95, 207, 'sine.inOut'],
+            [7.30, 207], [7.63, 200], [8.33, 205], [8.50, 290], [8.60, 400], [8.67, 520, 'power2.in'],
+            [8.75, 600, 'power2.out'], [8.83, 625], [8.90, 637], [9.00, 650], [9.17, 654]];
 const HROT = [[0, 0], [1.17, -0.7], [1.20, -3.9], [1.23, -8], [1.27, -10.5], [1.30, -9.8], [1.33, -8.8], [1.37, -6.8],
               [1.40, -2.9], [1.43, 5.5], [1.47, 6.1], [1.53, 5.9], [1.57, 5.4], [1.60, 4.8], [1.63, 3.9], [1.67, 2.3],
-              [1.70, 0.6], [1.73, 0], [2.17, 0.4], [2.23, 1.8], [2.37, 1.3], [3.0, 1.4]];
+              [1.70, 0.6], [1.73, 0], [2.17, 0.4], [2.23, 1.8], [2.37, 1.3], [3.0, 1.4], [6.67, 1.4], [6.95, 2.4, 'sine.inOut'],
+              [7.30, 2.4], [7.67, 2.4], [7.72, -8, 'power2.out'], [8.00, 0, 'power2.inOut'],
+              [8.07, 0], [8.12, 6, 'power2.out'], [8.35, 0, 'power2.inOut'],
+              [8.40, 0], [8.45, -5, 'power2.out'], [8.62, 0, 'power2.inOut'],
+              [8.67, 0], [8.70, 7.7, 'power2.out'], [8.77, 6.6], [8.83, 4.6], [8.90, 2.5], [8.97, 0]];
 const HW = [[0, 90], [1.17, 100], [1.20, 193], [1.23, 240], [1.27, 282], [1.30, 323], [1.33, 364], [1.37, 404],
             [1.40, 441], [1.43, 484], [1.47, 519], [1.50, 530], [1.53, 520], [1.57, 499], [1.60, 477], [1.63, 461],
             [1.67, 456], [1.70, 458], [1.73, 467], [1.77, 476], [1.80, 483], [1.83, 485], [1.87, 483], [1.90, 479],
             [1.93, 475], [1.97, 472], [2.00, 471], [2.17, 477], [2.20, 509], [2.23, 534], [2.27, 545], [2.30, 534],
-            [2.33, 515], [2.37, 509], [3.0, 520]];
-const LX = [[0, 0], [2.03, 0], [2.23, -197, 'power3.out'], [2.60, -190]];
-const LS = [[0, 0.28], [0.07, 0.34], [0.13, 0.52], [0.20, 0.72], [0.27, 0.86], [0.33, 0.96], [0.40, 0.99], [0.50, 1]];
+            [2.33, 515], [2.37, 509], [3.0, 520], [9.40, 507], [9.53, 475], [9.73, 475], [9.80, 491], [9.87, 550],
+            [9.93, 543], [10.00, 474], [10.07, 357], [10.13, 261], [10.20, 175], [10.27, 90]];
+const LX = [[0, 0], [2.03, 0], [2.23, -197, 'power3.out'], [2.60, -190], [9.47, -190], [9.60, -50, 'power2.in'],
+            [9.80, 186, 'power2.out'], [9.90, 171], [10.00, 102], [10.10, 44], [10.20, 2], [10.30, 0]];
+const LS = [[0, 0.28], [0.07, 0.34], [0.13, 0.52], [0.20, 0.72], [0.27, 0.86], [0.33, 0.96], [0.40, 0.99], [0.50, 1],
+            [11.33, 1], [11.50, 0.35, 'power2.in'], [11.60, 0, 'power1.in']];
 const LSTRETCH = [[0, 1.5], [0.13, 1.35], [0.20, 1.05], [0.27, 1]];
-const LSPIN = [[0, 0], [1.20, 0], [2.25, 360, 'power2.out']];   // one full turn, so the label ends face-on
+const LSPIN = [[0, 0], [1.20, 0], [2.25, 360, 'power2.out']];
+const DOCK = [[2.03, 1], [2.23, 0.35, 'power3.out'], [9.93, 0.35], [10.27, 1, 'power3.out']];  // 680 px -> 238 px in the card
 const CARDS = [
-  { id: 'c1', t0: 3.97,
+  { id: 'c1', t0: 3.97, gone: 7.67, item: 'grapes',
     y: [[3.97, 884], [4.03, 844], [4.10, 785], [4.17, 704], [4.23, 637], [4.33, 578], [4.40, 547], [4.47, 521],
-        [4.53, 499], [4.60, 482], [4.80, 430], [5.00, 405]],
-    s: [[3.97, 0.18], [4.03, 0.42], [4.10, 0.65], [4.17, 0.88], [4.23, 1.02], [4.33, 1.0]],
+        [4.53, 499], [4.60, 482], [4.80, 430], [5.00, 405], [5.30, 397], [5.60, 395], [6.67, 395], [6.95, 405, 'sine.inOut'],
+        [7.30, 405], [7.50, 360, 'power1.in'], [7.67, 215, 'power2.in']],
+    s: [[3.97, 0.18], [4.03, 0.42], [4.10, 0.65], [4.17, 0.88], [4.23, 1.02], [4.33, 1.0], [7.30, 1.0], [7.67, 0.55, 'power2.in']],
     r: [[3.97, 0], [4.23, 0], [4.60, 3]] },
-  { id: 'c2', t0: 4.30,
+  { id: 'c2', t0: 4.30, gone: 8.07, item: 'strawberry',
     y: [[4.30, 862], [4.33, 834], [4.40, 782], [4.47, 737], [4.53, 704], [4.60, 685], [4.67, 675], [4.73, 667],
-        [4.80, 656], [4.87, 646], [4.93, 635], [5.00, 629]],
+        [4.80, 656], [4.87, 646], [4.93, 635], [5.00, 629], [5.07, 625], [5.20, 617], [5.60, 608], [6.67, 608],
+        [6.95, 618, 'sine.inOut'], [7.30, 618], [7.60, 598], [7.67, 580], [8.07, 210, 'power2.in']],
     s: [[4.30, 0.30], [4.33, 0.41], [4.40, 0.65], [4.47, 0.91], [4.53, 1.09], [4.60, 1.07], [4.67, 1.05], [4.73, 1.01],
-        [4.80, 1.03], [4.87, 1.06], [4.93, 1.06], [5.00, 1.03]],
+        [4.80, 1.03], [4.87, 1.06], [4.93, 1.06], [5.00, 1.03], [5.07, 1.0], [5.20, 1.01], [5.60, 1.0], [7.67, 1.0],
+        [8.07, 0.55, 'power2.in']],
     r: [[4.30, 0], [4.47, 0.7], [4.53, 3.8], [4.60, 5.9], [4.67, 6.0], [4.73, 4.8], [4.80, 4.4]] },
-  { id: 'c3', t0: 4.67,
-    y: [[4.67, 931], [4.73, 899], [4.80, 868], [4.87, 846], [4.93, 837], [5.00, 836]],
-    s: [[4.67, 0.35], [4.73, 0.59], [4.80, 0.83], [4.87, 1.02], [4.93, 1.08], [5.00, 1.0]],
-    r: [[4.67, 0], [4.87, 1.7], [4.93, 3.7], [5.00, 3.2]] },
-  { id: 'c4', t0: 5.00, y: [[5.00, 1121]], s: [[5.00, 0.36]], r: [[5.00, 0]] },
+  { id: 'c3', t0: 4.67, gone: 8.40, item: 'seeds',
+    y: [[4.67, 931], [4.73, 899], [4.80, 868], [4.87, 846], [4.93, 837], [5.00, 836], [5.07, 834], [5.13, 829],
+        [5.20, 823], [5.27, 820], [5.60, 815], [6.67, 815], [6.95, 827, 'sine.inOut'], [7.30, 827], [7.70, 811],
+        [7.97, 757], [8.07, 722], [8.13, 689], [8.20, 650], [8.27, 596], [8.33, 513], [8.40, 300, 'power2.in']],
+    s: [[4.67, 0.35], [4.73, 0.59], [4.80, 0.83], [4.87, 1.02], [4.93, 1.08], [5.00, 1.0], [5.07, 0.96], [5.13, 0.95],
+        [5.20, 0.99], [5.27, 1.0], [8.20, 1.0], [8.40, 0.55, 'power2.in']],
+    r: [[4.67, 0], [4.87, 1.7], [4.93, 3.7], [5.13, 2.2], [5.27, 2.7], [5.60, 2.6]] },
+  { id: 'c4', t0: 5.00, gone: 8.67, item: 'miniBottle',
+    y: [[5.00, 1121], [5.07, 1096], [5.13, 1071], [5.20, 1060], [5.27, 1053], [5.33, 1055], [5.60, 1051], [6.67, 1048],
+        [6.95, 1061, 'sine.inOut'], [7.30, 1061], [7.70, 1051], [8.00, 1017], [8.13, 991], [8.27, 958], [8.40, 912],
+        [8.50, 863], [8.57, 816], [8.60, 782], [8.67, 610, 'power2.in']],
+    s: [[5.00, 0.36], [5.07, 0.59], [5.13, 0.83], [5.20, 0.98], [5.27, 1.08], [5.33, 1.02], [5.53, 1.0], [8.50, 1.0],
+        [8.67, 0.55, 'power2.in']],
+    r: [[5.00, 0], [5.20, 1.2], [5.27, 4.3], [5.40, 3.6], [5.60, 3.0], [12.6, 2.8]] },
 ];
+// A card lands in the header: pop, tilt kick (in HROT), and a flash in one brand colour (design.md)
+const FLASH = [[7.67, '#94050D'], [8.07, '#E1B377'], [8.40, '#FFF9F0'], [8.67, '#F2D49B']];
+// End card: the JRM Holistik logo repeats the bottle's drop and bounce (T1-T2), 12.0-15.0 s
+const END = 12.0;
 
-// ---- Reference (720x1280) -> Mega Ratu frame (1080x1920), kept inside the TikTok clear area ----
-const CX = 450;                                          // stack centre: clear of the right-hand button rail
+// ---- Reference (720x1280) -> this frame (1080x1920), inside the TikTok clear area ----
+const CX = 450;
 const mapX = (x) => CX + (x - 363) * 1.25;
-const mapY = (t, y) => t < 3.8 ? 824 + (y - 640) * 1.5   // drop and bounce: distances x1.5
-                                : 0.919 * y + 227;       // the stack: header 824 -> 408, cards to 590/786/976/1190
-const W = (w) => w * 1.25;                               // card widths x1.25 (max 680 px inside 120-780)
+const mapY = (t, y) => t < 3.8 ? 824 + (y - 640) * 1.5 : 0.919 * y + 227;
+const BOTTLE_H = 680, ITEM_H = 150;
+const ICON = [-283, -4];                                   // ingredient centre in card coordinates
 
 const $ = (id) => document.getElementById(id);
-const hdr = $('hdr'), hbody = $('hbody'), glow = $('glow');
-const BOTTLE_H = 680;                                    // 200 % of the previous 340 px
-const DOCKED = 0.35;                                     // 238 px once docked in the card, as before
+const hdr = $('hdr'), hbody = $('hbody'), glow = $('glow'), flash = $('flash'), hflash = $('hflash');
 const clip = (p) => 'inset(0 ' + ((1 - p) * 100).toFixed(2) + '% 0 0)';
 
 function draw(t) {
-  gsap.set(hdr, { x: mapX(kf(t, HX)), y: mapY(t, kf(t, HY)), rotation: kf(t, HROT) });
-  const w = W(kf(t, HW));
-  gsap.set(hbody, { width: w, height: kf(t, [[1.17, 110], [1.27, 170]]), autoAlpha: t >= 1.17 ? 1 : 0 });
-  // header fills in after the bottle reaches the left end (T4)
-  gsap.set('#h-title', { clipPath: clip(kf(t, [[2.10, 0], [2.30, 1, 'power2.out']])) });
-  gsap.set('#h-sub', { clipPath: clip(kf(t, [[2.35, 0], [2.55, 1, 'power2.out']])) });
-  gsap.set('#h-size', { clipPath: clip(kf(t, [[2.50, 0], [2.70, 1, 'power2.out']])) });
-  gsap.set('#hpill', { scale: kf(t, [[2.55, 0], [2.80, 1, 'back.out(1.7)']]) });
-  // bottle: drop, bounce, one 3D turn, slide to the card's left end
-  // the bottle settles to 35 % (238 px) as it docks in the card, so it doesn't overlap the cards below
-  const ls = kf(t, LS) * kf(t, [[2.03, 1], [2.23, DOCKED, 'power3.out']]);
-  const bx = kf(t, LX) * 1.376;
-  gsap.set(glow, { x: bx, scale: ls, opacity: kf(t, [[2.03, 1], [2.40, 0.55]]) });  // glow stays put while it spins
-  // 3D bottle: same anchor as the header group, so it moves, tilts and slides with it
-  const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT), a = hr * Math.PI / 180;
-  if (window.megaBottle3D) window.megaBottle3D.render({ x: hx + bx * Math.cos(a), y: hy + bx * Math.sin(a), rot: hr,
-    height: BOTTLE_H * ls, stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) });
-  // ingredient cards
-  for (const c of CARDS) {
-    gsap.set($(c.id), { x: CX, y: mapY(t, kf(t, c.y)), scale: kf(t, c.s), rotation: kf(t, c.r),
-                        autoAlpha: t >= c.t0 ? 1 : 0 });
-  }
+  // flash after each card lands
+  let amt = 0, col = '#FFF9F0';
+  for (const [f, c] of FLASH) if (t >= f && t < f + 0.3) { const a = 1 - (t - f) / 0.3; if (a > amt) { amt = a; col = c; } }
+  const pop = 1 + 0.06 * amt;
+  const hx = mapX(kf(t, HX)), hy = mapY(t, kf(t, HY)), hr = kf(t, HROT);
+  gsap.set(hdr, { x: hx, y: hy, rotation: hr, scale: pop });
+  gsap.set(flash, { x: hx, y: hy, opacity: amt * 0.55, background: 'radial-gradient(circle, ' + col + ' 0%, transparent 62%)' });
+  gsap.set(hflash, { opacity: amt * 0.85, backgroundColor: col });
+  gsap.set(hbody, { width: kf(t, HW) * 1.25, height: kf(t, [[1.17, 110], [1.27, 170]]), autoAlpha: t >= 1.17 && t < 10.27 ? 1 : 0 });
+  // header words: in after T4, out at T15
+  const out = t >= 9.43 ? Math.min(1, (t - 9.43) / 0.12) : 0;
+  gsap.set('#h-title', { clipPath: clip(kf(t, [[2.10, 0], [2.30, 1, 'power2.out']]) * (1 - out)) });
+  gsap.set('#h-sub', { clipPath: clip(kf(t, [[2.35, 0], [2.55, 1, 'power2.out']]) * (1 - out)) });
+  gsap.set('#h-size', { clipPath: clip(kf(t, [[2.50, 0], [2.70, 1, 'power2.out']]) * (1 - out)) });
+  gsap.set('#hpill', { scale: kf(t, [[2.55, 0], [2.80, 1, 'back.out(1.7)']]) * (1 - out) });
+  // bottle: drop, bounce, one 3D turn, docks small in the card, returns full size, shrinks out
+  const ls = kf(t, LS) * kf(t, DOCK);
+  const bx = kf(t, LX) * 1.376, a = hr * Math.PI / 180;
+  gsap.set(glow, { x: bx, scale: ls, opacity: kf(t, [[2.03, 1], [2.40, 0.55], [9.93, 0.55], [10.27, 1]]) });
+  const bottle = { x: hx + bx * Math.cos(a) * pop, y: hy + bx * Math.sin(a) * pop, rot: hr, size: BOTTLE_H * ls * pop,
+                   stretch: kf(t, LSTRETCH), spin: kf(t, LSPIN) };
+  // ingredient cards, each carrying its 3D ingredient
+  const items = {};
+  CARDS.forEach((c, i) => {
+    const on = t >= c.t0 && t < c.gone;
+    const y = mapY(t, kf(t, c.y)), s = kf(t, c.s), r = kf(t, c.r), ra = r * Math.PI / 180;
+    gsap.set($(c.id), { x: CX, y, scale: s, rotation: r, autoAlpha: on ? 1 : 0 });
+    items[c.item] = { visible: on, x: CX + (ICON[0] * Math.cos(ra) - ICON[1] * Math.sin(ra)) * s,
+                      y: y + (ICON[0] * Math.sin(ra) + ICON[1] * Math.cos(ra)) * s, rot: r, size: ITEM_H * s,
+                      spin: 28 * Math.sin((t - c.t0) * Math.PI * 2 / 3.2) + (i % 2 ? -12 : 12) };   // gentle turn to show depth
+  });
+  if (window.megaStage3D) window.megaStage3D.render({ bottle, items });
+  // end card: logo drops and bounces at x 540, then the name wipes in under it
+  const te = t - END;
+  const lsE = kf(te, LS.slice(0, 8));
+  gsap.set('#endlogo', { x: 540, y: 824 + (kf(te, HY.slice(0, 11)) - 640) * 1.5, scaleX: lsE, scaleY: lsE * kf(te, LSTRETCH),
+                         autoAlpha: te >= 0 ? 1 : 0 });
+  gsap.set('#endtitle', { x: 540, y: 975, clipPath: clip(kf(te, [[0.70, 0], [0.90, 1, 'power2.out']])), autoAlpha: te >= 0.7 ? 1 : 0 });
 }
 
 const tl = gsap.timeline({ paused: true, onUpdate: () => draw(tl.time()) });
@@ -192,8 +223,8 @@ window.anim = {
 };
 const qs = new URLSearchParams(location.search);
 fit();
-const bottleReady = window.megaBottle3D ? Promise.resolve() : new Promise((r) => addEventListener('bottle3d-ready', r, { once: true }));
-Promise.all([Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 3000))]), bottleReady]).then(() => {
+const ready3d = window.megaStage3D ? Promise.resolve() : new Promise((r) => addEventListener('stage3d-ready', r, { once: true }));
+Promise.all([Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 3000))]), ready3d]).then(() => {
   anim.seek(0);
   if (qs.has('t')) anim.seek(parseFloat(qs.get('t')));
   else if (!qs.has('external')) tl.play(0);
