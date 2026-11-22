@@ -64,7 +64,7 @@ def ink_alpha(img, lo=60, hi=200):
     g = img.convert('L')
     return g.point(lambda v: max(0, min(255, int((hi - v) * 255 / (hi - lo)))))
 
-def load_assets(logo_src, halal_src):
+def load_assets(logo_src, halal_src, logo_colour='black'):
     A = {p.stem: Image.open(p).convert('RGBA') for p in CUT.glob('*.png')}
     # JRM Holistik logo: kept black (with its white snowflake), only the outside white is removed
     li = Image.open(logo_src).convert('L'); g = np.asarray(li)
@@ -81,6 +81,9 @@ def load_assets(logo_src, halal_src):
     rgb = np.repeat(g[..., None], 3, 2)
     logo = Image.fromarray(np.dstack([rgb, (alpha * 255).astype(np.uint8)]), 'RGBA')
     A['logo'] = logo.crop(Image.fromarray((alpha * 255).astype(np.uint8)).point(lambda v: 255 if v > 20 else 0).getbbox())
+    if logo_colour == 'white':  # reversed-out version: white letters, snowflake cut out
+        wl = Image.new('RGBA', li.size, (255, 255, 255, 0)); wl.putalpha(Image.fromarray((ink * 255).astype(np.uint8)))
+        A['logo'] = wl.crop(wl.getchannel('A').point(lambda v: 255 if v > 20 else 0).getbbox())
     # Malaysia halal mark: kept in its original black and white, trimmed to the round badge
     hi = Image.open(halal_src).convert('RGB')
     big = Image.new('L', (hi.width * 4, hi.height * 4), 0)
@@ -341,10 +344,10 @@ def render_t(scenes, t):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('out'); ap.add_argument('--logo', required=True); ap.add_argument('--halal', required=True)
+    ap.add_argument('out'); ap.add_argument('--logo', required=True); ap.add_argument('--halal', required=True); ap.add_argument('--logo-colour', default='black', choices=['black', 'white'])
     ap.add_argument('--audio'); ap.add_argument('--test')
     a = ap.parse_args()
-    A = load_assets(a.logo, a.halal); scenes = build(A)
+    A = load_assets(a.logo, a.halal, a.logo_colour); scenes = build(A)
     if a.test:
         for t in a.test.split(','):
             render_t(scenes, float(t)).save(f'{a.out}_{t}.png')
