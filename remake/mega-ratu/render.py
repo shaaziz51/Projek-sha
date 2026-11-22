@@ -59,20 +59,24 @@ def shadow(im, blur=14, opacity=0.35, offset=(10, 16)):
     return out2
 
 # ---------------------------------------------------------------- assets
-def load_assets(box_src):
+def ink_alpha(img, lo=60, hi=200):
+    """black ink on white -> alpha mask (dark = opaque)"""
+    g = img.convert('L')
+    return g.point(lambda v: max(0, min(255, int((hi - v) * 255 / (hi - lo)))))
+
+def load_assets(logo_src, halal_src):
     A = {p.stem: Image.open(p).convert('RGBA') for p in CUT.glob('*.png')}
-    src = Image.open(box_src).convert('RGB')
-    # JRM logo: light letters on the black box -> white logo with luminance alpha
-    lg = src.crop((400, 120, 640, 230)).convert('L')
-    alpha = lg.point(lambda v: max(0, min(255, int((v - 60) * 255 / 150))))
-    logo = Image.new('RGBA', lg.size, (255, 255, 255, 0)); logo.putalpha(alpha)
-    logo = logo.crop(alpha.point(lambda v: 255 if v > 20 else 0).getbbox())
-    A['logo_white'] = logo
-    # halal badge: circular crop
-    cx, cy, r = 515, 1340, 41
-    hb = src.crop((cx - r, cy - r, cx + r, cy + r)).convert('RGBA')
-    m = Image.new('L', hb.size, 0); ImageDraw.Draw(m).ellipse((0, 0, 2 * r - 1, 2 * r - 1), fill=255)
-    hb.putalpha(m); A['halal'] = hb
+    # JRM Holistik logo (black on white) -> single-colour logo, tinted per scene
+    a = ink_alpha(Image.open(logo_src))
+    logo = Image.new('RGBA', a.size, (255, 255, 255, 0)); logo.putalpha(a)
+    A['logo_white'] = logo.crop(a.point(lambda v: 255 if v > 20 else 0).getbbox())
+    # Malaysia halal mark: black linework, white areas knocked out (like the reference's line badge)
+    hi = Image.open(halal_src)
+    a = ink_alpha(hi, 70, 190)
+    m = Image.new('L', hi.size, 0); ImageDraw.Draw(m).ellipse((12, 4, 730, 700), fill=255)
+    a = ImageChops.multiply(a, m)
+    hb = Image.new('RGBA', hi.size, (255, 255, 255, 0)); hb.putalpha(a)
+    A['halal'] = hb.crop(a.point(lambda v: 255 if v > 20 else 0).getbbox())
     return A
 
 def tint(im, rgb):
@@ -127,14 +131,12 @@ class Flavour:
         gl, gr = (glow, 0.0) if product_side == 'left' else (0.0, glow)
         bg = radial_bg(hexrgb(left), hexrgb(right), gl, gr)
         # fixed overlays (same spots as the reference): logo top-right, caption bottom-left, badge bottom-right
-        lg = tint(A['logo_white'], hexrgb(logo_rgb)); lg = lg.resize((200, round(lg.height * 200 / lg.width)), Image.LANCZOS)
-        _safe_composite(bg, lg, 572 - lg.width // 2, 120 - lg.height // 2)
+        lg = tint(A['logo_white'], hexrgb(logo_rgb)); lg = lg.resize((190, round(lg.height * 190 / lg.width)), Image.LANCZOS)
+        _safe_composite(bg, lg, 572 - lg.width // 2, 125 - lg.height // 2)
         cap = text_block(caption, 38, hexrgb(cap_rgb) + (255,), lead=1.08)
         _safe_composite(bg, cap, 70, 1024)
-        hb = A['halal'].resize((128, 128), Image.LANCZOS)
-        ring = Image.new('RGBA', (140, 140), (0, 0, 0, 0)); ImageDraw.Draw(ring).ellipse((0, 0, 139, 139), fill=(255, 255, 255, 235))
-        ring.alpha_composite(hb, (6, 6))
-        _safe_composite(bg, ring, 555 - 70, 1072 - 70)
+        hb = tint(A['halal'], hexrgb(logo_rgb)).resize((150, round(A['halal'].height * 150 / A['halal'].width)), Image.LANCZOS)
+        _safe_composite(bg, hb, 555 - hb.width // 2, 1072 - hb.height // 2)
         self.bg = bg
         self.pile = shadow(pile, blur=16, opacity=0.30, offset=(8, 14))
         self.prod = shadow(fit_h(A['bottle'], 610), blur=18, opacity=0.38, offset=(12, 18))
@@ -186,7 +188,7 @@ class EndCard:
         d = np.sqrt(((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H * 0.47) / (H * 0.40)) ** 2)
         k = np.clip(1 - d, 0, 1) ** 1.4
         self.bg = Image.fromarray((base + (glow - base) * k[..., None]).astype(np.uint8)).convert('RGBA')
-        lg = A['logo_white']; self.logo = lg.resize((250, round(lg.height * 250 / lg.width)), Image.LANCZOS)
+        lg = A['logo_white']; self.logo = lg.resize((220, round(lg.height * 220 / lg.width)), Image.LANCZOS)
         self.box = shadow(fit_h(A['box'], 560), blur=20, opacity=0.45, offset=(14, 20))
         self.bottle = shadow(fit_h(A['bottle'], 600), blur=20, opacity=0.45, offset=(14, 20))
         # lock-up layout
@@ -226,7 +228,7 @@ class EndCard:
         a = smooth((t - 21.15) / 0.4)
         if a > 0:
             lg = self.logo.copy(); lg.putalpha(lg.getchannel('A').point(lambda v: int(v * a)))
-            _safe_composite(img, lg, (W - lg.width) // 2, int(120 - 30 * (1 - a)))
+            _safe_composite(img, lg, (W - lg.width) // 2, int(105 - 30 * (1 - a)))
         # box + bottle pop in, side by side in the middle
         for im, cx, ts in ((self.box, 300, 20.98), (self.bottle, 432, 21.12)):
             k = self._pop(t, ts)
@@ -322,10 +324,10 @@ def render_t(scenes, t):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('out'); ap.add_argument('--box', required=True)
+    ap.add_argument('out'); ap.add_argument('--logo', required=True); ap.add_argument('--halal', required=True)
     ap.add_argument('--audio'); ap.add_argument('--test')
     a = ap.parse_args()
-    A = load_assets(a.box); scenes = build(A)
+    A = load_assets(a.logo, a.halal); scenes = build(A)
     if a.test:
         for t in a.test.split(','):
             render_t(scenes, float(t)).save(f'{a.out}_{t}.png')
