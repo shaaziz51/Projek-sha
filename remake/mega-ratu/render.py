@@ -70,13 +70,13 @@ def load_assets(logo_src, halal_src):
     a = ink_alpha(Image.open(logo_src))
     logo = Image.new('RGBA', a.size, (255, 255, 255, 0)); logo.putalpha(a)
     A['logo_white'] = logo.crop(a.point(lambda v: 255 if v > 20 else 0).getbbox())
-    # Malaysia halal mark: black linework, white areas knocked out (like the reference's line badge)
-    hi = Image.open(halal_src)
-    a = ink_alpha(hi, 70, 190)
-    m = Image.new('L', hi.size, 0); ImageDraw.Draw(m).ellipse((12, 4, 730, 700), fill=255)
-    a = ImageChops.multiply(a, m)
-    hb = Image.new('RGBA', hi.size, (255, 255, 255, 0)); hb.putalpha(a)
-    A['halal'] = hb.crop(a.point(lambda v: 255 if v > 20 else 0).getbbox())
+    # Malaysia halal mark: kept in its original black and white, trimmed to the round badge
+    hi = Image.open(halal_src).convert('RGB')
+    big = Image.new('L', (hi.width * 4, hi.height * 4), 0)
+    ImageDraw.Draw(big).ellipse((12 * 4, 4 * 4, 730 * 4, 700 * 4), fill=255)
+    m = big.resize(hi.size, Image.LANCZOS)  # anti-aliased circle
+    hb = hi.convert('RGBA'); hb.putalpha(m)
+    A['halal'] = hb.crop(m.getbbox())
     return A
 
 def tint(im, rgb):
@@ -135,7 +135,7 @@ class Flavour:
         _safe_composite(bg, lg, 572 - lg.width // 2, 125 - lg.height // 2)
         cap = text_block(caption, 38, hexrgb(cap_rgb) + (255,), lead=1.08)
         _safe_composite(bg, cap, 70, 1024)
-        hb = tint(A['halal'], hexrgb(logo_rgb)).resize((150, round(A['halal'].height * 150 / A['halal'].width)), Image.LANCZOS)
+        hb = A['halal'].resize((150, round(A['halal'].height * 150 / A['halal'].width)), Image.LANCZOS)
         _safe_composite(bg, hb, 555 - hb.width // 2, 1072 - hb.height // 2)
         self.bg = bg
         self.pile = shadow(pile, blur=16, opacity=0.30, offset=(8, 14))
