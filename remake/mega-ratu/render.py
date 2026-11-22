@@ -66,10 +66,21 @@ def ink_alpha(img, lo=60, hi=200):
 
 def load_assets(logo_src, halal_src):
     A = {p.stem: Image.open(p).convert('RGBA') for p in CUT.glob('*.png')}
-    # JRM Holistik logo (black on white) -> single-colour logo, tinted per scene
-    a = ink_alpha(Image.open(logo_src))
-    logo = Image.new('RGBA', a.size, (255, 255, 255, 0)); logo.putalpha(a)
-    A['logo_white'] = logo.crop(a.point(lambda v: 255 if v > 20 else 0).getbbox())
+    # JRM Holistik logo: kept black (with its white snowflake), only the outside white is removed
+    li = Image.open(logo_src).convert('L'); g = np.asarray(li)
+    ink = np.asarray(ink_alpha(li)).astype(np.float32) / 255
+    # the snowflake's white branches run out to the edge of the R, so fill the R's bowl by its convex hull
+    import cv2
+    x0, x1, y0, y1 = 168, 312, 56, 150
+    ys, xs = np.where(ink[y0:y1, x0:x1] > 0.5)
+    hull = cv2.convexHull(np.stack([xs + x0, ys + y0], 1).astype(np.int32))
+    big = np.zeros((g.shape[0] * 4, g.shape[1] * 4), np.uint8)
+    cv2.fillPoly(big, [hull * 4 + 2], 255)
+    enclosed = cv2.resize(big, (g.shape[1], g.shape[0]), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
+    alpha = np.maximum(ink, enclosed)
+    rgb = np.repeat(g[..., None], 3, 2)
+    logo = Image.fromarray(np.dstack([rgb, (alpha * 255).astype(np.uint8)]), 'RGBA')
+    A['logo'] = logo.crop(Image.fromarray((alpha * 255).astype(np.uint8)).point(lambda v: 255 if v > 20 else 0).getbbox())
     # Malaysia halal mark: kept in its original black and white, trimmed to the round badge
     hi = Image.open(halal_src).convert('RGB')
     big = Image.new('L', (hi.width * 4, hi.height * 4), 0)
@@ -131,7 +142,7 @@ class Flavour:
         gl, gr = (glow, 0.0) if product_side == 'left' else (0.0, glow)
         bg = radial_bg(hexrgb(left), hexrgb(right), gl, gr)
         # fixed overlays (same spots as the reference): logo top-right, caption bottom-left, badge bottom-right
-        lg = tint(A['logo_white'], hexrgb(logo_rgb)); lg = lg.resize((190, round(lg.height * 190 / lg.width)), Image.LANCZOS)
+        lg = A['logo']; lg = lg.resize((190, round(lg.height * 190 / lg.width)), Image.LANCZOS)
         _safe_composite(bg, lg, 572 - lg.width // 2, 125 - lg.height // 2)
         cap = text_block(caption, 38, hexrgb(cap_rgb) + (255,), lead=1.08)
         _safe_composite(bg, cap, 70, 1024)
@@ -188,7 +199,7 @@ class EndCard:
         d = np.sqrt(((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H * 0.47) / (H * 0.40)) ** 2)
         k = np.clip(1 - d, 0, 1) ** 1.4
         self.bg = Image.fromarray((base + (glow - base) * k[..., None]).astype(np.uint8)).convert('RGBA')
-        lg = A['logo_white']; self.logo = lg.resize((220, round(lg.height * 220 / lg.width)), Image.LANCZOS)
+        lg = A['logo']; self.logo = lg.resize((220, round(lg.height * 220 / lg.width)), Image.LANCZOS)
         self.box = shadow(fit_h(A['box'], 560), blur=20, opacity=0.45, offset=(14, 20))
         self.bottle = shadow(fit_h(A['bottle'], 600), blur=20, opacity=0.45, offset=(14, 20))
         # lock-up layout
