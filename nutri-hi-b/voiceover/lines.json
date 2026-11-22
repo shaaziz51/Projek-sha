@@ -1,0 +1,14 @@
+{
+  "video": "renders/nutrihib_rebuild_v2.mp4",
+  "output": "renders/nutrihib_with_voiceover.mp4",
+  "music_under_voice": 0.35,
+  "voice_gain": 1.0,
+  "lines": [
+    { "id": "vo_1", "start": 0.2,  "text": "Cari hadiah sihat... untuk ibu mengandung, dan ibu ayah?" },
+    { "id": "vo_2", "start": 4.1,  "text": "Ini dia — Nutri Hai Bi." },
+    { "id": "vo_3", "start": 6.8,  "text": "Gabungan lima bahan pilihan." },
+    { "id": "vo_4", "start": 8.8,  "text": "Kini dalam pembungkusan baharu." },
+    { "id": "vo_5", "start": 10.8, "text": "Hadiah? Beres!" },
+    { "id": "vo_6", "start": 12.3, "text": "Sihat itu nikmat. J.R.M itu asbab." }
+  ]
+}
