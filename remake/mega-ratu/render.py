@@ -211,6 +211,7 @@ class EndCard:
             while ImageFont.truetype(FONT, bs).getbbox(w)[2] > 640: bs -= 4
             self.big[w] = self._word(w, bs)
         self.rule_y = y0 + len(self.LINES) * lh + 24
+        self.handle = self._word('@kak_sha_jrm on TikTok', 34)
 
     def _word(self, w, size):
         f = ImageFont.truetype(FONT, size); bb = f.getbbox(w)
@@ -271,6 +272,11 @@ class EndCard:
         if k > 0:
             d = ImageDraw.Draw(img); half = 150 * k
             d.rounded_rectangle((W / 2 - half, self.rule_y, W / 2 + half, self.rule_y + 6), radius=3, fill=(232, 190, 70, 255))
+        # TikTok handle fades up under the gold rule
+        k = smooth((t - 26.75) / 0.4)
+        if k > 0:
+            h = self.handle.copy(); h.putalpha(h.getchannel('A').point(lambda v: int(v * k)))
+            paste_center(img, h, W / 2, self.rule_y + 42 + 14 * (1 - k))
         return img
 
 # ---------------------------------------------------------------- compositor
