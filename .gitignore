@@ -1,3 +1,20 @@
+# Installed packages and builds
 node_modules/
 dist/
+
+# Videos: rendered from the projects, so they aren't saved in Git
+*.mp4
+*.mov
+*.webm
+*.m4v
 renders/*-frames/
+# ...except the few videos that projects use as inputs (all small)
+!source/reference-videos/*.mp4
+!videos/reference-motion/source.mp4
+!videos/motion2code-title/source.mp4
+!videos/ratu-box/assets/*.mp4
+
+# Render and check leftovers
+shots/
+.hyperframes/
+.DS_Store
