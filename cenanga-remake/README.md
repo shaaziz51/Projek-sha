@@ -22,6 +22,7 @@ npm run studio                                          # live preview / scrub i
 ```
 
 - **On-screen copy, colours, images and footage** for a product are all in its file in `src/products/`. Change a line and re-render; text that gets longer shrinks automatically to stay inside the frame.
+- **Closing caption** ("Swipe to our profile... @Kak_sha_jrm") is `cta` in each product config: it shows from the "Order Now" shot through the end card (13.9–17.0 s). Set it to `null` to remove it.
 - **Shared timing** (the 12 cut points) is in `src/copy.ts`; scenes are in `src/scenes.tsx`, helpers in `src/lib.tsx`.
 - **Add a product:** copy `src/products/putik.ts`, change it, and add it to `PRODUCTS` in `src/copy.ts`. It appears as a new composition, and you add a `render:<name>` script like the existing ones.
 - The render uses the pre-installed headless Chromium at `/opt/pw-browsers/...`; on your own machine, drop the `--browser-executable` flag from `package.json` and Remotion downloads its own.
@@ -44,6 +45,7 @@ Cut points are the original's frame numbers × 17 / 38.43.
 | 10 | 12.8–13.9 | "With Ultimate Rehydration Made For All!" | "With Ultimate Freshness Made For Every Day!" | "Cooling Sensation That Lasts Longer & Refreshing!" (your tagline) |
 | 11 | 13.9–15.9 | Tilted tubes + "Order Now" | Tilted bottles + "Order Now" | Tilted bottles + "Order Now" |
 | 12 | 15.9–17.0 | food strong logo | JRM Holistik logo | JRM Holistik logo |
+| + | 13.9–17.0 | — | Caption card: "Swipe to our profile and buy it on the showcase. @Kak_sha_jrm" | same |
 
 Cenanga's "Made For All!" became "Made For Every Day!" because it contains menthol and camphor,
 and the notes say to use it on children and babies only with care.
