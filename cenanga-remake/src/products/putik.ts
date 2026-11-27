@@ -50,5 +50,6 @@ export const putik: Product = {
     s10: ['Cooling Sensation', 'That Lasts Longer', '& Refreshing!'],
     s11: { button: 'Order Now' },
   },
+  cta: { line: 'Swipe to our profile and buy it on the showcase.', handle: '@Kak_sha_jrm' },
   footage: { shot06: null, shot07: null, shot08: null },
 };

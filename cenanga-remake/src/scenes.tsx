@@ -435,3 +435,29 @@ export const S12: React.FC = () => {
     </Background>
   );
 };
+
+/* closing call to action: a caption card laid over shots 11-12 (13.9-17.0 s), so it is on screen
+   long enough to read; it stays put through the wipe into the end card */
+export const Cta: React.FC = () => {
+  const f = useCurrentFrame();
+  const P = useProduct();
+  if (!P.cta) return null;
+  const C = P.colors;
+  const t = ramp(f, 4, 12, Easing.out(Easing.back(1.4)));
+  return (
+    <AbsoluteFill>
+      <div style={{
+        position: 'absolute', left: 540, top: 1330, width: 880, transform: `translate(-50%, -50%) translateY(${(1 - t) * 60}px)`,
+        opacity: Math.min(1, t * 1.5), padding: '30px 40px 34px', borderRadius: 36, textAlign: 'center',
+        background: 'rgba(255,255,255,0.9)', boxShadow: `0 14px 34px ${C.shadow}`, border: `3px solid ${C.gold1}`,
+      }}>
+        <div style={{ fontFamily: FONT, fontWeight: 800, fontSize: 50, lineHeight: 1.18, color: C.text, letterSpacing: -0.5, textWrap: 'balance' } as React.CSSProperties}>
+          {P.cta.line}
+        </div>
+        <div style={{ fontFamily: FONT, fontWeight: 900, fontSize: fit(P.cta.handle, 66, 900, 800), lineHeight: 1, marginTop: 16, color: C.gold2, letterSpacing: 0 }}>
+          {P.cta.handle}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};

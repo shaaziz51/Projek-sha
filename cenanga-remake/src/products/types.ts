@@ -47,6 +47,8 @@ export type Product = {
     s10: [string, string, string];
     s11: { button: string };
   };
+  // Closing call to action, shown from the "Order Now" shot through the end card; null = none.
+  cta: { line: string; handle: string } | null;
   // Real clips for the original's three live-action shots; null = code-built stand-in.
   footage: { shot06: string | null; shot07: string | null; shot08: string | null };
 };
