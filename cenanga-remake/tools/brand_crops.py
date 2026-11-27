@@ -2,11 +2,12 @@
 
 alpha = how far a pixel is from white; colour is un-premultiplied against white,
 so gold / navy / green ink keeps its true colour on any background.
+
+usage: python3 tools/brand_crops.py <product shot> <x0,y0,x1,y1> <out.png> [boost] [scale]
 """
 import sys, numpy as np
 from PIL import Image
-src = Image.open(sys.argv[1]).convert('RGBA')
-def unwhite(box, path, boost=1.6, scale=1):
+def unwhite(src, box, path, boost=1.6, scale=1):
     c = np.array(src.crop(box)).astype(float)
     rgb, a0 = c[..., :3], c[..., 3:] / 255
     rgb = rgb * a0 + 255 * (1 - a0)                    # flatten on white
@@ -21,6 +22,12 @@ def unwhite(box, path, boost=1.6, scale=1):
     if scale != 1:
         im = im.resize((im.width * scale, im.height * scale), Image.LANCZOS)
     im.save(path); print(path, im.size)
-# x ranges are in the 1293x1216 product shot; the box face starts ~x=600
-unwhite((662, 300, 980, 540), 'public/img/wordmark.png', boost=1.5, scale=2)
-# end-card logo now comes from the supplied JRM Holistik artwork: see tools/logo_alpha.py
+
+if __name__ == '__main__':
+    a = sys.argv[1:]
+    unwhite(Image.open(a[0]).convert('RGBA'), tuple(int(v) for v in a[1].split(',')), a[2],
+            float(a[3]) if len(a) > 3 else 1.6, int(a[4]) if len(a) > 4 else 1)
+# Used for:
+#   Cenanga: public/img/product_src.webp 662,300,980,540 public/img/wordmark.png 1.5 2
+#   Putik:   public/putik/img/product_src.webp <box below> public/putik/img/wordmark.png 1.5 2
+# The end-card logo comes from the supplied JRM Holistik artwork: see tools/logo_alpha.py
