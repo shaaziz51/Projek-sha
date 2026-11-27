@@ -397,7 +397,7 @@ export const S12: React.FC = () => {
   const reveal = (1 - t) * 50;
   return (
     <Background>
-      <Pic src="img/logo.png" x={540} y={960} w={560} scale={1.25 - 0.25 * t}
+      <Pic src="img/logo.png" x={540} y={960} w={680} scale={1.25 - 0.25 * t}
         style={{ filter: `blur(${(1 - t) * 8}px)`, clipPath: `inset(${reveal}% ${reveal}% ${reveal}% ${reveal}%)` }} />
     </Background>
   );

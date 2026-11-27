@@ -23,4 +23,4 @@ def unwhite(box, path, boost=1.6, scale=1):
     im.save(path); print(path, im.size)
 # x ranges are in the 1293x1216 product shot; the box face starts ~x=600
 unwhite((662, 300, 980, 540), 'public/img/wordmark.png', boost=1.5, scale=2)
-unwhite((372, 594, 503, 662), 'public/img/logo.png', boost=1.8, scale=3)
+# end-card logo now comes from the supplied JRM Holistik artwork: see tools/logo_alpha.py

@@ -40,7 +40,7 @@ Cut points are the original's frame numbers × 17 / 38.43.
 | 9 | 10.5–12.8 | Tube + 5 benefit callouts with arrows | Bottle + 5 callouts from your product notes | Code |
 | 10 | 12.8–13.9 | "With Ultimate Rehydration Made For All!" typed on texture | "With Ultimate Freshness Made For Every Day!" | Code |
 | 11 | 13.9–15.9 | Tilted tubes + "Order Now", wipe | Tilted bottles + "Order Now", wipe | Code |
-| 12 | 15.9–17.0 | food strong logo | JRM Skin Care logo | Code |
+| 12 | 15.9–17.0 | food strong logo | JRM Holistik logo | Code |
 
 "Made For All!" became "Made For Every Day!" because the product contains menthol and camphor and
 the notes say to use it on children and babies only with care.
@@ -63,6 +63,6 @@ Put a clip in `public/footage/` and name it in `FOOTAGE` in `src/copy.ts`
 
 ## Assets
 
-- `public/img/`: your product shot (already transparent), bottle and box split from it, and the Cenanga wordmark and JRM logo cut from the packaging (`tools/brand_crops.py`). The ice cube (`tools/ice_matte.py`), mint, camphor leaves and candy (`tools/cutout.py`) are cut-outs of the photos you supplied. Higher-resolution or vector logo files would make shots 4 and 12 sharper.
+- `public/img/`: your product shot (already transparent), bottle and box split from it, the Cenanga wordmark cut from the packaging (`tools/brand_crops.py`), and your JRM Holistik logo file (`logo_src.jpg`, made transparent by `tools/logo_alpha.py`). The ice cube (`tools/ice_matte.py`), mint, camphor leaves and candy (`tools/cutout.py`) are cut-outs of the photos you supplied. A higher-resolution or vector wordmark would make shot 4 sharper.
 - `public/audio/`: placeholder music (about 100 BPM, F major, like the original) and dings / whooshes at the original's cue points, synthesised by `tools/make_audio.py`, so there are no licensing issues. Swap in a licensed track before publishing if you prefer.
 - Fonts: Nunito via `@fontsource` (Open Font License).
